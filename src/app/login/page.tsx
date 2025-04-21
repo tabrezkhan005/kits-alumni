@@ -153,8 +153,27 @@ export default function LoginPage() {
             throw new Error(authResult.message || 'Authentication failed');
           }
         } else {
-          // Admin login not implemented
-          alert('Admin login is not implemented yet.');
+          // Admin login implementation
+          const response = await fetch('/api/admin-login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: formData.email,
+              password: formData.password
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            // Admin login succeeded, redirect to admin page
+            router.push('/admin');
+          } else {
+            // Admin login failed
+            throw new Error(data.error || 'Admin login failed. Please check your credentials.');
+          }
         }
       } catch (error) {
         console.error('Login error:', error);

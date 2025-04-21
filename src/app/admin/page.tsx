@@ -1,9 +1,12 @@
 "use client";
 
+import { useEffect, useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserPlusIcon, TrophyIcon, CalendarIcon, BookOpenIcon, QuestionMarkCircleIcon, CogIcon } from "@heroicons/react/24/outline";
+import { redirect, useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 // Stats card component for the dashboard
 const StatCard = ({ title, value, icon: Icon, href, color }: {
@@ -26,91 +29,96 @@ const StatCard = ({ title, value, icon: Icon, href, color }: {
   </Link>
 );
 
-export default function AdminDashboard() {
+export default function AdminDashboardPage() {
+  const router = useRouter();
+  const [adminData, setAdminData] = useState<{ isAdmin: boolean; admin: any | null }>({
+    isAdmin: false,
+    admin: null
+  });
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Check if user is admin
+  useEffect(() => {
+    async function checkAdminStatus() {
+      try {
+        const response = await fetch('/api/check-admin');
+        const data = await response.json();
+
+        setAdminData(data);
+
+        if (!data.isAdmin) {
+          // Redirect to login if not admin
+          router.push('/login');
+        }
+      } catch (error) {
+        console.error('Error checking admin status:', error);
+        router.push('/login');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    checkAdminStatus();
+  }, [router]);
+
+  // Admin logout function
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin-logout', {
+        method: 'POST',
+      });
+
+      router.push('/login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+
+  // Show loading while checking admin status
+  if (isLoading) {
+    return (
+      <div className="container mx-auto py-8 px-4 text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-burgundy mx-auto"></div>
+        <p className="mt-4 text-gray-600">Loading admin dashboard...</p>
+      </div>
+    );
+  }
+
+  // If not admin and not loading, we'll redirect in useEffect
+  if (!adminData.isAdmin && !isLoading) {
+    return null;
+  }
+
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-        <p className="text-gray-500 mt-2">
-          Welcome to the KITS College admin portal. Manage student registrations, events, and more.
-        </p>
+    <div className="flex flex-col min-h-screen">
+      <div className="container mx-auto py-8 px-4 flex-grow">
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+          <h1 className="text-2xl font-bold text-burgundy mb-4">Admin Dashboard</h1>
+
+          <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+            <p className="text-gray-700">Welcome, {adminData.admin?.email}</p>
+            <p className="text-sm text-gray-500 mt-1">You are logged in as an administrator</p>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <Button
+              className="bg-burgundy hover:bg-burgundy/90 text-white px-4 py-2 rounded-md"
+              asChild
+            >
+              <Link href="/admin/register-requests">Manage Registration Requests</Link>
+            </Button>
+          </div>
+        </div>
       </div>
 
-      {/* Stats Overview */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <StatCard
-          title="Registration Requests"
-          value={8}
-          icon={UserPlusIcon}
-          href="/admin/register-requests"
-          color="text-blue-500"
-        />
-        <StatCard
-          title="Achievements"
-          value={24}
-          icon={TrophyIcon}
-          href="/admin/achievements"
-          color="text-yellow-500"
-        />
-        <StatCard
-          title="Upcoming Events"
-          value={3}
-          icon={CalendarIcon}
-          href="/admin/events"
-          color="text-green-500"
-        />
-        <StatCard
-          title="Student Blogs"
-          value={15}
-          icon={BookOpenIcon}
-          href="/admin/blogs"
-          color="text-purple-500"
-        />
-        <StatCard
-          title="Open Queries"
-          value={12}
-          icon={QuestionMarkCircleIcon}
-          href="/admin/queries"
-          color="text-red-500"
-        />
-        <StatCard
-          title="System Settings"
-          value={4}
-          icon={CogIcon}
-          href="/admin/settings"
-          color="text-gray-500"
-        />
-      </div>
-
-      {/* Recent Activity */}
-      <div>
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>Latest actions from the system</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="flex items-center gap-4 border-b border-gray-100 pb-4">
-                  <div className="relative h-10 w-10 overflow-hidden rounded-full bg-gray-100">
-                    <Image
-                      src="/img/default-avatar.png"
-                      alt="User avatar"
-                      width={40}
-                      height={40}
-                      className="object-cover"
-                    />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">User_{i} requested registration approval</p>
-                    <p className="text-xs text-gray-500">{i} hour{i !== 1 ? 's' : ''} ago</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+      {/* Logout button positioned at the bottom left */}
+      <div className="container mx-auto px-4 pb-4">
+        <Button
+          onClick={handleLogout}
+          className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
+        >
+          Logout
+        </Button>
       </div>
     </div>
   );
