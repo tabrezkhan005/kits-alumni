@@ -1,0 +1,7 @@
+# Commit Logs
+
+## Commit History
+- No commits yet
+- [Pending] Student Achievements Feature: Implements the student achievements page with form for adding new achievements and displaying existing achievements with status indicators
+- [Pending] Fix RLS Policies for Achievements: Resolves row-level security policy issues for achievements table and improves student name handling
+- [Pending] SQL Utilities and API Route: Adds SQL execution utilities and an API route for applying database migrations

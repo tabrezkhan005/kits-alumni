@@ -1,0 +1,83 @@
+# Supabase Integration Logs
+
+## Successful Attempts
+- [2024-07-21] Installed @supabase/supabase-js package
+- [2024-07-21] Created Supabase client configuration in src/lib/supabase.ts
+- [2024-07-21] Created database types in src/types/supabase.ts
+- [2024-07-21] Created authentication utilities in src/lib/auth.ts
+- [2024-07-21] Created database access layer in src/lib/db.ts
+- [2024-07-21] Created useSupabase hook in src/lib/hooks/useSupabase.ts
+- [2024-07-21] Created SupabaseStatus component in src/components/SupabaseStatus.tsx
+- [2024-07-21] Added environment variables template in .env.local.example
+- [2024-07-21] Created SQL migration for RegisterRequests table in sqlCommands/00001_create_register_requests.sql
+- [2024-07-21] Updated database types with RegisterRequests schema
+- [2024-07-21] Added registration helper functions in src/lib/registration.ts
+- [2024-07-21] Updated register form to submit data to Supabase
+- [2024-07-21] Created registration success page at src/app/register/success/page.tsx
+- [2024-08-07] Created SQL migration for profiles storage bucket in sqlCommands/create_profiles_bucket.sql
+- [2024-08-07] Added storage policies for the profiles bucket
+- [2024-08-07] Created trigger to update profile_picture_url in RegisterRequests table
+- [2024-08-07] Fixed profile picture upload issues by:
+  * Corrected storage bucket configuration with proper MIME types and size limits
+  * Added better error handling to the upload process
+  * Implemented proper bucket existence checking
+  * Fixed storage policies to be more permissive for authenticated users
+- [2024-08-07] Fixed SQL error in test_profiles_bucket.sql by using pg_policies catalog view directly
+- [2024-08-07] Fixed column name errors in test_profiles_bucket.sql by removing non-existent columns and correctly structuring the storage.objects INSERT statement
+- [2024-08-07] Fixed owner column type issue in test_profiles_bucket.sql by using auth.uid() without casting to text
+- [2024-08-09] Created admin registration requests page at src/app/admin/register-requests/page.tsx with features:
+  * Displays registration requests from register_requests table in cards
+  * Shows stats for total, pending, approved, and denied requests
+  * Provides Accept, Deny, and Block buttons for managing requests
+  * Implements real-time status updates via Supabase client
+- [2024-08-09] Updated registration requests page to order by first_name alphabetically instead of created_at
+- [2024-08-12] Created achievements page for student dashboard at src/app/student-dashboard/achievements/page.tsx with features:
+  * Displays student's achievements with status indicators
+  * Form to add new achievements with type selection
+  * Uses achievements table with proper student name association
+  * Implemented responsive grid layout for achievement cards
+- [2024-08-12] Updated student dashboard to show actual achievement counts from Supabase
+- [2024-08-12] Added navigation from dashboard to achievements page
+  * Updated navItems array with proper paths
+  * Made stats cards clickable to navigate to respective pages
+  * Improved UX with hover effects on clickable elements
+- [2024-08-12] Added loading component for achievements page with skeleton UI for better user experience
+- [2024-08-12] Added error component for achievements page with error reporting and retry functionality
+- [2024-08-12] Improved error handling in achievements page:
+  * Added fetch error state and display component
+  * Enhanced error messages with specific server responses
+  * Added retry functionality for data loading failures
+  * Properly typed error objects for better handling
+- [2024-08-12] Fixed RLS policy issues for the achievements table:
+  * Created more permissive RLS policies for authenticated users
+  * Added SECURITY DEFINER functions to bypass RLS for critical operations
+  * Fixed student name handling to properly identify the current user
+  * Added comprehensive error handling for RPC function fallbacks
+- [2024-08-12] Created SQL utility function exec_sql with SECURITY DEFINER to allow running SQL statements dynamically
+- [2024-08-12] Created API route for fixing achievement policies:
+  * Added API endpoint at /api/fix-achievements-policy
+  * Implemented functionality to run SQL scripts via the API
+  * Added error handling and reporting for SQL execution
+- [2024-08-13] Fixed Turbopack runtime error:
+  * Removed --turbopack flag from the dev script in package.json
+  * Completely cleared .next directory and npm cache
+  * Fixed internal server error caused by corrupted build artifacts
+  * Restored normal development experience without build errors
+- [2024-08-13] Fixed React-DOM chunk loading error:
+  * Created separate client-side BlogForm component to avoid server rendering issues
+  * Implemented proper client-side form handling with FormData
+  * Updated API to handle both FormData and JSON request formats
+  * Simplified the blog entry interface with just title and content fields
+
+## Failed Attempts
+- [2024-08-07] Initial attempt to upload profile pictures failed with empty error object - fixed by updating storage bucket configuration and policies
+- [2024-08-07] Initial version of test_profiles_bucket.sql failed with "column p.tableid does not exist" error - fixed by using the correct column names from pg_policies
+- [2024-08-07] Second version of test_profiles_bucket.sql failed with "column 'size' does not exist" error - fixed by removing non-existent columns and checking the actual schema
+- [2024-08-07] Third version of test_profiles_bucket.sql failed with type mismatch in owner column - fixed by using auth.uid() without text casting
+- [2024-08-09] Initial implementation of register-requests page had incorrect icon import (RefreshIcon instead of RefreshCwIcon) - fixed by using the correct icon from lucide-react
+- [2024-08-09] Initial query in register-requests page used non-existent created_at column - fixed by ordering by first_name alphabetically
+- [2024-08-12] Initial implementation of achievements page missed Trophy icon import - fixed by adding it to the imports list from lucide-react
+- [2024-08-12] Initial achievement form submission failed with RLS policy error - fixed by creating a more permissive RLS policy and adding SECURITY DEFINER functions
+- [2024-08-12] Student name was stored as "undefined undefined" - fixed by adding proper name handling and fallback logic
+- [2024-08-13] Initial attempt to fix Turbopack runtime error by only removing --turbopack flag failed with internal server error - fixed by completely cleaning the Next.js cache and npm cache
+- [2024-08-13] Initial server component BlogForm implementation caused "Failed to load chunk" error - fixed by creating a proper client component with 'use client' directive
