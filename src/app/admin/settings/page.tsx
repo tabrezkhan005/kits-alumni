@@ -29,7 +29,7 @@ export default function Settings() {
               <input
                 type="text"
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-                defaultValue="Michael Scott"
+                defaultValue="KITS Admin"
               />
             </div>
             <div>
@@ -37,7 +37,7 @@ export default function Settings() {
               <input
                 type="email"
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-                defaultValue="michael.scott@example.com"
+                defaultValue="kitsadmin@gmail.com"
               />
             </div>
             <div>
