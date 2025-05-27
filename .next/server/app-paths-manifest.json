@@ -1,6 +1,4 @@
 {
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/about/page": "app/about/page.js",
-  "/entropy-demo/page": "app/entropy-demo/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/about/page": "app/about/page.js"
 }
