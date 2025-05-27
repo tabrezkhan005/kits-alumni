@@ -1,4 +1,4 @@
-import FacultyHero from "@/components/faculty/Hero";
+import { Hero } from "@/components/layout/hero";
 import FacultyMembers from "@/components/faculty/FacultyMembers";
 import { Metadata } from "next";
 
@@ -11,7 +11,11 @@ export const metadata: Metadata = {
 export default function FacultyPage() {
   return (
     <div className="space-y-0">
-      <FacultyHero />
+      <Hero
+        title="Meet Our Faculty"
+        subtitle="Dedicated educators and researchers leading the way in AI & Machine Learning."
+        size={500}
+      />
       <FacultyMembers />
     </div>
   );

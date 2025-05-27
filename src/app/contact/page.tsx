@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import ContactHero from "@/components/contact/Hero";
+import { Hero } from "@/components/layout/hero";
 import ContactInfo from "@/components/contact/ContactInfo";
 import JoinNetwork from "@/components/contact/JoinNetwork";
 import Faq from "@/components/contact/Faq";
@@ -13,7 +13,11 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <main className="flex flex-col w-full overflow-x-hidden">
-      <ContactHero />
+      <Hero
+        title="Get in Touch"
+        subtitle="Connect with our team for inquiries, feedback, or collaboration opportunities"
+        size={450}
+      />
       <ContactInfo />
       <JoinNetwork />
       <div id="faq-section">

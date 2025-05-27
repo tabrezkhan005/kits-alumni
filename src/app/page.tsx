@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Hero } from "@/components/layout/hero";
 
 // Mock data for the website
 const upcomingEvents = [
@@ -112,43 +113,11 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 font-[family-name:var(--font-geist-sans)]">
       {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/img/conference.jpg"
-            alt="KITS College Campus"
-            fill
-            priority
-            className="object-cover opacity-70 dark:opacity-40"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/70 to-transparent dark:from-blue-950/80"></div>
-        </div>
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-2xl text-white">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg">
-              Welcome to KITS College
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 drop-shadow">
-              Shaping futures through excellence in education and innovation
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/about"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-blue-500/50 text-center transform hover:-translate-y-1"
-              >
-                Learn More
-              </Link>
-              <Link
-                href="/contact"
-                className="bg-white hover:bg-gray-100 text-blue-600 px-6 py-3 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-white/30 text-center transform hover:-translate-y-1"
-              >
-                Contact Us
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Hero
+        title="Welcome to KITS College"
+        subtitle="Shaping futures through excellence in education and innovation"
+        size={550}
+      />
 
       {/* Faculty Members Section */}
       <section className="py-16 bg-white dark:bg-gray-800">

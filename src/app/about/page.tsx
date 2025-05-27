@@ -1,6 +1,6 @@
-import AboutHero from "@/components/about/Hero";
 import AboutSection from "@/components/about/AboutSection";
 import Timeline from "@/components/about/Timeline";
+import { Hero } from "@/components/layout/hero";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,7 +12,11 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="space-y-0">
-      <AboutHero />
+      <Hero
+        title="Our Alumni Story"
+        subtitle="Discover the history, values, and mission driving our vibrant alumni community."
+        size={500}
+      />
       <AboutSection />
       <Timeline />
     </div>
