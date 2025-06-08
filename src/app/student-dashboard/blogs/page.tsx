@@ -184,6 +184,13 @@ export default function StudentBlogsPage() {
     if (student) {
       console.log('Manually refreshing blogs...');
 
+      // Remove duplicate blogs before refreshing
+      try {
+        await fetch('/api/remove-duplicate-blogs', { method: 'POST' });
+      } catch (err) {
+        console.error('Failed to remove duplicate blogs:', err);
+      }
+
       // Try to fix any policy issues first
       try {
         const fixResponse = await fetch('/api/fix-blogs-policy', {

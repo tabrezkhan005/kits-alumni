@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -17,10 +17,13 @@ export default function BlogForm({ studentName, onBlogSubmitted }: BlogFormProps
   const [content, setContent] = useState('');
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
   const [attempts, setAttempts] = useState<string[]>([]);
+  const submittingRef = useRef(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting || submittingRef.current) return; // Prevent double submit
     setIsSubmitting(true);
+    submittingRef.current = true;
     setMessage(null);
     setAttempts([]);
 
@@ -178,6 +181,7 @@ export default function BlogForm({ studentName, onBlogSubmitted }: BlogFormProps
       });
     } finally {
       setIsSubmitting(false);
+      submittingRef.current = false;
     }
   };
 

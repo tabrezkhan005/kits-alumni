@@ -61,6 +61,23 @@ export async function POST(request: Request) {
       }
 
       console.log('RPC method failed:', rpcError?.message);
+
+      // If insert fails, re-query for the existing blog and return it
+      const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+      const { data: recentBlogs } = await supabaseAdmin
+        .from('blogs')
+        .select('id, title, created_at')
+        .eq('name', name)
+        .eq('title', title)
+        .gte('created_at', fiveMinutesAgo);
+      if (recentBlogs && recentBlogs.length > 0) {
+        return NextResponse.json({
+          id: recentBlogs[0].id,
+          success: true,
+          message: 'Existing blog reused to prevent duplication (race condition)'
+        }, { status: 200 });
+      }
+      throw rpcError;
     } catch (rpcError) {
       console.error('Error using RPC method:', rpcError);
       // Continue to next method if this fails
@@ -114,6 +131,22 @@ export async function POST(request: Request) {
 
       if (insertError) {
         console.error('Error directly adding blog:', insertError);
+
+        // If insert fails, re-query for the existing blog and return it
+        const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+        const { data: recentBlogs } = await supabaseAdmin
+          .from('blogs')
+          .select('id, title, created_at')
+          .eq('name', name)
+          .eq('title', title)
+          .gte('created_at', fiveMinutesAgo);
+        if (recentBlogs && recentBlogs.length > 0) {
+          return NextResponse.json({
+            id: recentBlogs[0].id,
+            success: true,
+            message: 'Existing blog reused to prevent duplication (race condition)'
+          }, { status: 200 });
+        }
         throw new Error(`Failed to add blog: ${insertError.message}`);
       }
 
@@ -197,6 +230,22 @@ export async function POST(request: Request) {
 
       if (directError) {
         console.error('Error with Supabase client direct insert:', directError);
+
+        // If insert fails, re-query for the existing blog and return it
+        const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+        const { data: recentBlogs } = await supabaseAdmin
+          .from('blogs')
+          .select('id, title, created_at')
+          .eq('name', name)
+          .eq('title', title)
+          .gte('created_at', fiveMinutesAgo);
+        if (recentBlogs && recentBlogs.length > 0) {
+          return NextResponse.json({
+            id: recentBlogs[0].id,
+            success: true,
+            message: 'Existing blog reused to prevent duplication (race condition)'
+          }, { status: 200 });
+        }
         throw directError;
       }
 

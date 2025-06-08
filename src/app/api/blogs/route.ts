@@ -73,69 +73,6 @@ export async function POST(request: Request) {
       // Continue with blog creation if duplicate check fails
     }
 
-    // Method 1: Try using the exec_sql function
-    console.log('Trying exec_sql method...');
-    try {
-      // First check if the exec_sql function exists
-      const checkFunctionSQL = `
-        SELECT EXISTS(
-          SELECT 1 FROM pg_proc WHERE proname = 'exec_sql'
-        ) as function_exists;
-      `;
-
-      const { data: functionCheckResult, error: functionCheckError } = await supabaseAdmin.rpc('exec_sql', {
-        sql: checkFunctionSQL
-      });
-
-      console.log('exec_sql function check:', functionCheckResult);
-
-      if (functionCheckError) {
-        console.error('Error checking exec_sql function:', functionCheckError);
-        throw new Error('exec_sql function check failed');
-      }
-
-      // Create the blog using exec_sql
-      const sql = createBlogSql(name, title, blog);
-      const { data: sqlResult, error: sqlError } = await supabaseAdmin.rpc('exec_sql', { sql });
-
-      console.log('exec_sql result:', sqlResult);
-
-      if (sqlError) {
-        console.error('Error creating blog with exec_sql:', sqlError);
-        throw new Error(sqlError.message);
-      }
-
-      // Extract the ID from the result - handle different response formats
-      let blogId;
-      if (Array.isArray(sqlResult) && sqlResult.length > 0 && sqlResult[0].id) {
-        blogId = sqlResult[0].id;
-      } else if (sqlResult && sqlResult.success && sqlResult.affected_rows > 0) {
-        // Get the ID using a SELECT query for the most recently inserted blog by this student
-        const getIdSql = `
-          SELECT id::text FROM blogs
-          WHERE name = '${name.replace(/'/g, "''")}'
-          ORDER BY created_at DESC
-          LIMIT 1;
-        `;
-        const { data: idResult } = await supabaseAdmin.rpc('exec_sql', { sql: getIdSql });
-
-        if (Array.isArray(idResult) && idResult.length > 0 && idResult[0].id) {
-          blogId = idResult[0].id;
-        }
-      }
-
-      if (blogId) {
-        console.log('Blog created successfully via exec_sql with ID:', blogId);
-        return NextResponse.json({ id: blogId, success: true }, { status: 201 });
-      } else {
-        console.error('exec_sql method failed: No error but no ID returned');
-        throw new Error('No ID returned from blog creation');
-      }
-    } catch (execSqlError) {
-      console.error('exec_sql method failed:', execSqlError);
-      // Continue to next method if this fails
-    }
-
     // Method 2: Try using an RPC function
     console.log('Trying RPC method...');
     try {
@@ -149,7 +86,21 @@ export async function POST(request: Request) {
       );
 
       if (rpcError) {
-        console.error('Error creating blog with RPC:', rpcError);
+        // If insert fails, re-query for the existing blog and return it
+        const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+        const { data: recentBlogs } = await supabaseAdmin
+          .from('blogs')
+          .select('id, title, created_at')
+          .eq('name', name)
+          .eq('title', title)
+          .gte('created_at', fiveMinutesAgo);
+        if (recentBlogs && recentBlogs.length > 0) {
+          return NextResponse.json({
+            id: recentBlogs[0].id,
+            success: true,
+            message: 'Existing blog reused to prevent duplication (race condition)'
+          }, { status: 200 });
+        }
         throw new Error(rpcError.message);
       }
 
@@ -175,7 +126,21 @@ export async function POST(request: Request) {
         .single();
 
       if (insertError) {
-        console.error('Error creating blog with direct insertion:', insertError);
+        // If insert fails, re-query for the existing blog and return it
+        const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+        const { data: recentBlogs } = await supabaseAdmin
+          .from('blogs')
+          .select('id, title, created_at')
+          .eq('name', name)
+          .eq('title', title)
+          .gte('created_at', fiveMinutesAgo);
+        if (recentBlogs && recentBlogs.length > 0) {
+          return NextResponse.json({
+            id: recentBlogs[0].id,
+            success: true,
+            message: 'Existing blog reused to prevent duplication (race condition)'
+          }, { status: 200 });
+        }
         return NextResponse.json(
           { error: insertError.message },
           { status: 500 }
