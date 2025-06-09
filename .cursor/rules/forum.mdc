@@ -1,0 +1,101 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# 🧭 Roadmap: Forum (Reddit-Style) inside Student Portal
+
+## ✅ Phase 1: Database Setup
+
+> Using Supabase MCP, define the following tables:
+>
+> - `posts`:
+>   - `id` (UUID, PK)
+>   - `title` (text)
+>   - `content` (text)
+>   - `author_id` (UUID, FK to users)
+>   - `created_at` (timestamp, default `now()`)
+>
+> - `comments`:
+>   - `id` (UUID, PK)
+>   - `post_id` (UUID, FK to posts)
+>   - `author_id` (UUID, FK to users)
+>   - `content` (text)
+>   - `created_at` (timestamp)
+>
+> - `votes`:
+>   - `id` (UUID)
+>   - `post_id` (UUID)
+>   - `user_id` (UUID)
+>   - `vote_type` (integer: 1/-1)
+
+---
+
+## 🔐 Phase 2: Integration
+> Fetch the current logged-in user ID , and make it available in components/pages where needed (like post/comment creation).
+
+---
+
+## 🧵 Phase 3: Forum Pages
+
+### `/forum` — Forum Home
+
+> Create a `/forum` page that:
+> - Fetches all posts from Supabase `posts` table
+> - Displays title, author ID or username, upvote/downvote, and comment count
+> - Uses `useEffect`, `SWR`, or Supabase hooks
+> - Tailwind-styled clean UI
+
+---
+
+### `/forum/create` — New Post Page
+
+> Build a form page at `/forum/create` that:
+> - Inputs: title, content
+> - On submit, inserts into `posts` table using Supabase client
+> - Uses logged-in user’s ID
+
+---
+
+### `/forum/post/[id]` — Post Detail + Comments
+
+**Prompt:**
+> Create a dynamic page `/forum/post/[id]` that:
+> - Fetches post details from Supabase
+> - Lists all comments for that post from `comments` table
+> - Includes a comment input form
+> - Submits comment with post_id and user_id
+
+---
+
+## 🔼 Phase 4 : Voting Feature
+
+> Implement voting with `votes` table:
+> - Add upvote/downvote buttons
+> - Store each user's vote
+> - Show net vote count
+> - Support toggle logic (re-click removes vote)
+
+---
+
+## ✨ Phase 5: UI + Realtime
+
+**Prompt:**
+> Polish UI with Tailwind or Shadcn components.
+> Optionally, use Supabase Realtime to:
+> - Auto-update post list on new posts
+> - Auto-update comments in real-time
+
+---
+
+## 🚀 Tips for Working in Cursor with MCP & Claude
+- Use **Sequential Thinking** for scaffold generation and bug fixing
+- Use **Supabase MCP tool in Cursor** for schema edits, browsing tables, testing queries
+- Let **Context7** help explore Supabase docs and libraries if necessary
+
+---
+
+## 📝 End Goal
+
+
+A minimal, functional, Reddit-style forum within your student portal — secure, efficient, and collaborative.

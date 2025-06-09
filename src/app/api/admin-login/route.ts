@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { createClient } from '@supabase/supabase-js';
+import { generateOtp, hashOtp } from '@/lib/otp';
 
 /**
  * Admin login endpoint
@@ -47,32 +48,52 @@ export async function POST(request: NextRequest) {
 
     console.log('Admin found in database:', adminData.email);
 
-    // Since we found the admin, we'll assume the credentials are valid for now
-    // In a production environment, you would properly verify the password here
+    // --- OTP Logic ---
+    const otp = generateOtp();
+    // Store OTP in plain text for development/testing
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString(); // 10 min
 
-    // Admin credentials are valid, create session
-    const cookieStore = await cookies();
+    // Store OTP in admin_otps table
+    const { error: otpError } = await supabaseAdmin.from('admin_otps').insert([
+      {
+        email: adminData.email,
+        otp_hash: otp, // store plain OTP
+        expires_at: expiresAt
+      }
+    ]);
+    if (otpError) {
+      console.error('Failed to store OTP:', otpError);
+      return NextResponse.json(
+        { error: 'Failed to send OTP. Please try again later.' },
+        { status: 500 }
+      );
+    }
 
-    // Store admin session in a secure cookie
-    cookieStore.set({
-      name: 'admin_session',
-      value: JSON.stringify({
-        id: adminData.id,
-        email: adminData.email
-      }),
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24, // 1 day
-      path: '/'
-    });
+    // Send OTP email via API route
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+      const res = await fetch(`${baseUrl}/api/send-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: adminData.email, otp })
+      });
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.message || 'Failed to send OTP email');
+      }
+    } catch (emailError) {
+      console.error('Failed to send OTP email:', emailError);
+      return NextResponse.json(
+        { error: 'Failed to send OTP email. Please try again later.' },
+        { status: 500 }
+      );
+    }
 
+    // Do NOT create session yet. Wait for OTP verification.
     return NextResponse.json({
       success: true,
-      message: 'Admin login successful',
-      user: {
-        id: adminData.id,
-        email: adminData.email
-      }
+      message: 'OTP sent to your email. Please verify to continue.',
+      email: adminData.email
     });
   } catch (error) {
     console.error('Admin login error:', error);

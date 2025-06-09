@@ -48,10 +48,15 @@ export async function GET(request: NextRequest) {
     // Further verification - check if this admin exists in the database
     const { data: adminData, error: adminError } = await supabaseAdmin
       .from('admins')
-      .select('id, email')
+      .select('id, email, is_verified')
       .eq('id', adminSession.id)
       .eq('email', adminSession.email)
       .limit(1);
+
+    let isVerified = false;
+    if (adminData && adminData.length > 0) {
+      isVerified = !!adminData[0].is_verified;
+    }
 
     if (adminError) {
       console.error('Error verifying admin in database:', adminError.message);
@@ -72,7 +77,8 @@ export async function GET(request: NextRequest) {
       isAdmin: true,
       admin: {
         id: adminSession.id,
-        email: adminSession.email
+        email: adminSession.email,
+        isVerified
       }
     });
   } catch (error) {

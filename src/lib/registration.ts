@@ -1,4 +1,6 @@
 import { supabase } from './supabase';
+import { generateOtp, hashOtp } from './otp';
+import { sendOtpEmail } from './email';
 
 /**
  * Interface for the registration form data
@@ -74,6 +76,53 @@ export const submitRegistration = async (
         message: rpcError.message || 'Registration failed. Please try again later.',
         error: rpcError
       };
+    }
+
+    // --- OTP Logic for Admin Registration ---
+    // If this registration is for an admin, generate and send OTP
+    // TODO: Add a real check to determine if this is an admin registration
+    const isAdminRegistration = true; // <-- Replace with real check if needed
+    if (isAdminRegistration) {
+      const otp = generateOtp();
+      const otpHash = hashOtp(otp);
+      const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString(); // 10 minutes from now
+
+      // Store OTP in admin_otps table
+      const { error: otpError } = await supabase.from('admin_otps').insert([
+        {
+          email: formData.email,
+          otp_hash: otpHash,
+          expires_at: expiresAt
+        }
+      ]);
+      if (otpError) {
+        console.error('Failed to store OTP:', otpError);
+        return {
+          success: false,
+          message: 'Failed to send OTP. Please try again later.',
+          error: otpError
+        };
+      }
+
+      // Send OTP email via API route
+      try {
+        const res = await fetch('/api/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: formData.email, otp })
+        });
+        const data = await res.json();
+        if (!data.success) {
+          throw new Error(data.message || 'Failed to send OTP email');
+        }
+      } catch (emailError) {
+        console.error('Failed to send OTP email:', emailError);
+        return {
+          success: false,
+          message: 'Failed to send OTP email. Please try again later.',
+          error: emailError
+        };
+      }
     }
 
     return {

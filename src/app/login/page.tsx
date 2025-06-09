@@ -168,8 +168,10 @@ export default function LoginPage() {
           const data = await response.json();
 
           if (response.ok && data.success) {
-            // Admin login succeeded, redirect to admin page
-            router.push('/admin');
+            // Admin login succeeded, redirect to OTP verification
+            setAuthError('OTP sent to your email. Please verify to continue.');
+            router.push(`/verify-otp?email=${encodeURIComponent(formData.email)}`);
+            return;
           } else {
             // Admin login failed
             throw new Error(data.error || 'Admin login failed. Please check your credentials.');

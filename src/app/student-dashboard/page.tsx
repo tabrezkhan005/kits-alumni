@@ -24,6 +24,7 @@ export default function StudentDashboard() {
     { id: "overview", label: "Dashboard", icon: <User size={20} />, path: "/student-dashboard" },
     { id: "achievements", label: "Achievements", icon: <Award size={20} />, path: "/student-dashboard/achievements" },
     { id: "blogs", label: "Student Blogs", icon: <FileText size={20} />, path: "/student-dashboard/blogs" },
+    { id: "forum", label: "Forum", icon: <MessageSquare size={20} />, path: "/forum" },
   ];
 
   // Load student achievements count

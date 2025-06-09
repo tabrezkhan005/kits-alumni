@@ -1,4 +1,8 @@
 {
-  "/api/blogs/route": "app/api/blogs/route.js",
-  "/api/check-blogs/route": "app/api/check-blogs/route.js"
+  "/api/forum/post/[id]/route": "app/api/forum/post/[id]/route.js",
+  "/api/forum/posts/route": "app/api/forum/posts/route.js",
+  "/api/forum/post/[id]/comment/route": "app/api/forum/post/[id]/comment/route.js",
+  "/forum/create/page": "app/forum/create/page.js",
+  "/forum/post/[id]/page": "app/forum/post/[id]/page.js",
+  "/forum/page": "app/forum/page.js"
 }

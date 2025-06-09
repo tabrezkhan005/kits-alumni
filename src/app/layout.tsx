@@ -28,7 +28,8 @@ export default function RootLayout({
   const pathname = usePathname();
   const isAdminPage = pathname?.startsWith('/admin');
   const isStudentDashboard = pathname?.startsWith('/student-dashboard');
-  const shouldHideNavbarAndFooter = isAdminPage || isStudentDashboard;
+  const isForumPage = pathname?.startsWith('/forum');
+  const shouldHideNavbarAndFooter = isAdminPage || isStudentDashboard || isForumPage;
 
   return (
     <html lang="en" suppressHydrationWarning>
