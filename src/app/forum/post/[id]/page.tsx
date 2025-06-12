@@ -3,11 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { getStudentSession } from '@/lib/hooks/useStudentAuth';
-
-function getCurrentUserEmail() {
-  const session = getStudentSession();
-  return session?.email || '';
-}
+import Link from 'next/link';
 
 interface Post {
   id: string;
@@ -33,7 +29,15 @@ export default function ForumPostDetailPage() {
   const [comment, setComment] = useState('');
   const [isCommenting, setIsCommenting] = useState(false);
   const [commentError, setCommentError] = useState('');
-  const userEmail = getCurrentUserEmail();
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const session = getStudentSession();
+    if (session) {
+      const fullName = `${session.firstName || ''} ${session.lastName || ''}`.trim();
+      setUserName(fullName && fullName !== '' ? fullName : (session.email || ''));
+    }
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -62,7 +66,7 @@ export default function ForumPostDetailPage() {
       const res = await fetch(`/api/forum/post/${id}/comment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: comment, author_id: userEmail }),
+        body: JSON.stringify({ content: comment, author_id: userName }),
       });
       if (!res.ok) {
         const data = await res.json();
@@ -83,6 +87,13 @@ export default function ForumPostDetailPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-100 flex flex-col items-center py-0">
       <div className="w-full max-w-2xl mx-auto px-4 py-10">
+        <div className="mb-4">
+          <Link href="/forum">
+            <Button variant="outline" size="sm" className="flex items-center gap-2">
+              ← Back to Forum
+            </Button>
+          </Link>
+        </div>
         {isLoading ? (
           <div className="text-center py-12 text-blue-700 font-medium">Loading...</div>
         ) : hasError || !post ? (

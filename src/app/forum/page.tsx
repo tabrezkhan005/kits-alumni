@@ -5,11 +5,6 @@ import { Button } from '@/components/ui/button';
 import { MessageSquarePlus } from 'lucide-react';
 import { getStudentSession } from '@/lib/hooks/useStudentAuth';
 
-function getCurrentUserEmail() {
-  const session = getStudentSession();
-  return session?.email || '';
-}
-
 // Type definitions
 interface Post {
   id: string;
@@ -23,7 +18,16 @@ export default function ForumPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const userEmail = getCurrentUserEmail();
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    // Set userName from session (client-side only)
+    const session = getStudentSession();
+    if (session) {
+      const fullName = `${session.firstName || ''} ${session.lastName || ''}`.trim();
+      setUserName(fullName && fullName !== '' ? fullName : (session.email || ''));
+    }
+  }, []);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -46,6 +50,13 @@ export default function ForumPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-100 flex flex-col items-center py-0">
       <header className="w-full max-w-3xl mx-auto px-4 py-8 flex flex-col items-center">
+        <div className="w-full flex justify-start mb-2">
+          <Link href="/student-dashboard">
+            <Button variant="outline" size="sm" className="flex items-center gap-2">
+              ← Back to Dashboard
+            </Button>
+          </Link>
+        </div>
         <h1 className="text-3xl font-extrabold text-blue-900 tracking-tight mb-2">🎓 Student Forum</h1>
         <p className="text-gray-600 text-center max-w-xl mb-4">A place for students to share ideas, ask questions, and connect with peers. Be respectful and help each other grow!</p>
       </header>

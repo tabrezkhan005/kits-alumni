@@ -1,31 +1,34 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { getStudentSession } from '@/lib/hooks/useStudentAuth';
-
-function getCurrentUserEmail() {
-  const session = getStudentSession();
-  return session?.email || '';
-}
 
 export default function ForumCreatePage() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [userName, setUserName] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    const session = getStudentSession();
+    if (session) {
+      const fullName = `${session.firstName || ''} ${session.lastName || ''}`.trim();
+      setUserName(fullName && fullName !== '' ? fullName : (session.email || ''));
+    }
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-    const userEmail = getCurrentUserEmail();
     try {
       const res = await fetch('/api/forum/posts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, content, author_id: userEmail }),
+        body: JSON.stringify({ title, content, author_id: userName }),
       });
       if (!res.ok) {
         const data = await res.json();

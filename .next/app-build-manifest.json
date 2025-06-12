@@ -6,25 +6,35 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/page.js"
+    ],
+    "/student-dashboard/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/student-dashboard/layout.js"
+    ],
+    "/student-dashboard/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/student-dashboard/page.js"
+    ],
     "/forum/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/forum/layout.js"
     ],
-    "/forum/create/page": [
+    "/forum/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/forum/create/page.js"
+      "static/chunks/app/forum/page.js"
     ],
     "/api/forum/posts/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/api/forum/posts/route.js"
-    ],
-    "/forum/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/forum/page.js"
     ],
     "/forum/post/[id]/page": [
       "static/chunks/webpack.js",
@@ -36,10 +46,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/api/forum/post/[id]/route.js"
     ],
-    "/api/forum/post/[id]/comment/route": [
+    "/login/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/api/forum/post/[id]/comment/route.js"
+      "static/chunks/app/login/page.js"
     ]
   }
 }
