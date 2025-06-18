@@ -28,8 +28,9 @@ export default function VerifyOtpForm() {
       });
       const data = await res.json();
       if (data.success) {
-        setMessage({ type: "success", text: data.message });
-        setTimeout(() => router.push("/admin"), 1500);
+        // Redirect to API route that sets the cookie and then redirects to /admin
+        window.location.href = `/api/complete-admin-login?email=${encodeURIComponent(email)}`;
+        return;
       } else {
         setMessage({ type: "error", text: data.message });
       }

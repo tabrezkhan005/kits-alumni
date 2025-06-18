@@ -21,16 +21,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, message: 'Admin not verified.' }, { status: 403 });
     }
     // Set session cookie
-    const cookieStore = cookies();
-    cookieStore.set({
-      name: 'admin_session',
-      value: JSON.stringify({ id: admin.id, email: admin.email }),
+    const response = NextResponse.json({ success: true, message: 'Session created.' });
+    response.cookies.set('admin_session', JSON.stringify({ id: admin.id, email: admin.email }), {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
       maxAge: 60 * 60 * 24, // 1 day
       path: '/'
     });
-    return NextResponse.json({ success: true, message: 'Session created.' });
+    return response;
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Server error.', error }, { status: 500 });
   }

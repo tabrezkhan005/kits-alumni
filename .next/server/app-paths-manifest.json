@@ -1,10 +1,7 @@
 {
-  "/api/forum/posts/route": "app/api/forum/posts/route.js",
+  "/api/check-admin/route": "app/api/check-admin/route.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/api/forum/post/[id]/route": "app/api/forum/post/[id]/route.js",
-  "/page": "app/page.js",
+  "/verify-otp/page": "app/verify-otp/page.js",
   "/login/page": "app/login/page.js",
-  "/forum/page": "app/forum/page.js",
-  "/forum/post/[id]/page": "app/forum/post/[id]/page.js",
-  "/student-dashboard/page": "app/student-dashboard/page.js"
+  "/admin/page": "app/admin/page.js"
 }

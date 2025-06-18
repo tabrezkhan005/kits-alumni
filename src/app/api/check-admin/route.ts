@@ -12,6 +12,12 @@ export async function GET(request: NextRequest) {
     const cookieStore = await cookies();
     const adminSessionCookie = cookieStore.get('admin_session');
 
+    // Debug logging
+    console.log('Check admin - Cookie found:', !!adminSessionCookie);
+    console.log('Check admin - All cookies:', Object.fromEntries(
+      Array.from(cookieStore.getAll()).map(cookie => [cookie.name, cookie.value.substring(0, 50) + '...'])
+    ));
+
     // If no cookie, not an admin
     if (!adminSessionCookie) {
       console.log('No admin session cookie found');
@@ -48,14 +54,16 @@ export async function GET(request: NextRequest) {
     // Further verification - check if this admin exists in the database
     const { data: adminData, error: adminError } = await supabaseAdmin
       .from('admins')
-      .select('id, email, is_verified')
+      .select('id, email, is_verified, name')
       .eq('id', adminSession.id)
       .eq('email', adminSession.email)
       .limit(1);
 
     let isVerified = false;
+    let adminName = adminSession.email;
     if (adminData && adminData.length > 0) {
       isVerified = !!adminData[0].is_verified;
+      adminName = adminData[0].name || adminData[0].email;
     }
 
     if (adminError) {
@@ -78,6 +86,7 @@ export async function GET(request: NextRequest) {
       admin: {
         id: adminSession.id,
         email: adminSession.email,
+        name: adminName,
         isVerified
       }
     });

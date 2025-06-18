@@ -57,6 +57,23 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [adminInfo, setAdminInfo] = useState<{ name?: string; email?: string } | null>(null);
+
+  // Fetch admin info
+  useEffect(() => {
+    async function fetchAdmin() {
+      try {
+        const res = await fetch("/api/check-admin");
+        const data = await res.json();
+        if (data.isAdmin && data.admin) {
+          setAdminInfo({ name: data.admin.name, email: data.admin.email });
+        }
+      } catch (e) {
+        setAdminInfo(null);
+      }
+    }
+    fetchAdmin();
+  }, []);
 
   // Update time every minute
   useEffect(() => {
@@ -67,6 +84,19 @@ export default function AdminLayout({
     return () => clearInterval(timer);
   }, []);
 
+  // Helper to get display name (before @ if email, or name)
+  const getDisplayName = () => {
+    if (adminInfo?.name && adminInfo.name !== adminInfo.email) return adminInfo.name;
+    if (adminInfo?.email) return adminInfo.email.split("@")[0];
+    return "Admin";
+  };
+
+  // Helper to get initial for avatar
+  const getInitial = () => {
+    const displayName = getDisplayName();
+    return displayName.charAt(0).toUpperCase();
+  };
+
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
@@ -74,17 +104,14 @@ export default function AdminLayout({
         {/* User profile section */}
         <div className="p-5 border-b border-gray-200">
           <div className="flex items-center space-x-3">
-            <div className="relative w-12 h-12 overflow-hidden rounded-full">
-              <Image
-                src="/img/default-avatar.png"
-                alt="Admin profile"
-                width={48}
-                height={48}
-                className="object-cover"
-              />
+            <div className="relative w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-600 text-white text-xl font-bold select-none">
+              {/* Show initial if no image */}
+              {getInitial()}
             </div>
-            <div>
-              <h3 className="font-medium text-gray-900">Michael Scott</h3>
+            <div className="flex flex-col justify-center">
+              <h3 className="font-medium text-gray-900 leading-tight">
+                {getDisplayName()}
+              </h3>
               <p className="text-xs text-gray-500">Admin</p>
             </div>
           </div>

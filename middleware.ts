@@ -11,10 +11,26 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/admin')) {
     // Check for admin session cookie
     const adminSessionCookie = request.cookies.get('admin_session');
-    const isAdminLoggedIn = !!adminSessionCookie?.value;
 
-    // If accessing admin routes without admin session, redirect to login
-    if (!isAdminLoggedIn) {
+    console.log('Middleware - Path:', pathname);
+    console.log('Middleware - Cookie found:', !!adminSessionCookie);
+
+    // Basic validation of cookie existence and structure
+    let isValidSession = false;
+    if (adminSessionCookie?.value) {
+      try {
+        const session = JSON.parse(adminSessionCookie.value);
+        isValidSession = !!(session?.id && session?.email);
+        console.log('Middleware - Valid session:', isValidSession);
+      } catch (error) {
+        console.log('Middleware - Cookie parse error:', error);
+        isValidSession = false;
+      }
+    }
+
+    // If accessing admin routes without valid admin session, redirect to login
+    if (!isValidSession) {
+      console.log('Middleware - Redirecting to login from:', pathname);
       const url = new URL('/login', request.url);
       url.searchParams.set('redirect', encodeURIComponent(pathname));
       return NextResponse.redirect(url);
