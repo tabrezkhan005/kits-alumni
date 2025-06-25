@@ -1,6 +1,5 @@
 import { supabase } from './supabase';
-import { generateOtp, hashOtp } from './otp';
-import { sendOtpEmail } from './email';
+// Only export client/server-safe code here. Remove all server-only logic.
 
 /**
  * Interface for the registration form data

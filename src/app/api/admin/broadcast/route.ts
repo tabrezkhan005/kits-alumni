@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllStudentEmails } from '@/lib/registration.server';
-import { sendEmail } from '@/lib/email';
+import { sendEmail } from '@/lib/email.server';
 import { getAdminSessionFromRequest } from '@/lib/auth/adminAuth';
 
 export async function POST(req: NextRequest) {
