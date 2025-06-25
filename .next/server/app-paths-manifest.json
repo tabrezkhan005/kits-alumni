@@ -1,7 +1,6 @@
 {
-  "/api/check-admin/route": "app/api/check-admin/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/verify-otp/page": "app/verify-otp/page.js",
-  "/login/page": "app/login/page.js",
-  "/admin/page": "app/admin/page.js"
+  "/api/admin/broadcast/route": "app/api/admin/broadcast/route.js",
+  "/register/page": "app/register/page.js",
+  "/page": "app/page.js",
+  "/admin/broadcast/page": "app/admin/broadcast/page.js"
 }

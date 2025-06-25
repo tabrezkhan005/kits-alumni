@@ -4,8 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 const getSupabaseUrl = () => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   if (!url) {
-    console.error('Missing NEXT_PUBLIC_SUPABASE_URL');
-    return '';
+    throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL environment variable. Please check your .env file.');
   }
   return url;
 };
@@ -13,8 +12,7 @@ const getSupabaseUrl = () => {
 const getServiceRoleKey = () => {
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!key) {
-    console.error('Missing SUPABASE_SERVICE_ROLE_KEY');
-    return '';
+    throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY environment variable. Please check your .env file.');
   }
   return key;
 };

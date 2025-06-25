@@ -13,7 +13,8 @@ import {
   BookOpenIcon,
   QuestionMarkCircleIcon,
   CogIcon,
-  UserCircleIcon
+  UserCircleIcon,
+  EnvelopeIcon
 } from "@heroicons/react/24/outline";
 
 // Admin navigation items with icons
@@ -42,6 +43,11 @@ const navItems = [
     name: "Queries",
     href: "/admin/queries",
     icon: QuestionMarkCircleIcon,
+  },
+  {
+    name: "Broadcast",
+    href: "/admin/broadcast",
+    icon: EnvelopeIcon,
   },
   {
     name: "Settings",
