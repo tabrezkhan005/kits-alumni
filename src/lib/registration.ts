@@ -104,17 +104,9 @@ export const submitRegistration = async (
         };
       }
 
-      // Send OTP email via API route
+      // Send OTP email directly (no fetch)
       try {
-        const res = await fetch('/api/send-otp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: formData.email, otp })
-        });
-        const data = await res.json();
-        if (!data.success) {
-          throw new Error(data.message || 'Failed to send OTP email');
-        }
+        await sendOtpEmail({ to: formData.email, otp });
       } catch (emailError) {
         console.error('Failed to send OTP email:', emailError);
         return {
