@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { createClient } from '@supabase/supabase-js';
 import { generateOtp, hashOtp } from '@/lib/otp';
+import { sendOtpEmail } from '@/lib/email.server';
 
 /**
  * Admin login endpoint
@@ -69,18 +70,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Send OTP email via API route
+    // Send OTP email directly (no fetch)
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-      const res = await fetch(`${baseUrl}/api/send-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: adminData.email, otp })
-      });
-      const data = await res.json();
-      if (!data.success) {
-        throw new Error(data.message || 'Failed to send OTP email');
-      }
+      await sendOtpEmail({ to: adminData.email, otp });
     } catch (emailError) {
       console.error('Failed to send OTP email:', emailError);
       return NextResponse.json(
