@@ -52,49 +52,75 @@ export function Hero({ title, subtitle, variant = 'entropy', className }: HeroPr
       )}
     >
       {/* Background Variants */}
-      {variant === 'entropy' && (
-        <div className="absolute inset-0 z-0 opacity-40">
-           <Entropy width={2000} height={1000} />
-        </div>
-      )}
-
-      {variant === 'grid' && (
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-navy/20 to-navy/80" />
-        </div>
-      )}
-
-      {variant === 'dots' && (
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[radial-gradient(#ffffff10_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]" />
-        </div>
-      )}
-
-        {variant === 'forum' && (
-          <div className="absolute inset-0 z-0">
-             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-navy via-navy-light/40 to-navy" />
-             <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
-             <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gold/10 rounded-full blur-[100px] animate-pulse" />
+        {variant === 'entropy' && (
+          <div className="absolute inset-0 z-0 opacity-60">
+             <Entropy width={2000} height={1000} />
+             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-navy/20 to-navy" />
           </div>
         )}
 
-        {variant === 'excellence' && (
+        {variant === 'grid' && (
           <div className="absolute inset-0 z-0">
-             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold/20 via-navy/40 to-navy" />
-             <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold/5 rounded-full blur-[120px] animate-pulse" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#D4AF3705_2px,transparent_2px),linear-gradient(to_bottom,#D4AF3705_2px,transparent_2px)] bg-[size:200px_200px]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-navy/20 to-navy/80" />
           </div>
         )}
 
-        {variant === 'geometric' && (
-        <div className="absolute inset-0 z-0">
-           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-gold/10 rounded-full blur-[120px] animate-pulse" />
-           <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-navy/40 rounded-full blur-[120px]" />
-           <div className="absolute top-[20%] right-[10%] w-[20%] h-[20%] bg-white/5 rotate-45 border border-white/10" />
-           <div className="absolute bottom-[20%] left-[15%] w-[15%] h-[15%] rounded-full border border-white/5" />
+        {variant === 'dots' && (
+          <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 bg-[radial-gradient(#D4AF3715_1px,transparent_1px)] [background-size:32px_32px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]" />
+            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_30%,#D4AF3705_0%,transparent_50%)]" />
+          </div>
+        )}
+
+          {variant === 'forum' && (
+            <div className="absolute inset-0 z-0">
+               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-navy via-navy-light/40 to-navy" />
+               <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+               <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gold/20 rounded-full blur-[100px] animate-pulse" />
+               <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-navy-light/30 rounded-full blur-[80px]" />
+            </div>
+          )}
+
+          {variant === 'excellence' && (
+            <div className="absolute inset-0 z-0">
+               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold/15 via-navy/40 to-navy" />
+               <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20" />
+               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold/10 rounded-full blur-[150px] animate-pulse" />
+               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-navy/90" />
+            </div>
+          )}
+
+          {variant === 'geometric' && (
+          <div className="absolute inset-0 z-0">
+             <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-gold/15 rounded-full blur-[120px] animate-pulse" />
+             <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-navy-light/40 rounded-full blur-[120px]" />
+             <div className="absolute top-[20%] right-[10%] w-[20%] h-[20%] bg-white/5 rotate-45 border border-white/10 backdrop-blur-3xl" />
+             <div className="absolute bottom-[20%] left-[15%] w-[15%] h-[15%] rounded-full border border-white/5 backdrop-blur-2xl" />
+             <div className="absolute top-1/2 right-1/4 w-32 h-32 border border-gold/10 rotate-12" />
+          </div>
+        )}
+
+        {/* Decorative Floating Elements */}
+        <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+           <motion.div 
+             animate={{ 
+               y: [0, -20, 0],
+               opacity: [0.2, 0.5, 0.2]
+             }}
+             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+             className="absolute top-1/4 right-[10%] w-2 h-2 bg-gold rounded-full blur-sm"
+           />
+           <motion.div 
+             animate={{ 
+               y: [0, 20, 0],
+               opacity: [0.1, 0.3, 0.1]
+             }}
+             transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+             className="absolute bottom-1/3 left-[15%] w-3 h-3 bg-white rounded-full blur-sm"
+           />
         </div>
-      )}
 
       {/* Decorative Blobs */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full z-0">

@@ -107,15 +107,15 @@ function TransitioningText({ sentences }: { sentences: string[] }) {
   }, [sentences.length]);
 
   return (
-    <div className="relative h-40 md:h-48 lg:h-56">
+    <div className="relative min-h-[160px] md:min-h-[200px] lg:min-h-[240px]">
       <AnimatePresence mode="wait">
         <motion.h1
           key={currentSentenceIndex}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 20 }}
+          initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          exit={{ opacity: 0, y: -40, filter: "blur(10px)" }}
           transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="text-5xl md:text-6xl lg:text-7xl font-bold text-navy leading-[1.1] tracking-tight font-space-grotesk absolute inset-0"
+          className="text-4xl md:text-6xl lg:text-7xl font-bold text-navy leading-[1.1] tracking-tight font-space-grotesk"
         >
           {sentences[currentSentenceIndex].split(' ').map((word, i) => (
             <span key={i} className={i % 3 === 0 ? "text-gold" : ""}>
@@ -124,6 +124,13 @@ function TransitioningText({ sentences }: { sentences: string[] }) {
           ))}
         </motion.h1>
       </AnimatePresence>
+      <motion.div 
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        key={`progress-${currentSentenceIndex}`}
+        transition={{ duration: 5, ease: "linear" }}
+        className="absolute -bottom-4 left-0 h-1 bg-gold/30 w-full origin-left"
+      />
     </div>
   );
 }

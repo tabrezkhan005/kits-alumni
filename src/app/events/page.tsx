@@ -1,16 +1,16 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Video, Users, Sparkles } from 'lucide-react';
+import { Video, Users, Sparkles, Calendar, ArrowRight, MapPin, Clock } from 'lucide-react';
 import { Hero } from '@/components/layout/hero';
 import { EventsList } from '@/components/layout/events-list';
+import { FinalCTASection } from '@/components/layout/final-cta-section';
 
 export const metadata: Metadata = {
   title: 'Department Events | KITS CSM',
   description: 'Stay updated with the latest workshops, seminars, and alumni meetups at KITS Computer Science & Machine Learning department.',
 };
 
-// Mock events data for the UI overhaul
 const events = [
   {
     id: 1,
@@ -49,12 +49,74 @@ export default function EventsPage() {
     <main className="min-h-screen bg-white">
       {/* Hero Section */}
       <Hero 
-        title="Departmental Events"
-        subtitle="Join our technical workshops, alumni networking sessions, and academic conferences designed to foster growth and collaboration."
+        title="Engineering Events & Symposiums"
+        subtitle="Explore our technical workshops, global conferences, and networking events designed to keep you at the forefront of AI and ML innovation."
         variant="grid"
       />
 
       <section className="container mx-auto px-6 py-24">
+        {/* Featured Event Spotlight */}
+        <div className="mb-32">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-10 h-1 bg-gold rounded-full" />
+            <span className="text-gold font-bold uppercase tracking-[0.3em] text-[10px]">Featured Event</span>
+          </div>
+          
+          <div className="group relative bg-navy rounded-[3.5rem] overflow-hidden flex flex-col lg:flex-row items-stretch border border-navy/10 shadow-2xl shadow-navy/20">
+            <div className="lg:w-1/2 relative h-[400px] lg:h-auto overflow-hidden">
+               <Image 
+                 src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1200&auto=format&fit=crop"
+                 alt="Featured Event"
+                 fill
+                 className="object-cover group-hover:scale-110 transition-transform duration-[2s]"
+               />
+               <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/20 to-transparent"></div>
+               <div className="absolute top-10 left-10">
+                  <span className="px-6 py-2 bg-gold text-navy rounded-full font-bold text-xs shadow-xl uppercase tracking-widest">
+                    Registration Open
+                  </span>
+               </div>
+            </div>
+            
+            <div className="lg:w-1/2 p-12 lg:p-20 flex flex-col justify-center">
+               <div className="flex items-center gap-4 text-gold mb-6">
+                  <Calendar className="w-5 h-5" />
+                  <span className="font-bold tracking-widest text-xs uppercase">March 24-26, 2026</span>
+               </div>
+               
+               <h2 className="text-4xl md:text-5xl font-space-grotesk font-bold text-white mb-8 leading-tight">
+                 Global AI & <span className="text-gold">Machine Learning</span> Summit
+               </h2>
+               
+               <p className="text-white/60 text-lg mb-12 font-medium leading-relaxed">
+                 The flagship event of KITS CSM department. Bringing together global experts, researchers, and alumni for three days of deep technical exploration and networking.
+               </p>
+               
+               <div className="grid grid-cols-2 gap-8 mb-12">
+                  <div className="flex flex-col gap-2">
+                     <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest">Venue</span>
+                     <span className="text-white font-medium flex items-center gap-2">
+                        <MapPin className="w-4 h-4 text-gold" />
+                        Main Campus
+                     </span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                     <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest">Speakers</span>
+                     <span className="text-white font-medium flex items-center gap-2">
+                        <Users className="w-4 h-4 text-gold" />
+                        12+ Experts
+                     </span>
+                  </div>
+               </div>
+               
+               <button className="w-fit px-12 py-5 bg-gold text-navy font-bold rounded-full hover:bg-white transition-all shadow-2xl shadow-gold/10 flex items-center gap-3 group/btn">
+                  SECURE YOUR SEAT
+                  <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+               </button>
+            </div>
+          </div>
+        </div>
+
         <div className="flex flex-col md:flex-row items-center justify-between mb-16">
           <div>
             <h2 className="text-3xl md:text-4xl font-space-grotesk font-bold text-navy mb-4">Upcoming Schedule</h2>
@@ -69,7 +131,7 @@ export default function EventsPage() {
         <EventsList events={events} />
 
         {/* Calendar View CTA */}
-        <div className="bg-gray-50 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden border border-gray-100">
+        <div className="bg-gray-50 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden border border-gray-100 mb-24">
            <div className="relative z-10 max-w-2xl mx-auto">
               <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-xl">
                  <Sparkles className="w-8 h-8 text-gold" />
@@ -110,6 +172,8 @@ export default function EventsPage() {
            </div>
         </div>
       </section>
+
+      <FinalCTASection />
     </main>
   );
 }
