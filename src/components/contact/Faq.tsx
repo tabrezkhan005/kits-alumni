@@ -1,6 +1,8 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, Minus, HelpCircle } from 'lucide-react';
 
 type FaqItem = {
   id: string;
@@ -8,107 +10,100 @@ type FaqItem = {
   answer: string;
 };
 
-// Predefined FAQ data to avoid re-renders
 const faqItems: FaqItem[] = [
   {
     id: "faq1",
     question: "How do I join the Alumni Association?",
-    answer: "To join our Alumni Association, simply click on the \"Register\" button in the navigation menu and fill out the registration form. Once your details are verified, you will receive a confirmation email with your membership details."
+    answer: "To join our Alumni Association, simply click on the \"Register\" button in the navigation menu and fill out the registration form. Once your details are verified by the department, you will receive a confirmation email with your membership access."
   },
   {
     id: "faq2",
     question: "How can I update my contact information?",
-    answer: "You can update your contact information by logging into your alumni account and editing your profile. Alternatively, you can email us at ai-hod@kitsguntur.ac.in with your updated details."
+    answer: "You can update your contact information by logging into your alumni dashboard and editing your profile. For critical changes, you can also email the HOD's office directly."
   },
   {
     id: "faq3",
     question: "Are there any membership fees?",
-    answer: "Basic membership in the KITS AI & ML Alumni Association is free. However, we do offer premium membership with additional benefits for a nominal annual fee. Details can be found on the registration page."
+    answer: "Basic membership in the KITS CSM Alumni Association is currently free for all graduates. We encourage active participation in our mentorship and research programs."
   },
   {
     id: "faq4",
     question: "How can I participate in alumni events?",
-    answer: "Information about upcoming events is regularly posted on our Events page. You can register for events through the website or by contacting the event coordinator directly."
+    answer: "Information about upcoming events is regularly posted on our Events page. You can RSVP for events through the website or by contacting the departmental event coordinator."
   },
   {
     id: "faq5",
-    question: "Can I contribute to the alumni network?",
-    answer: "Yes! We welcome contributions from our alumni in various forms including mentorship, guest lectures, internship opportunities, sponsorships, and donations. Please contact us through the form on this page to discuss how you can contribute."
-  },
-  {
-    id: "faq6",
-    question: "How can I access the alumni directory?",
-    answer: "The alumni directory is available to registered members. After logging in, you can access the directory through the Members section of the website. It contains contact information for alumni who have opted to share their details."
+    question: "Can I contribute to the department?",
+    answer: "Yes! We highly value alumni contributions in the form of guest lectures, research collaborations, industry mentorship, and internship opportunities for current students."
   }
 ];
 
 export default function Faq() {
-  const [activeItem, setActiveItem] = useState<string>("faq1");
-  const contentRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-
-  // Toggle accordion item
-  const toggleAccordion = (id: string) => {
-    setActiveItem(prevActiveItem => prevActiveItem === id ? "" : id);
-  };
-
-  // Set reference callback that properly handles the HTMLDivElement
-  const setContentRef = (id: string) => (element: HTMLDivElement | null) => {
-    contentRefs.current[id] = element;
-  };
-
-  // Simple renderFaqItem function that doesn't rely on dynamic height calculations
-  const renderFaqItem = (item: FaqItem) => (
-    <div
-      key={item.id}
-      className="border border-gray-200 rounded-lg overflow-hidden shadow-sm mb-4 transition-all duration-300 ease-in-out"
-      data-animate-on-scroll
-    >
-      <button
-        className={`w-full text-left px-6 py-4 font-semibold flex justify-between items-center transition-all duration-300 ${
-          activeItem === item.id ? "bg-burgundy text-white" : "bg-white text-burgundy hover:bg-gray-50"
-        }`}
-        onClick={() => toggleAccordion(item.id)}
-        aria-expanded={activeItem === item.id}
-        aria-controls={`content-${item.id}`}
-      >
-        <span>{item.question}</span>
-        <i className={`fas ${activeItem === item.id ? "fa-minus" : "fa-plus"} transition-transform duration-300`}></i>
-      </button>
-      <div
-        id={`content-${item.id}`}
-        ref={setContentRef(item.id)}
-        className={`bg-white overflow-hidden transition-all duration-700 ease-in-out ${
-          activeItem === item.id ? "max-h-96" : "max-h-0"
-        }`}
-        style={{
-          opacity: activeItem === item.id ? 1 : 0
-        }}
-      >
-        <div className="px-6 py-4">
-          <p className="text-gray-700">{item.answer}</p>
-        </div>
-      </div>
-    </div>
-  );
+  const [activeId, setActiveId] = useState<string | null>("faq1");
 
   return (
-    <div className="container mx-auto px-4 py-16">
-      <div className="text-center max-w-3xl mx-auto mb-12">
-        <h2 className="text-3xl font-bold text-burgundy mb-4">Frequently Asked Questions</h2>
-        <p className="text-gray-700">
-          Find answers to common questions about the KITS AI & ML Alumni Association.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        <div>
-          {faqItems.slice(0, 3).map(item => renderFaqItem(item))}
+    <section className="py-24 bg-white">
+      <div className="container mx-auto px-6">
+        <div className="text-center max-w-3xl mx-auto mb-20">
+          <div className="w-16 h-16 bg-navy/5 rounded-2xl flex items-center justify-center mx-auto mb-6">
+             <HelpCircle className="w-8 h-8 text-gold" />
+          </div>
+          <h2 className="text-4xl font-space-grotesk font-bold text-navy mb-6">Common Inquiries</h2>
+          <p className="text-gray-500 font-medium">
+            Everything you need to know about the KITS CSM Alumni Network and departmental collaborations.
+          </p>
         </div>
 
-        <div>
-          {faqItems.slice(3).map(item => renderFaqItem(item))}
+        <div className="max-w-4xl mx-auto space-y-4">
+          {faqItems.map((item) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className={`rounded-[2rem] border transition-all duration-300 overflow-hidden ${
+                activeId === item.id 
+                ? "border-gold/30 bg-navy/5 shadow-xl shadow-navy/5" 
+                : "border-gray-100 bg-white hover:border-gold/20"
+              }`}
+            >
+              <button
+                onClick={() => setActiveId(activeId === item.id ? null : item.id)}
+                className="w-full px-8 py-6 flex items-center justify-between text-left group"
+              >
+                <span className={`text-lg font-bold font-space-grotesk transition-colors ${
+                  activeId === item.id ? "text-gold" : "text-navy"
+                }`}>
+                  {item.question}
+                </span>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                  activeId === item.id ? "bg-gold text-navy rotate-0" : "bg-navy/5 text-navy rotate-90"
+                }`}>
+                  {activeId === item.id ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                </div>
+              </button>
+
+              <AnimatePresence>
+                {activeId === item.id && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="px-8 pb-8">
+                       <div className="h-px bg-gold/10 mb-6 w-full" />
+                       <p className="text-gray-500 leading-relaxed font-medium">
+                         {item.answer}
+                       </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

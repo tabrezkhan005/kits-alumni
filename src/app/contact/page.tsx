@@ -12,11 +12,11 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <main className="flex flex-col w-full overflow-x-hidden">
+    <main className="flex flex-col w-full overflow-x-hidden bg-white">
       <Hero
         title="Get in Touch"
         subtitle="Connect with our team for inquiries, feedback, or collaboration opportunities"
-        size={450}
+        variant="dots"
       />
       <ContactInfo />
       <JoinNetwork />

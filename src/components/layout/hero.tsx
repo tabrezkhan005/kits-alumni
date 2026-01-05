@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 interface HeroProps {
   title: string;
   subtitle?: string;
-  variant?: 'entropy' | 'grid' | 'dots' | 'geometric' | 'simple';
+    variant?: 'entropy' | 'grid' | 'dots' | 'geometric' | 'excellence' | 'forum' | 'simple';
   className?: string;
 }
 
@@ -71,7 +71,23 @@ export function Hero({ title, subtitle, variant = 'entropy', className }: HeroPr
         </div>
       )}
 
-      {variant === 'geometric' && (
+        {variant === 'forum' && (
+          <div className="absolute inset-0 z-0">
+             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-navy via-navy-light/40 to-navy" />
+             <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+             <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gold/10 rounded-full blur-[100px] animate-pulse" />
+          </div>
+        )}
+
+        {variant === 'excellence' && (
+          <div className="absolute inset-0 z-0">
+             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold/20 via-navy/40 to-navy" />
+             <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold/5 rounded-full blur-[120px] animate-pulse" />
+          </div>
+        )}
+
+        {variant === 'geometric' && (
         <div className="absolute inset-0 z-0">
            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-gold/10 rounded-full blur-[120px] animate-pulse" />
            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-navy/40 rounded-full blur-[120px]" />
@@ -108,7 +124,7 @@ export function Hero({ title, subtitle, variant = 'entropy', className }: HeroPr
             {title.split(' ').map((word, i) => (
               <span key={i} className={cn(
                 "inline-block mr-3",
-                word.toLowerCase() === 'csm' || word.toLowerCase() === 'faculty' || word.toLowerCase() === 'events' ? "text-gold" : ""
+                word.toLowerCase() === 'csm' || word.toLowerCase() === 'faculty' || word.toLowerCase() === 'events' || word.toLowerCase() === 'excellence' || word.toLowerCase() === 'achievements' ? "text-gold" : ""
               )}>
                 {word}
               </span>

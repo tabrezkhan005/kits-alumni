@@ -4,46 +4,24 @@ import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, Lock, LogIn } from "lucide-react";
+import { Mail, Lock, LogIn, ArrowLeft, ShieldCheck, GraduationCap } from "lucide-react";
 import { authenticateStudent, saveStudentSession, isStudentAuthenticated } from "@/lib/hooks/useStudentAuth";
-
-// For development and demo purposes only - not for production
-const DEMO_USERS = [
-  {
-    id: '1',
-    first_name: 'John',
-    last_name: 'Doe',
-    email: 'student@example.com',
-    password_hash: 'password123', // In a real app, this would be hashed
-    reg_number: 'REG123456',
-    branch: 'Computer Science',
-    batch_year: '2020-2024'
-  }
-];
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 export default function LoginPage() {
   const router = useRouter();
   const [checkingAuth, setCheckingAuth] = useState(true);
-
-  // Form state
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    userType: "student" // Default to student login
+    userType: "student" 
   });
-
-  // Loading state
   const [isLoading, setIsLoading] = useState(false);
-
-  // Authentication error
   const [authError, setAuthError] = useState<string | null>(null);
-
-  // Form validation errors
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Check if already logged in
   useEffect(() => {
-    // If already authenticated, redirect to dashboard
     if (isStudentAuthenticated()) {
       router.push('/student-dashboard');
     } else {
@@ -51,12 +29,9 @@ export default function LoginPage() {
     }
   }, [router]);
 
-  // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
-
-    // Clear error when user starts typing
     if (errors[id]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
@@ -64,304 +39,227 @@ export default function LoginPage() {
         return newErrors;
       });
     }
-
-    // Clear auth error when user modifies form
-    if (authError) {
-      setAuthError(null);
-    }
+    if (authError) setAuthError(null);
   };
 
-  // Toggle user type (student/admin)
   const toggleUserType = (type: "student" | "admin") => {
     setFormData((prev) => ({ ...prev, userType: type }));
-    // Clear auth error when switching user types
-    if (authError) {
-      setAuthError(null);
-    }
+    if (authError) setAuthError(null);
   };
 
-  // Validate form
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-
-    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Invalid email format";
     }
-
-    // Password validation
     if (!formData.password) {
       newErrors.password = "Password is required";
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Authenticate with demo data
-  const authenticateWithDemoData = () => {
-    const demoUser = DEMO_USERS.find(user => user.email === formData.email);
-
-    if (!demoUser) {
-      throw new Error('Student not found. Please check your email and try again.');
-    }
-
-    if (demoUser.password_hash !== formData.password) {
-      throw new Error('Incorrect password. Please try again.');
-    }
-
-    // Login successful with demo user
-    const studentData = {
-      id: demoUser.id,
-      email: demoUser.email,
-      firstName: demoUser.first_name,
-      lastName: demoUser.last_name,
-      regNumber: demoUser.reg_number,
-      branch: demoUser.branch,
-      batchYear: demoUser.batch_year
-    };
-
-    // Save the student session with the correct data
-    saveStudentSession(studentData);
-
-    return true;
-  };
-
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (validateForm()) {
       setIsLoading(true);
       setAuthError(null);
-
       try {
         if (formData.userType === "student") {
-          // Direct authentication against registered_students table
           const authResult = await authenticateStudent(formData.email, formData.password);
-
           if (authResult.success && authResult.student) {
-            // Save student session
             saveStudentSession(authResult.student);
-
-            // Redirect to dashboard
             router.push('/student-dashboard');
           } else {
-            // Authentication failed
             throw new Error(authResult.message || 'Authentication failed');
           }
         } else {
-          // Admin login implementation
           const response = await fetch('/api/admin-login', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email: formData.email,
-              password: formData.password
-            }),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: formData.email, password: formData.password }),
           });
-
           const data = await response.json();
-
           if (response.ok && data.success) {
-            // Admin login succeeded, redirect to OTP verification
-            setAuthError('OTP sent to your email. Please verify to continue.');
             router.push(`/verify-otp?email=${encodeURIComponent(formData.email)}`);
-            return;
           } else {
-            // Admin login failed
-            throw new Error(data.error || 'Admin login failed. Please check your credentials.');
+            throw new Error(data.error || 'Admin login failed');
           }
         }
       } catch (error) {
-        console.error('Login error:', error);
-        setAuthError(error instanceof Error ? error.message : 'Login failed. Please try again.');
+        setAuthError(error instanceof Error ? error.message : 'Login failed');
       } finally {
         setIsLoading(false);
       }
     }
   };
 
-  // If still checking authentication, show loading
   if (checkingAuth) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-burgundy mx-auto"></div>
-          <p className="mt-4 text-gray-600">Checking authentication status...</p>
-        </div>
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <div className="w-12 h-12 border-4 border-navy border-t-gold rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-4">
-        <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-          {/* Header */}
-          <div className="bg-burgundy text-white py-8 px-6 relative">
-            <div className="absolute inset-0 opacity-20"
-                 style={{
-                   backgroundImage: `url('/img/alumini logo2.jpg')`,
-                   backgroundSize: 'cover',
-                   backgroundPosition: 'center',
-                   filter: 'blur(2px)'
-                 }}></div>
-            <div className="relative z-10 text-center">
-              <Image
-                src="/img/alumini logo2.jpg"
-                alt="KITS Alumni Logo"
-                width={80}
-                height={80}
-                className="mx-auto rounded-full border-4 border-white mb-3"
-              />
-              <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome Back!</h1>
+    <main className="min-h-screen bg-white flex overflow-hidden font-inter">
+      {/* Visual Side */}
+      <div className="hidden lg:flex lg:w-1/2 bg-navy relative items-center justify-center p-20 overflow-hidden">
+         <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold/10 via-navy to-navy" />
+            <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold/5 rounded-full blur-[120px]" />
+         </div>
+         
+         <motion.div 
+           initial={{ opacity: 0, y: 30 }}
+           animate={{ opacity: 1, y: 0 }}
+           className="relative z-10 text-center max-w-lg"
+         >
+            <Link href="/" className="inline-flex items-center gap-2 text-gold font-bold text-[10px] uppercase tracking-[0.4em] mb-12 hover:translate-x-[-4px] transition-transform">
+               <ArrowLeft className="w-4 h-4" /> Back to Home
+            </Link>
+            <div className="w-24 h-24 bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] flex items-center justify-center mx-auto mb-10 shadow-2xl">
+               <Image src="/img/alumini logo2.jpg" alt="Logo" width={60} height={60} className="rounded-2xl" />
             </div>
+            <h1 className="text-5xl font-space-grotesk font-bold text-white mb-6 leading-tight">
+               Excellence in <span className="text-gold">Engineering</span>
+            </h1>
+            <p className="text-white/60 font-medium leading-relaxed">
+               Securely access the KITS CSM portal to connect with your community, share research, and grow your professional network.
+            </p>
+         </motion.div>
+
+         <div className="absolute bottom-10 left-10 flex gap-10 opacity-30">
+            <div className="flex items-center gap-2">
+               <div className="w-1.5 h-1.5 bg-gold rounded-full"></div>
+               <span className="text-white text-[10px] font-bold uppercase tracking-widest">Innovation</span>
+            </div>
+            <div className="flex items-center gap-2">
+               <div className="w-1.5 h-1.5 bg-gold rounded-full"></div>
+               <span className="text-white text-[10px] font-bold uppercase tracking-widest">Collaboration</span>
+            </div>
+         </div>
+      </div>
+
+      {/* Form Side */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-20 relative">
+        <motion.div 
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="w-full max-w-md"
+        >
+          <div className="mb-12">
+            <h2 className="text-4xl font-space-grotesk font-bold text-navy mb-4">Welcome Back</h2>
+            <p className="text-gray-500 font-medium">Please enter your credentials to continue</p>
           </div>
 
-          {/* Login Form */}
-          <div className="p-6 md:p-8">
-            {/* User Type Toggle with Animated Slider */}
-            <div className="relative flex bg-gray-100 p-1 rounded-full mb-8 max-w-xs mx-auto">
-              {/* Animated background pill that slides */}
-              <div
-                className={`absolute inset-y-1 w-1/2 bg-burgundy rounded-full shadow-md transition-all duration-300 ease-in-out ${
-                  formData.userType === "student" ? "left-1" : "left-[50%] -translate-x-[2px]"
-                }`}
-                aria-hidden="true"
-              ></div>
+          {/* User Type Toggle */}
+          <div className="flex bg-gray-50 p-1.5 rounded-2xl mb-10 border border-gray-100">
+            <button
+              onClick={() => toggleUserType("student")}
+              className={cn(
+                "flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest transition-all",
+                formData.userType === "student" ? "bg-navy text-white shadow-xl shadow-navy/20" : "text-gray-400 hover:text-navy"
+              )}
+            >
+              <GraduationCap className="w-4 h-4" /> Student
+            </button>
+            <button
+              onClick={() => toggleUserType("admin")}
+              className={cn(
+                "flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest transition-all",
+                formData.userType === "admin" ? "bg-gold text-navy shadow-xl shadow-gold/20" : "text-gray-400 hover:text-navy"
+              )}
+            >
+              <ShieldCheck className="w-4 h-4" /> Admin
+            </button>
+          </div>
 
-              {/* Student button */}
-              <button
-                type="button"
-                onClick={() => toggleUserType("student")}
-                className={`relative z-10 flex-1 py-2 px-4 rounded-full text-center transition-colors duration-300 ease-in-out ${
-                  formData.userType === "student" ? "text-white font-medium" : "text-gray-700 hover:text-gray-900"
-                }`}
-              >
-                Student
-              </button>
+          {authError && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="mb-8 p-4 bg-red-50 border border-red-100 rounded-2xl text-red-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-3"
+            >
+              <div className="w-2 h-2 bg-red-500 rounded-full animate-ping"></div>
+              {authError}
+            </motion.div>
+          )}
 
-              {/* Admin button */}
-              <button
-                type="button"
-                onClick={() => toggleUserType("admin")}
-                className={`relative z-10 flex-1 py-2 px-4 rounded-full text-center transition-colors duration-300 ease-in-out ${
-                  formData.userType === "admin" ? "text-white font-medium" : "text-gray-700 hover:text-gray-900"
-                }`}
-              >
-                Admin
-              </button>
-            </div>
-
-            {/* Authentication error message */}
-            {authError && (
-              <div className="mb-6 p-3 bg-red-50 border border-red-200 rounded-md text-red-600 text-sm">
-                {authError}
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Email Field */}
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                <div className="relative">
-                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
-                    <Mail size={18} />
-                  </span>
-                  <input
-                    type="email"
-                    id="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className={`w-full pl-10 pr-4 py-3 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-burgundy focus:border-transparent`}
-                    placeholder="Enter your email"
-                  />
-                </div>
-                {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
-              </div>
-
-              {/* Password Field */}
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-                  <Link href="/forgot-password" className="text-xs text-burgundy hover:text-burgundy-dark hover:underline transition-colors">
-                    Forgot Password?
-                  </Link>
-                </div>
-                <div className="relative">
-                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
-                    <Lock size={18} />
-                  </span>
-                  <input
-                    type="password"
-                    id="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className={`w-full pl-10 pr-4 py-3 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-burgundy focus:border-transparent`}
-                    placeholder="Enter your password"
-                  />
-                </div>
-                {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
-              </div>
-
-              {/* Demo Credentials Notice */}
-              <div className="text-sm text-gray-500 bg-gray-50 p-3 rounded-md">
-                <p className="font-medium">Demo Credentials:</p>
-                <p>Email: student@example.com</p>
-                <p>Password: password123</p>
-              </div>
-
-              {/* Remember Me */}
-              <div className="flex items-center">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest ml-4">Email Address</label>
+              <div className="relative">
+                <Mail className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
-                  id="remember"
-                  type="checkbox"
-                  className="h-4 w-4 text-burgundy focus:ring-burgundy border-gray-300 rounded"
+                  type="email"
+                  id="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={cn(
+                    "w-full bg-gray-50 border border-gray-100 rounded-[1.5rem] pl-14 pr-6 py-5 text-navy font-bold text-sm placeholder:text-gray-300 focus:outline-none focus:border-navy transition-all",
+                    errors.email && "border-red-500"
+                  )}
+                  placeholder="name@university.edu"
                 />
-                <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
-                  Remember me
-                </label>
               </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full bg-burgundy hover:bg-burgundy-dark text-white font-semibold py-3 px-6 rounded-md transition duration-300 transform hover:scale-105 flex items-center justify-center disabled:opacity-70 disabled:transform-none"
-              >
-                {isLoading ? (
-                  <span className="flex items-center">
-                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Processing...
-                  </span>
-                ) : (
-                  <>
-                    <LogIn className="mr-2" size={20} />
-                    Login
-                  </>
-                )}
-              </button>
-            </form>
-
-            {/* Register Link */}
-            <div className="text-center mt-6">
-              <p className="text-gray-600">
-                Don't have an account? {" "}
-                <Link href="/register" className="text-burgundy hover:text-burgundy-dark font-medium hover:underline transition-colors">
-                  Register here
-                </Link>
-              </p>
+              {errors.email && <p className="text-[10px] text-red-500 font-bold uppercase ml-4">{errors.email}</p>}
             </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between px-4">
+                 <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest">Password</label>
+                 <Link href="/forgot-password" size="sm" className="text-[10px] font-bold text-gold uppercase tracking-widest hover:text-navy transition-colors">Forgot?</Link>
+              </div>
+              <div className="relative">
+                <Lock className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  type="password"
+                  id="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className={cn(
+                    "w-full bg-gray-50 border border-gray-100 rounded-[1.5rem] pl-14 pr-6 py-5 text-navy font-bold text-sm placeholder:text-gray-300 focus:outline-none focus:border-navy transition-all",
+                    errors.password && "border-red-500"
+                  )}
+                  placeholder="••••••••"
+                />
+              </div>
+              {errors.password && <p className="text-[10px] text-red-500 font-bold uppercase ml-4">{errors.password}</p>}
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-navy text-white font-bold py-6 rounded-[1.5rem] hover:bg-gold hover:text-navy transition-all shadow-2xl shadow-navy/20 flex items-center justify-center gap-3 disabled:opacity-70 group overflow-hidden relative"
+            >
+              {isLoading ? (
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              ) : (
+                <>
+                  LOGIN TO PORTAL
+                  <LogIn className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="mt-12 text-center">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+              Don't have an account? {" "}
+              <Link href="/register" className="text-gold hover:text-navy transition-colors ml-2">
+                Create Account
+              </Link>
+            </p>
           </div>
-        </div>
+        </motion.div>
+        
+        {/* Background decorative blob */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-gold/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 -z-10"></div>
       </div>
     </main>
   );
