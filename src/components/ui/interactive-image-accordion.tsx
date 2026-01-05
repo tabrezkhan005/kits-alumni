@@ -205,24 +205,27 @@ export function LandingAccordionItem() {
                 ))}
               </motion.div>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="mt-12 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6"
-            >
-              <Link href="/register" className="flex-1 sm:flex-none">
-                <button className="w-full group px-10 py-5 bg-navy text-white font-bold rounded-2xl hover:bg-gold hover:text-navy transition-all duration-500 shadow-2xl shadow-navy/20 flex items-center justify-center gap-3 active:scale-[0.98] border border-navy/10">
-                  JOIN OUR NETWORK
-                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                </button>
-              </Link>
-              <Link href="/about" className="flex-1 sm:flex-none">
-                <button className="w-full px-10 py-5 bg-white border-2 border-navy/10 text-navy font-bold rounded-2xl hover:border-navy hover:bg-navy hover:text-white transition-all duration-500 active:scale-[0.98] flex items-center justify-center">
-                  EXPLORE DEPARTMENT
-                </button>
-              </Link>
-            </motion.div>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className="mt-12 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6"
+              >
+                <Link href="/register" className="flex-1 sm:flex-none">
+                  <button className="relative overflow-hidden w-full group px-10 py-5 bg-navy text-white font-bold rounded-2xl transition-all duration-500 shadow-2xl shadow-navy/20 flex items-center justify-center gap-3 active:scale-[0.98] border border-navy/10 hover:bg-gold hover:text-navy hover:shadow-[0_0_30px_rgba(212,167,46,0.4)]">
+                    <span className="relative z-10 flex items-center gap-3">
+                      JOIN OUR NETWORK
+                      <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />
+                  </button>
+                </Link>
+                <Link href="/about" className="flex-1 sm:flex-none">
+                  <button className="w-full px-10 py-5 bg-white border-2 border-navy/10 text-navy font-bold rounded-2xl hover:border-navy hover:bg-navy hover:text-white transition-all duration-500 active:scale-[0.98] flex items-center justify-center hover:shadow-xl hover:shadow-navy/10">
+                    EXPLORE DEPARTMENT
+                  </button>
+                </Link>
+              </motion.div>
           </div>
 
           <motion.div 
