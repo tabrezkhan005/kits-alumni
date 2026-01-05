@@ -55,39 +55,39 @@ const AccordionItem = ({ item, isActive, onMouseEnter }: {
     <motion.div
       layout
       className={`
-        relative h-[550px] rounded-[2.5rem] overflow-hidden cursor-pointer
+        relative h-[450px] md:h-[550px] rounded-[2.5rem] overflow-hidden cursor-pointer
         transition-all duration-700 ease-in-out border border-white/10
-        ${isActive ? 'w-[450px] shadow-2xl shadow-navy/40' : 'w-[80px] opacity-70 hover:opacity-100'}
+        ${isActive ? 'flex-[4] md:flex-[5] shadow-2xl shadow-navy/40' : 'flex-1 opacity-70 hover:opacity-100'}
       `}
       onMouseEnter={onMouseEnter}
     >
       <img
         src={item.imageUrl}
         alt={item.title}
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-110"
       />
-      <div className={`absolute inset-0 bg-gradient-to-b from-transparent via-navy/20 to-navy/90 transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-60'}`} />
+      <div className={`absolute inset-0 bg-gradient-to-b from-transparent via-navy/10 to-navy/90 transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-60'}`} />
 
       <AnimatePresence>
         {isActive && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            className="absolute bottom-10 left-10 right-10 z-20"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            className="absolute bottom-8 left-8 right-8 z-20"
           >
-             <div className="w-12 h-12 bg-gold rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+             <div className="w-12 h-12 bg-gold text-navy rounded-2xl flex items-center justify-center mb-4 shadow-lg transform -rotate-12">
                 {item.icon}
              </div>
-             <h3 className="text-2xl font-space-grotesk font-bold text-white mb-2">{item.title}</h3>
-             <p className="text-white/60 text-sm font-medium">Empowering students through cutting-edge technological education.</p>
+             <h3 className="text-xl md:text-2xl font-space-grotesk font-bold text-white mb-2">{item.title}</h3>
+             <p className="text-white/70 text-xs md:text-sm font-medium line-clamp-2">Leading the frontier of technological innovation and academic excellence.</p>
           </motion.div>
         )}
       </AnimatePresence>
 
       {!isActive && (
         <div className="absolute inset-0 flex items-center justify-center z-10">
-           <span className="rotate-90 text-white/40 text-xs font-bold uppercase tracking-[0.3em] whitespace-nowrap">
+           <span className="rotate-90 text-white/50 text-[10px] font-bold uppercase tracking-[0.4em] whitespace-nowrap">
               {item.title}
            </span>
         </div>
@@ -107,30 +107,35 @@ function TransitioningText({ sentences }: { sentences: string[] }) {
   }, [sentences.length]);
 
   return (
-    <div className="relative min-h-[160px] md:min-h-[200px] lg:min-h-[240px]">
+    <div className="relative h-[180px] md:h-[240px] lg:h-[280px] flex flex-col justify-center">
       <AnimatePresence mode="wait">
         <motion.h1
           key={currentSentenceIndex}
-          initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+          initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          exit={{ opacity: 0, y: -40, filter: "blur(10px)" }}
+          exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
           transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="text-4xl md:text-6xl lg:text-7xl font-bold text-navy leading-[1.1] tracking-tight font-space-grotesk"
+          className="text-4xl md:text-6xl lg:text-7xl font-bold text-navy leading-[1.05] tracking-tight font-space-grotesk"
         >
-          {sentences[currentSentenceIndex].split(' ').map((word, i) => (
-            <span key={i} className={i % 3 === 0 ? "text-gold" : ""}>
-               {word}{' '}
-            </span>
-          ))}
+          {sentences[currentSentenceIndex].split(' ').map((word, i) => {
+            const isHighlight = ['AI', '&', 'Machine', 'Learning', 'Innovators', 'Technology', 'Excellence', 'Artificial', 'Intelligence', 'ML', 'Research'].includes(word.replace(/[^a-zA-Z&]/g, ''));
+            return (
+              <span key={i} className={isHighlight ? "text-gold inline-block" : "inline-block"}>
+                 {word}{' '}
+              </span>
+            );
+          })}
         </motion.h1>
       </AnimatePresence>
-      <motion.div 
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        key={`progress-${currentSentenceIndex}`}
-        transition={{ duration: 5, ease: "linear" }}
-        className="absolute -bottom-4 left-0 h-1 bg-gold/30 w-full origin-left"
-      />
+      <div className="absolute -bottom-6 left-0 w-full h-[2px] bg-gray-100 overflow-hidden rounded-full">
+        <motion.div 
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          key={`progress-${currentSentenceIndex}`}
+          transition={{ duration: 5, ease: "linear" }}
+          className="h-full bg-gold w-full origin-left"
+        />
+      </div>
     </div>
   );
 }
@@ -139,24 +144,31 @@ export function LandingAccordionItem() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <div className="bg-white min-h-screen pt-[140px] pb-24 overflow-hidden relative">
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-gold/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-[30%] h-[30%] bg-navy/5 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2" />
+    <div className="bg-white min-h-screen pt-[120px] pb-20 overflow-hidden relative selection:bg-gold/30">
+      {/* Premium Background Elements */}
+      <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-gold/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4 animate-pulse" />
+      <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-navy/5 rounded-full blur-[120px] translate-y-1/4 -translate-x-1/4" />
+      
+      {/* Subtle Grid Pattern */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
+           style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #001F3F 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
       <section className="container mx-auto px-6 lg:px-12 relative z-10">
-        <div className="flex flex-col xl:flex-row items-center justify-between gap-20">
+        <div className="flex flex-col xl:flex-row items-center justify-between gap-16 lg:gap-24">
 
-          <div className="w-full xl:w-[45%]">
+          <div className="w-full xl:w-[45%] flex flex-col justify-center">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               className="mb-8"
             >
-               <span className="px-4 py-1.5 rounded-full bg-navy/5 text-navy text-[10px] font-bold uppercase tracking-[0.3em] border border-navy/10">
-                  Welcome to CSM Department
-               </span>
+               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-navy/[0.03] border border-navy/5">
+                  <span className="w-2 h-2 rounded-full bg-gold animate-ping" />
+                  <span className="text-navy text-[10px] font-bold uppercase tracking-[0.3em]">
+                    Welcome to CSM Department
+                  </span>
+               </div>
             </motion.div>
             
             <TransitioningText sentences={typewriterSentences} />
@@ -165,7 +177,7 @@ export function LandingAccordionItem() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-8 text-lg md:text-xl text-gray-500 max-w-xl font-medium leading-relaxed"
+              className="mt-10 text-lg text-gray-500 max-w-xl font-medium leading-relaxed"
             >
               Building the next generation of AI leaders at KITS. Our curriculum is designed to merge theoretical excellence with practical industry standards.
             </motion.p>
@@ -174,7 +186,7 @@ export function LandingAccordionItem() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-6"
+              className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4"
             >
               {[
                 { label: 'Alumni', val: '500+' },
@@ -182,9 +194,9 @@ export function LandingAccordionItem() {
                 { label: 'Projects', val: '120+' },
                 { label: 'Placements', val: '98%' }
               ].map((stat, i) => (
-                <div key={i} className="group p-4 rounded-3xl bg-gray-50/50 border border-gray-100 hover:border-gold/30 hover:bg-white hover:shadow-xl hover:shadow-navy/5 transition-all duration-300">
-                  <div className="text-2xl font-bold text-navy mb-1 group-hover:text-gold">{stat.val}</div>
-                  <div className="text-[10px] uppercase font-bold text-gray-400 tracking-widest">{stat.label}</div>
+                <div key={i} className="group p-5 rounded-[2rem] bg-gray-50/50 border border-gray-100 hover:border-gold/20 hover:bg-white hover:shadow-2xl hover:shadow-navy/5 transition-all duration-500">
+                  <div className="text-2xl font-bold text-navy mb-1 group-hover:text-gold transition-colors">{stat.val}</div>
+                  <div className="text-[9px] uppercase font-bold text-gray-400 tracking-[0.2em]">{stat.label}</div>
                 </div>
               ))}
             </motion.div>
@@ -193,16 +205,16 @@ export function LandingAccordionItem() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="mt-12 flex flex-wrap gap-6"
+              className="mt-12 flex flex-wrap items-center gap-6"
             >
               <Link href="/register">
-                <button className="px-10 py-5 bg-navy text-white font-bold rounded-full hover:bg-gold hover:text-navy transition-all shadow-2xl shadow-navy/20 flex items-center gap-3">
+                <button className="group px-10 py-5 bg-navy text-white font-bold rounded-full hover:bg-gold hover:text-navy transition-all duration-500 shadow-2xl shadow-navy/20 flex items-center gap-3 active:scale-95">
                   JOIN OUR NETWORK
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </button>
               </Link>
               <Link href="/about">
-                <button className="px-10 py-5 bg-white border-2 border-navy text-navy font-bold rounded-full hover:bg-navy hover:text-white transition-all">
+                <button className="px-10 py-5 bg-white border-2 border-navy/10 text-navy font-bold rounded-full hover:border-navy hover:bg-navy hover:text-white transition-all duration-500 active:scale-95">
                   EXPLORE DEPARTMENT
                 </button>
               </Link>
@@ -212,10 +224,10 @@ export function LandingAccordionItem() {
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="w-full xl:w-[55%] flex items-center justify-center lg:justify-end"
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full xl:w-[55%] flex items-center"
           >
-            <div className="flex flex-row items-center gap-4 p-4">
+            <div className="flex flex-row items-center gap-3 md:gap-4 w-full h-full min-h-[450px] md:min-h-[550px]">
               {accordionItems.map((item, index) => (
                 <AccordionItem
                   key={item.id}
