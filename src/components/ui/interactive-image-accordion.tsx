@@ -47,20 +47,20 @@ const typewriterSentences = [
 ];
 
 const AccordionItem = ({ item, isActive, onMouseEnter }: {
-  item: typeof accordionItems[0];
-  isActive: boolean;
-  onMouseEnter: () => void;
-}) => {
-  return (
-    <motion.div
-      layout
-      className={`
-        relative h-[450px] md:h-[550px] rounded-[2.5rem] overflow-hidden cursor-pointer
-        transition-all duration-700 ease-in-out border border-white/10
-        ${isActive ? 'flex-[4] md:flex-[5] shadow-2xl shadow-navy/40' : 'flex-1 opacity-70 hover:opacity-100'}
-      `}
-      onMouseEnter={onMouseEnter}
-    >
+    item: typeof accordionItems[0];
+    isActive: boolean;
+    onMouseEnter: () => void;
+  }) => {
+    return (
+      <motion.div
+        layout
+        className={`
+          relative h-[450px] md:h-[550px] rounded-3xl overflow-hidden cursor-pointer
+          transition-all duration-700 ease-in-out border border-white/10
+          ${isActive ? 'flex-[4] md:flex-[5] shadow-2xl shadow-navy/40' : 'flex-1 opacity-70 hover:opacity-100'}
+        `}
+        onMouseEnter={onMouseEnter}
+      >
       <img
         src={item.imageUrl}
         alt={item.title}
@@ -107,33 +107,37 @@ function TransitioningText({ sentences }: { sentences: string[] }) {
   }, [sentences.length]);
 
   return (
-    <div className="relative h-[180px] md:h-[240px] lg:h-[280px] flex flex-col justify-center">
+    <div className="relative h-[160px] md:h-[200px] lg:h-[240px] flex flex-col justify-center overflow-hidden">
       <AnimatePresence mode="wait">
         <motion.h1
           key={currentSentenceIndex}
-          initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+          initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
-          transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="text-4xl md:text-6xl lg:text-7xl font-bold text-navy leading-[1.05] tracking-tight font-space-grotesk"
+          exit={{ opacity: 0, y: -40, filter: "blur(12px)" }}
+          transition={{ 
+            duration: 0.9, 
+            ease: [0.16, 1, 0.3, 1],
+            opacity: { duration: 0.6 }
+          }}
+          className="text-4xl md:text-6xl lg:text-7xl font-bold text-navy leading-[1.1] tracking-tight font-space-grotesk"
         >
           {sentences[currentSentenceIndex].split(' ').map((word, i) => {
             const isHighlight = ['AI', '&', 'Machine', 'Learning', 'Innovators', 'Technology', 'Excellence', 'Artificial', 'Intelligence', 'ML', 'Research'].includes(word.replace(/[^a-zA-Z&]/g, ''));
             return (
-              <span key={i} className={isHighlight ? "text-gold inline-block" : "inline-block"}>
+              <span key={i} className={isHighlight ? "text-gold relative inline-block" : "inline-block"}>
                  {word}{' '}
               </span>
             );
           })}
         </motion.h1>
       </AnimatePresence>
-      <div className="absolute -bottom-6 left-0 w-full h-[2px] bg-gray-100 overflow-hidden rounded-full">
+      <div className="mt-8 w-32 h-[3px] bg-navy/[0.03] overflow-hidden rounded-full relative">
         <motion.div 
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           key={`progress-${currentSentenceIndex}`}
           transition={{ duration: 5, ease: "linear" }}
-          className="h-full bg-gold w-full origin-left"
+          className="absolute inset-0 bg-gold w-full origin-left"
         />
       </div>
     </div>
@@ -182,39 +186,39 @@ export function LandingAccordionItem() {
               Building the next generation of AI leaders at KITS. Our curriculum is designed to merge theoretical excellence with practical industry standards.
             </motion.p>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4"
-            >
-              {[
-                { label: 'Alumni', val: '500+' },
-                { label: 'Faculty', val: '50+' },
-                { label: 'Projects', val: '120+' },
-                { label: 'Placements', val: '98%' }
-              ].map((stat, i) => (
-                <div key={i} className="group p-5 rounded-[2rem] bg-gray-50/50 border border-gray-100 hover:border-gold/20 hover:bg-white hover:shadow-2xl hover:shadow-navy/5 transition-all duration-500">
-                  <div className="text-2xl font-bold text-navy mb-1 group-hover:text-gold transition-colors">{stat.val}</div>
-                  <div className="text-[9px] uppercase font-bold text-gray-400 tracking-[0.2em]">{stat.label}</div>
-                </div>
-              ))}
-            </motion.div>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4"
+              >
+                {[
+                  { label: 'Alumni', val: '500+' },
+                  { label: 'Faculty', val: '50+' },
+                  { label: 'Projects', val: '120+' },
+                  { label: 'Placements', val: '98%' }
+                ].map((stat, i) => (
+                  <div key={i} className="group p-5 rounded-2xl bg-white border border-navy/[0.06] hover:border-gold/30 hover:shadow-xl hover:shadow-navy/5 transition-all duration-500">
+                    <div className="text-2xl font-bold text-navy mb-1 group-hover:text-gold transition-colors">{stat.val}</div>
+                    <div className="text-[10px] uppercase font-bold text-gray-400 tracking-[0.2em]">{stat.label}</div>
+                  </div>
+                ))}
+              </motion.div>
 
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="mt-12 flex flex-wrap items-center gap-6"
+              className="mt-12 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6"
             >
-              <Link href="/register">
-                <button className="group px-10 py-5 bg-navy text-white font-bold rounded-full hover:bg-gold hover:text-navy transition-all duration-500 shadow-2xl shadow-navy/20 flex items-center gap-3 active:scale-95">
+              <Link href="/register" className="flex-1 sm:flex-none">
+                <button className="w-full group px-10 py-5 bg-navy text-white font-bold rounded-2xl hover:bg-gold hover:text-navy transition-all duration-500 shadow-2xl shadow-navy/20 flex items-center justify-center gap-3 active:scale-[0.98] border border-navy/10">
                   JOIN OUR NETWORK
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                 </button>
               </Link>
-              <Link href="/about">
-                <button className="px-10 py-5 bg-white border-2 border-navy/10 text-navy font-bold rounded-full hover:border-navy hover:bg-navy hover:text-white transition-all duration-500 active:scale-95">
+              <Link href="/about" className="flex-1 sm:flex-none">
+                <button className="w-full px-10 py-5 bg-white border-2 border-navy/10 text-navy font-bold rounded-2xl hover:border-navy hover:bg-navy hover:text-white transition-all duration-500 active:scale-[0.98] flex items-center justify-center">
                   EXPLORE DEPARTMENT
                 </button>
               </Link>

@@ -108,18 +108,56 @@ const Navbar = () => {
                                 ))}
                             </div>
 
-                            {/* Let's Connect Button */}
+                            {/* Portal Access Button */}
                             <div className="hidden lg:flex items-center">
-                                <Link href="/contact">
+                                <Link href="/login">
                                     <motion.button
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className="px-6 py-2.5 bg-navy text-white rounded-full hover:bg-navy-dark transition-all duration-300 text-sm font-bold shadow-lg shadow-navy/20 flex items-center gap-2 border border-navy/10"
+                                        whileHover="hover"
+                                        whileTap="tap"
+                                        initial="initial"
+                                        animate={{
+                                            boxShadow: [
+                                                "0 0 20px rgba(0,31,63,0.1)",
+                                                "0 0 25px rgba(212,175,55,0.2)",
+                                                "0 0 20px rgba(0,31,63,0.1)"
+                                            ]
+                                        }}
+                                        transition={{
+                                            boxShadow: {
+                                                duration: 3,
+                                                repeat: Infinity,
+                                                ease: "easeInOut"
+                                            }
+                                        }}
+                                        className="relative group px-6 py-2.5 bg-navy text-white rounded-full overflow-hidden transition-all duration-500 text-sm font-bold flex items-center gap-3 border border-white/10"
                                     >
-                                        <span>Portal Access</span>
-                                        <div className="w-5 h-5 rounded-full bg-gold flex items-center justify-center">
-                                            <ChevronRight className="w-3 h-3 text-navy" strokeWidth={3} />
-                                        </div>
+                                        {/* Shimmer Effect */}
+                                        <motion.div
+                                            variants={{
+                                                initial: { x: "-100%" },
+                                                hover: { x: "100%" }
+                                            }}
+                                            transition={{ duration: 0.6, ease: "easeInOut" }}
+                                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent z-10"
+                                        />
+
+                                        {/* Background Glow */}
+                                        <div className="absolute inset-0 bg-navy group-hover:bg-navy-dark transition-colors duration-300" />
+                                        
+                                        <span className="relative z-20">Portal Access</span>
+                                        
+                                        <motion.div 
+                                            variants={{
+                                                initial: { x: 0 },
+                                                hover: { x: 3 }
+                                            }}
+                                            className="relative z-20 w-6 h-6 rounded-full bg-gold flex items-center justify-center shadow-lg shadow-gold/20"
+                                        >
+                                            <ChevronRight className="w-3.5 h-3.5 text-navy transition-transform group-hover:scale-110" strokeWidth={3} />
+                                        </motion.div>
+
+                                        {/* Pulse Ring */}
+                                        <div className="absolute inset-0 rounded-full border border-gold/0 group-hover:border-gold/50 group-hover:scale-105 transition-all duration-500" />
                                     </motion.button>
                                 </Link>
                             </div>
@@ -159,9 +197,10 @@ const Navbar = () => {
                                                 ))}
                                             </div>
                                             <div className="mt-auto px-4 pb-10">
-                                                <Link href="/login" className="w-full flex items-center justify-center gap-2 bg-navy text-white py-4 rounded-2xl font-bold shadow-xl shadow-navy/20">
-                                                    Student Login
-                                                    <ChevronRight className="w-5 h-5" />
+                                                <Link href="/login" className="w-full relative group flex items-center justify-center gap-3 bg-navy text-white py-4 rounded-2xl font-bold shadow-xl shadow-navy/20 overflow-hidden border border-white/10">
+                                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                                                    <span className="relative z-10">Student Login</span>
+                                                    <ChevronRight className="w-5 h-5 relative z-10 transition-transform group-hover:translate-x-1" />
                                                 </Link>
                                             </div>
                                         </div>
