@@ -115,18 +115,23 @@ const Navbar = () => {
                                         whileHover="hover"
                                         whileTap="tap"
                                         initial="initial"
-                                        animate={{
-                                            boxShadow: [
-                                                "0 0 20px rgba(0,31,63,0.1)",
-                                                "0 0 25px rgba(212,175,55,0.2)",
-                                                "0 0 20px rgba(0,31,63,0.1)"
-                                            ]
-                                        }}
-                                        transition={{
-                                            boxShadow: {
-                                                duration: 3,
-                                                repeat: Infinity,
-                                                ease: "easeInOut"
+                                        variants={{
+                                            initial: { 
+                                                boxShadow: "0 0 20px rgba(0,31,63,0.1)"
+                                            },
+                                            hover: {
+                                                boxShadow: [
+                                                    "0 0 20px rgba(0,31,63,0.1)",
+                                                    "0 0 40px rgba(212,175,55,0.4)",
+                                                    "0 0 20px rgba(0,31,63,0.1)"
+                                                ],
+                                                transition: {
+                                                    boxShadow: {
+                                                        duration: 2,
+                                                        repeat: Infinity,
+                                                        ease: "easeInOut"
+                                                    }
+                                                }
                                             }
                                         }}
                                         className="relative group px-6 py-2.5 bg-navy text-white rounded-full overflow-hidden transition-all duration-500 text-sm font-bold flex items-center gap-3 border border-white/10"
