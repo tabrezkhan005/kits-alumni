@@ -1,14 +1,117 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
+/* ============================================
+   CUSTOM FONTS FROM /public/fonts/
+   ============================================ */
+
+/* JetBrains Mono Font - Bold */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/Jetbrains/JetBrainsMono-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Poppins Font Family */
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins/Poppins-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins/Poppins-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins/Poppins-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Space Grotesk Font Family */
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('/fonts/Spacegrotesk/SpaceGrotesk-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('/fonts/Spacegrotesk/SpaceGrotesk-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('/fonts/Spacegrotesk/SpaceGrotesk-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('/fonts/Spacegrotesk/SpaceGrotesk-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('/fonts/Spacegrotesk/SpaceGrotesk-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --burgundy: #800020;
-  --gold: #D4AF37;
+  /* CSM Navy Blue Palette */
+  --navy-primary: #2C3E7C;
+  --navy-dark: #1A2347;
+  --navy-light: #3D5AA8;
+
+  /* CSM Gold Palette */
+  --gold-primary: #D4A72E;
+  --gold-light: #E6C054;
+  --gold-dark: #B8911F;
+
+  /* Legacy compatibility */
+  --burgundy: #2C3E7C;
+  --gold: #D4A72E;
+
+  /* Design tokens */
   --radius: 0.625rem;
   --topbar-height: 52px;
   --topbar-height-scrolled: 40px;
   --navbar-height: 72px;
+
+  /* Shadcn UI colors */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -87,13 +190,70 @@
 }
 
 body {
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-family: 'Inter', 'System UI', Arial, Helvetica, sans-serif;
+}
+
+/* CSM Design System Utility Classes */
+.glass-effect {
+  background: rgba(44, 62, 124, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 167, 46, 0.2);
+}
+
+.navy-gradient {
+  background: linear-gradient(135deg, #1A2347 0%, #2C3E7C 100%);
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #D4A72E 0%, #E6C054 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #D4A72E 0%, #E6C054 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.navy-text {
+  color: #2C3E7C;
+}
+
+.gold-text {
+  color: #D4A72E;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 30px rgba(212, 167, 46, 0.4);
+  transition: box-shadow 0.3s ease;
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(44, 62, 124, 0.15);
+}
+
+.neural-network-bg {
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(212, 167, 46, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(44, 62, 124, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(212, 167, 46, 0.05) 0%, transparent 50%);
 }
 
 /* Custom animations */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes scroll {
+  to {
+    transform: translate(calc(-50% - 0.5rem));
+  }
 }
 
 @keyframes fadeInUp {
@@ -169,6 +329,81 @@ body {
 .timeline-item.active .timeline-content {
   opacity: 1;
   transform: translateX(0);
+}
+
+/* ============================================
+   FONT UTILITY CLASSES
+   Use these classes anywhere to apply fonts
+   ============================================ */
+
+/* JetBrains Mono - Monospace font for technical/code content */
+.font-jetbrains {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.font-jetbrains-bold {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+}
+
+/* Poppins - Modern, friendly font for body text */
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-poppins-regular {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+}
+
+.font-poppins-medium {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+
+.font-poppins-semibold {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+.font-poppins-bold {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+/* Space Grotesk - Geometric, modern font for headings */
+.font-space-grotesk {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-space-grotesk-light {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 300;
+}
+
+.font-space-grotesk-regular {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 400;
+}
+
+.font-space-grotesk-medium {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 500;
+}
+
+.font-space-grotesk-semibold {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+}
+
+.font-space-grotesk-bold {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+}
+
+/* Inter - Clean, readable font (from Google Fonts) */
+.font-inter {
+  font-family: 'Inter', sans-serif;
 }
 
 /* Custom utility classes */
@@ -251,4 +486,155 @@ body {
 #spinner:not(.show) {
   opacity: 0;
   visibility: hidden;
+}
+
+/* ============================================
+   GRADIENT ANIMATION FOR HERO TEXT
+   ============================================ */
+@keyframes gradient-animation {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  animation: gradient-animation 4s ease infinite;
+  background-size: 200% 200%;
+}
+
+.bg-300\% {
+  background-size: 300% 300%;
+}
+
+/* ============================================
+   RADIAL ORBITAL TIMELINE STYLES
+   ============================================ */
+
+/* Animation for the pulsing effect */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Animation for the ping effect */
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Custom animations for the orbital timeline */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Transitions */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.duration-300 {
+  transition-duration: 300ms;
+}
+
+.duration-700 {
+  transition-duration: 700ms;
+}
+
+.duration-1000 {
+  transition-duration: 1000ms;
+}
+
+/* Backdrop blur */
+.backdrop-blur-lg {
+  backdrop-filter: blur(16px);
+}
+
+/* Custom gradients */
+.bg-gradient-orbital {
+  background: linear-gradient(to bottom right, #6366f1, #3b82f6, #14b8a6);
+}
+
+/* Z-index utilities */
+.z-10 {
+  z-index: 10;
+}
+
+.z-50 {
+  z-index: 50;
+}
+
+/* Custom shadows */
+.shadow-orbital {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+/* Custom transforms */
+.scale-125 {
+  transform: scale(1.25);
+}
+
+.scale-150 {
+  transform: scale(1.5);
+}
+
+/* Custom opacity values */
+.opacity-70 {
+  opacity: 0.7;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+/* Custom border opacity */
+.border-white\/10 {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.border-white\/20 {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.border-white\/30 {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.border-white\/40 {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Custom background opacity */
+.bg-black\/90 {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.bg-white\/50 {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.bg-white\/80 {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Custom text opacity */
+.text-white\/70 {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.text-white\/80 {
+  color: rgba(255, 255, 255, 0.8);
 }

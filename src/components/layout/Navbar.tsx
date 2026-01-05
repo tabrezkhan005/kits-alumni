@@ -20,183 +20,175 @@ import {
 } from "@/components/ui/sheet";
 
 const Navbar = () => {
-    const [showTopbar, setShowTopbar] = useState(true);
     const [isScrolled, setIsScrolled] = useState(false);
     const pathname = usePathname();
 
     useEffect(() => {
-        const handleResize = () => {
-            setShowTopbar(window.innerWidth >= 992); // lg breakpoint
-        };
+        let lastScrollY = window.scrollY;
+        let ticking = false;
 
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 10);
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const currentScrollY = window.scrollY;
+
+                    // Smooth scroll detection with threshold
+                    if (currentScrollY > 10) {
+                        setIsScrolled(true);
+                    } else {
+                        setIsScrolled(false);
+                    }
+
+                    lastScrollY = currentScrollY;
+                    ticking = false;
+                });
+                ticking = true;
+            }
         };
 
         // Initialize on mount
-        handleResize();
         handleScroll();
 
-        // Add event listeners
-        window.addEventListener('resize', handleResize);
-        window.addEventListener('scroll', handleScroll);
+        // Add scroll event listener with passive option for better performance
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
         // Cleanup
         return () => {
-            window.removeEventListener('resize', handleResize);
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
 
     return (
         <div className="w-full relative">
-            {/* Fixed wrapper for the entire navbar, creating hover effect */}
+            {/* Fixed wrapper for the navbar - positioned below the AnnouncementBar */}
+            {/* When scrolled, navbar hides completely behind the announcement bar */}
             <div className={cn(
-                "w-full fixed top-0 z-50 transition-all duration-300",
-                isScrolled ? "shadow-lg" : ""
+                "w-full fixed z-30 transition-all duration-700 ease-in-out",
+                isScrolled
+                  ? "top-10 -translate-y-full opacity-0 pointer-events-none"
+                  : "top-10 translate-y-0 opacity-100 shadow-md"
             )}>
-                {/* Top Bar */}
+                {/* Main Navigation - Always visible when not scrolled */}
                 <div className={cn(
-                    "w-full transition-all duration-300",
+                    "w-full transition-all duration-300 border-b",
                     isScrolled
-                      ? "bg-[#800020]/85 backdrop-blur-sm py-1"
-                      : "bg-[#800020] py-2"
+                      ? "bg-white/95 backdrop-blur-md border-gray-200"
+                      : "bg-white/95 backdrop-blur-sm border-gray-100"
                 )}>
-                    <div className="container mx-auto px-4 flex justify-between items-center">
-                        <div className="flex items-center space-x-6">
-                            <div className="flex items-center">
-                                <span className="mr-2">
-                                    <i className="fas fa-map-marker-alt text-[#D4AF37]"></i>
-                                </span>
-                                <a href="https://maps.app.goo.gl/DstAStquPrbKjZQp7" className="text-white text-sm hover:text-white/90 transition-colors">
-                                    Vinjanampadu, Guntur
-                                </a>
-                            </div>
-                            <div className="flex items-center">
-                                <span className="mr-2">
-                                    <i className="fas fa-envelope text-[#D4AF37]"></i>
-                                </span>
-                                <a href="mailto:ai-hod@kitsguntur.ac.in" className="text-white text-sm hover:text-white/90 transition-colors">
-                                    ai-hod@kitsguntur.ac.in
-                                </a>
-                            </div>
-                        </div>
-                        <div className="flex space-x-2">
-                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
-                                className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center text-[#800020] hover:bg-white hover:scale-105 transition-all">
-                                <i className="fab fa-instagram"></i>
-                            </a>
-                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
-                                className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center text-[#800020] hover:bg-white hover:scale-105 transition-all">
-                                <i className="fab fa-linkedin-in"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Main Navigation */}
-                <div className={cn(
-                    "w-full transition-all duration-300",
-                    isScrolled ? "bg-white/90 backdrop-blur-sm" : "bg-white"
-                )}>
-                    <div className="container mx-auto px-4">
-                        <nav className="flex items-center justify-between py-3">
-                            <Link href="/" className="flex items-center space-x-3">
+                    <div className="container mx-auto px-6">
+                        <nav className="flex items-center justify-between py-3 font-inter">
+                            <Link href="/" className="flex items-center ml-4">
                                 <Image
-                                    src="/img/alumini logo1.jpg"
-                                    alt="KITS AI & ML"
-                                    width={50}
-                                    height={50}
-                                    className="rounded-md"
+                                    src="/logo1.png"
+                                    alt="KITS CSM"
+                                    width={64}
+                                    height={64}
+                                    className="rounded-lg"
                                 />
-                                <h1 className="text-[#800020] font-medium text-xl lg:text-2xl">
-                                    KITS <span className="text-[#D4AF37]">Alumni</span>
-                                </h1>
                             </Link>
 
-                            {/* Desktop Navigation */}
-                            <div className="hidden lg:flex items-center">
-                                <div className="flex items-center space-x-6 mr-8">
+                            {/* Desktop Navigation - Centered */}
+                            <div className="hidden lg:flex items-center flex-1 justify-center">
+                                <div className="flex items-center space-x-6">
                                     <Link href="/" className={cn(
-                                        "relative px-1 py-2 text-lg font-medium transition-colors hover:text-[#800020] group font-bold",
-                                        pathname === "/" ? "text-[#800020] font-semibold" : ""
+                                        "relative px-2 py-2 text-[15px] font-semibold tracking-wide transition-all duration-300 group",
+                                        pathname === "/" ? "text-navy" : "text-gray-700",
+                                        "hover:!text-[#3F426B]"
                                     )}>
                                         Home
                                         <span className={cn(
-                                            "absolute bottom-0 left-0 w-full h-0.5 bg-[#800020] transform origin-left transition-transform duration-300",
+                                            "absolute bottom-0 left-0 w-full h-0.5 bg-gold-primary transform origin-left transition-transform duration-300",
                                             pathname === "/" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                                         )}></span>
                                     </Link>
                                     <Link href="/about" className={cn(
-                                        "relative px-1 py-2 text-lg font-medium transition-colors hover:text-[#800020] group font-bold",
-                                        pathname === "/about" ? "text-[#800020] font-semibold" : ""
+                                        "relative px-2 py-2 text-[15px] font-semibold tracking-wide transition-all duration-300 group",
+                                        pathname === "/about" ? "text-navy" : "text-gray-700",
+                                        "hover:!text-[#3F426B]"
                                     )}>
                                         About
                                         <span className={cn(
-                                            "absolute bottom-0 left-0 w-full h-0.5 bg-[#800020] transform origin-left transition-transform duration-300",
+                                            "absolute bottom-0 left-0 w-full h-0.5 bg-gold-primary transform origin-left transition-transform duration-300",
                                             pathname === "/about" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                                         )}></span>
                                     </Link>
-                                    <Link href="/event" className={cn(
-                                        "relative px-1 py-2 text-lg font-medium transition-colors hover:text-[#800020] group font-bold",
-                                        pathname === "/event" ? "text-[#800020] font-semibold" : ""
+                                    <Link href="/programs" className={cn(
+                                        "relative px-2 py-2 text-[15px] font-semibold tracking-wide transition-all duration-300 group",
+                                        pathname === "/programs" ? "text-navy" : "text-gray-700",
+                                        "hover:!text-[#3F426B]"
                                     )}>
-                                        Events
+                                        Programs
                                         <span className={cn(
-                                            "absolute bottom-0 left-0 w-full h-0.5 bg-[#800020] transform origin-left transition-transform duration-300",
-                                            pathname === "/event" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                                            "absolute bottom-0 left-0 w-full h-0.5 bg-gold-primary transform origin-left transition-transform duration-300",
+                                            pathname === "/programs" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                                         )}></span>
                                     </Link>
-                                    <Link href="/achievements" className={cn(
-                                        "relative px-1 py-2 text-lg font-medium transition-colors hover:text-[#800020] group font-bold",
-                                        pathname === "/achievements" ? "text-[#800020] font-semibold" : ""
+                                    <Link href="/research" className={cn(
+                                        "relative px-2 py-2 text-[15px] font-semibold tracking-wide transition-all duration-300 group",
+                                        pathname === "/research" ? "text-navy" : "text-gray-700",
+                                        "hover:!text-[#3F426B]"
                                     )}>
-                                        Achievements
+                                        Research
                                         <span className={cn(
-                                            "absolute bottom-0 left-0 w-full h-0.5 bg-[#800020] transform origin-left transition-transform duration-300",
-                                            pathname === "/achievements" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                                        )}></span>
-                                    </Link>
-                                    <Link href="/blog" className={cn(
-                                        "relative px-1 py-2 text-lg font-medium transition-colors hover:text-[#800020] group font-bold",
-                                        pathname === "/blog" ? "text-[#800020] font-semibold" : ""
-                                    )}>
-                                        Blog
-                                        <span className={cn(
-                                            "absolute bottom-0 left-0 w-full h-0.5 bg-[#800020] transform origin-left transition-transform duration-300",
-                                            pathname === "/blog" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                                            "absolute bottom-0 left-0 w-full h-0.5 bg-gold-primary transform origin-left transition-transform duration-300",
+                                            pathname === "/research" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                                         )}></span>
                                     </Link>
                                     <Link href="/faculty" className={cn(
-                                        "relative px-1 py-2 text-lg font-medium transition-colors hover:text-[#800020] group font-bold",
-                                        pathname === "/faculty" ? "text-[#800020] font-semibold" : ""
+                                        "relative px-2 py-2 text-[15px] font-semibold tracking-wide transition-all duration-300 group",
+                                        pathname === "/faculty" ? "text-navy" : "text-gray-700",
+                                        "hover:!text-[#3F426B]"
                                     )}>
                                         Faculty
                                         <span className={cn(
-                                            "absolute bottom-0 left-0 w-full h-0.5 bg-[#800020] transform origin-left transition-transform duration-300",
+                                            "absolute bottom-0 left-0 w-full h-0.5 bg-gold-primary transform origin-left transition-transform duration-300",
                                             pathname === "/faculty" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                                         )}></span>
                                     </Link>
+                                    <Link href="/placements" className={cn(
+                                        "relative px-2 py-2 text-[15px] font-semibold tracking-wide transition-all duration-300 group",
+                                        pathname === "/placements" ? "text-navy" : "text-gray-700",
+                                        "hover:!text-[#3F426B]"
+                                    )}>
+                                        Placements
+                                        <span className={cn(
+                                            "absolute bottom-0 left-0 w-full h-0.5 bg-gold-primary transform origin-left transition-transform duration-300",
+                                            pathname === "/placements" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                                        )}></span>
+                                    </Link>
+                                    <Link href="/alumni" className={cn(
+                                        "relative px-2 py-2 text-[15px] font-semibold tracking-wide transition-all duration-300 group",
+                                        pathname === "/alumni" ? "text-navy" : "text-gray-700",
+                                        "hover:!text-[#3F426B]"
+                                    )}>
+                                        Alumni
+                                        <span className={cn(
+                                            "absolute bottom-0 left-0 w-full h-0.5 bg-gold-primary transform origin-left transition-transform duration-300",
+                                            pathname === "/alumni" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                                        )}></span>
+                                    </Link>
                                     <Link href="/contact" className={cn(
-                                        "relative px-1 py-2 text-lg font-medium transition-colors hover:text-[#800020] group font-bold",
-                                        pathname === "/contact" ? "text-[#800020] font-semibold" : ""
+                                        "relative px-2 py-2 text-[15px] font-semibold tracking-wide transition-all duration-300 group",
+                                        pathname === "/contact" ? "text-navy" : "text-gray-700",
+                                        "hover:!text-[#3F426B]"
                                     )}>
                                         Contact
                                         <span className={cn(
-                                            "absolute bottom-0 left-0 w-full h-0.5 bg-[#800020] transform origin-left transition-transform duration-300",
+                                            "absolute bottom-0 left-0 w-full h-0.5 bg-gold-primary transform origin-left transition-transform duration-300",
                                             pathname === "/contact" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                                         )}></span>
                                     </Link>
                                 </div>
+                            </div>
 
-                                <div className="flex items-center space-x-4">
-                                    <Link href="/login" className="px-6 py-2 border border-[#800020] text-[#800020] rounded-full hover:bg-[#800020] hover:text-white transition-colors duration-300 text-lg font-bold">
-                                        Login
-                                    </Link>
-                                    <Link href="/register" className="px-6 py-2 bg-[#800020] text-white rounded-full hover:bg-[#600010] transition-colors duration-300 text-lg font-bold">
-                                        Register
-                                    </Link>
-                                </div>
+                            {/* Let's Connect Button - Right Side - Primary Color CTA */}
+                            <div className="hidden lg:flex items-center">
+                                <Link href="/contact" className="px-8 py-3 bg-[#3F426B] text-white rounded-full hover:bg-[#2C3E7C] transition-all duration-300 text-sm font-bold hover:scale-105 shadow-md hover:shadow-lg flex items-center gap-2">
+                                    <span>Let's Connect</span>
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                    </svg>
+                                </Link>
                             </div>
 
                             {/* Mobile Navigation */}
@@ -245,6 +237,12 @@ const Navbar = () => {
                                         )}>
                                             Faculty
                                         </Link>
+                                        <Link href="/alumni" className={cn(
+                                            "px-3 py-2 text-lg font-medium hover:text-[#800020] border-l-4",
+                                            pathname === "/alumni" ? "text-[#800020] font-semibold border-[#800020]" : "border-transparent"
+                                        )}>
+                                            Alumni
+                                        </Link>
                                         <Link href="/contact" className={cn(
                                             "px-3 py-2 text-lg font-medium hover:text-[#800020] border-l-4",
                                             pathname === "/contact" ? "text-[#800020] font-semibold border-[#800020]" : "border-transparent"
@@ -252,12 +250,12 @@ const Navbar = () => {
                                             Contact
                                         </Link>
                                     </div>
-                                    <div className="flex flex-col space-y-3 mt-6">
-                                        <Link href="/login" className="w-full px-6 py-2 border border-[#800020] text-[#800020] text-center rounded-full hover:bg-[#800020] hover:text-white transition-colors duration-300">
-                                            Login
-                                        </Link>
-                                        <Link href="/register" className="w-full px-6 py-2 bg-[#800020] text-white text-center rounded-full hover:bg-[#600010] transition-colors duration-300">
-                                            Register
+                                    <div className="flex flex-col mt-6">
+                                        <Link href="/contact" className="w-full px-6 py-3 bg-[#3F426B] text-white text-center rounded-full hover:bg-[#2C3E7C] transition-all duration-300 font-bold shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                                            <span>Let's Connect</span>
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                            </svg>
                                         </Link>
                                     </div>
                                 </SheetContent>
@@ -268,9 +266,9 @@ const Navbar = () => {
             </div>
 
             {/* Empty space to prevent content from hiding behind the fixed navbar */}
-            <div className="w-full" style={{
-                height: isScrolled ? 'calc(var(--topbar-height-scrolled) + var(--navbar-height))'
-                                   : 'calc(var(--topbar-height) + var(--navbar-height))'
+            {/* The height accounts for both AnnouncementBar (40px) and Navbar (56px) */}
+            <div className="w-full transition-all duration-700 ease-in-out" style={{
+                height: isScrolled ? '40px' : '96px'
             }}></div>
         </div>
     );

@@ -68,6 +68,595 @@
   * Implemented proper client-side form handling with FormData
   * Updated API to handle both FormData and JSON request formats
   * Simplified the blog entry interface with just title and content fields
+- [2024-10-28] Created dynamic announcement bar component:
+  * Created AnnouncementBar component at src/components/layout/AnnouncementBar.tsx
+  * Implemented rotating announcements with 5-second intervals
+  * Added smooth fade-in/fade-out transitions using Framer Motion
+  * Integrated 6 engineering-related announcements for alumni website
+  * Used primary color palette (#3F426B background, #D4A72E accents)
+  * Added progress indicators and hover effects for better UX
+  * Integrated announcement bar into home page at the top
+  * Implemented responsive design for mobile and desktop views
+- [2024-10-28] Restructured navigation layout - Replaced top bar with announcement bar:
+  * Removed contact info and social media top bar from Navbar component
+  * Made AnnouncementBar fixed at top (z-index: 50)
+  * Repositioned Navbar below AnnouncementBar (z-index: 40)
+  * Updated Navbar to start at top-12 when not scrolled, top-0 when scrolled
+  * Adjusted spacing calculations for proper content positioning
+  * Removed unused showTopbar state and resize listeners
+  * Updated layout.tsx to render AnnouncementBar above Navbar
+  * Ensured proper z-index hierarchy for fixed positioning
+  * Cleaned up component structure for better maintainability
+- [2024-10-28] Enhanced announcement bar UI with premium design:
+  * Added Lucide React icons (Sparkles, TrendingUp, Award, Briefcase, FlaskConical, Users, ChevronRight)
+  * Implemented category badges for each announcement type (Workshop, Innovation, Achievement, etc.)
+  * Added animated gradient overlay that sweeps across the bar
+  * Created decorative corner accents with brand colors
+  * Enhanced progress indicators with glow effects and pulsing animations
+  * Added sparkle effects in corners with staggered animations
+  * Implemented icon containers with glassmorphism effect
+  * Improved hover effects with scale transforms and color transitions
+  * Used brand colors throughout: Primary #3F426B, Secondary #D4A72E
+  * Increased bar height to 56px for better visual presence
+  * Added thicker gold accent line at bottom with gradient
+  * Implemented custom easing curves for smoother animations
+  * Added shadow effects for depth perception
+- [2024-10-28] Improved scroll behavior - Navbar hides behind announcement bar:
+  * Updated Navbar to slide up and hide when user scrolls (opacity fade + translate)
+  * AnnouncementBar remains fixed and visible at all times
+  * Smooth 500ms transition for navbar hide/show animation
+  * Adjusted spacing: 56px when scrolled (announcement bar only), 120px when not scrolled (both bars)
+  * Added border-bottom to navbar for better separation
+  * Implemented opacity transitions for smoother visual feedback
+  * Ensured announcement bar stays at z-50, navbar at z-40
+  * Updated top positioning: navbar at top-14 when visible, slides to -translate-y-16 when hidden
+- [2024-10-28] Integrated modern sticky footer component:
+  * Installed required dependencies: motion, lenis (smooth scroll library)
+  * Created sticky-footer.tsx component in src/components/ui/
+  * Implemented sticky scroll effect with clip-path polygon for modern reveal animation
+  * Customized with KITS brand colors: Primary #3F426B, Secondary #D4A72E
+  * Added KITS logo1.png to footer branding
+  * Integrated newsletter subscription form with email input and send button
+  * Added social media links: LinkedIn, Instagram, Website (with hover animations)
+  * Organized footer into sections: Brand/About, Quick Links, Resources, For Students, Contact
+  * Included all quick links from existing footer (Home, About, Programs, Research, Faculty, etc.)
+  * Added contact information: Address, Email, Phone with icon animations
+  * Implemented AnimatedContainer with scroll-triggered entrance effects
+  * Added decorative background gradients with brand colors
+  * Created "Crafted by Tabrez Khan" signature with animated heart icon
+  * Responsive design: mobile-first approach with column/row layout changes
+  * Added accessibility features: ARIA labels, semantic HTML, reduced motion support
+  * Footer height: 800px for comprehensive content display
+- [2024-10-28] Added smooth scrolling functionality:
+  * Created SmoothScroll.tsx component using Lenis library
+  * Configured smooth momentum-based scrolling with custom easing
+  * Set duration to 1.2s for fluid scroll animations
+  * Enabled smooth wheel scrolling with multiplier settings
+  * Integrated SmoothScroll wrapper in layout.tsx around all body content
+  * Enhances sticky footer reveal animation with smoother transitions
+  * Added proper cleanup to prevent memory leaks
+- [2024-10-28] Refactored Footer.tsx component:
+  * Simplified Footer component to use StickyFooter
+  * Removed old static footer HTML structure
+  * Updated imports to use new sticky-footer component
+  * Added comprehensive component documentation
+  * Maintained all existing footer links and content
+  * Improved code maintainability and reusability
+- [2024-10-28] Updated announcement bar with professional styling:
+  * Added JetBrains Mono Bold font from public/fonts/Jetbrains/JetBrainsMono-Bold.ttf
+  * Added Poppins font family (Regular, Medium, SemiBold, Bold) to globals.css
+  * Changed primary color from #3F426B to #2A2E5C
+  * Removed all golden (#D4A72E) overlays and decorative elements
+  * Updated to clean white on dark blue (#2A2E5C) color scheme
+  * Removed all emojis from announcement text for professional appearance
+  * Applied JetBrains Mono Bold font to entire announcement bar
+  * Updated category badges to use white/transparent styling
+  * Changed icon containers to white/10 background with white borders
+  * Updated progress indicators to use white instead of gold
+  * Removed animated sparkle effects in corners
+  * Changed animated gradient overlay to subtle white/5 overlay
+  * Updated bottom accent line to white/20 (minimal styling)
+  * Made announcements more professional and corporate:
+    - "Technical Workshop on AI & Machine Learning - Registration Now Open"
+    - "Alumni Startup Showcase featuring groundbreaking tech ventures"
+    - "Students secured First Place in National Robotics Championship 2024"
+    - "Engineering Career Fair with Top Tech Companies - November 15th"
+    - "Department publishes breakthrough research in IEEE International Conference"
+    - "Alumni working at Google, Microsoft, Amazon and leading tech companies"
+  * Updated all hover states to use white colors instead of gold
+  * Maintained smooth animations and transitions
+  * Kept professional appearance with monospace font styling
+- [2024-10-28] Declared all custom fonts globally with utility classes:
+  * Added complete Space Grotesk font family (Light 300, Regular 400, Medium 500, SemiBold 600, Bold 700)
+  * Added complete Poppins font family (Regular 400, Medium 500, SemiBold 600, Bold 700)
+  * Added JetBrains Mono Bold (700) for monospace/technical content
+  * Inter already available via Google Fonts
+  * Created comprehensive utility classes for easy font usage:
+    - .font-jetbrains, .font-jetbrains-bold
+    - .font-poppins, .font-poppins-regular, .font-poppins-medium, .font-poppins-semibold, .font-poppins-bold
+    - .font-space-grotesk, .font-space-grotesk-light, .font-space-grotesk-regular, .font-space-grotesk-medium, .font-space-grotesk-semibold, .font-space-grotesk-bold
+    - .font-inter
+  * All fonts loaded from /public/fonts/ directory with font-display: swap for performance
+  * Fonts can now be used anywhere in the project via utility classes
+- [2024-10-28] Updated sticky footer with new color scheme and fonts:
+  * Changed background from gradient (#3F426B) to solid #2A2E5C
+  * Changed all text colors to white and white variants (white/70, white/80, white/90)
+  * Removed all golden (#D4A72E) colors throughout footer
+  * Changed border-top from gold to white/20
+  * Updated background decorative elements to use white gradients instead of gold
+  * Applied font hierarchy throughout footer:
+    - Space Grotesk Bold for main brand title "KITS CSM"
+    - Poppins Regular for body text and descriptions
+    - JetBrains Mono Bold for section headings (Newsletter, Quick Links, Resources, Contact Us)
+    - Space Grotesk SemiBold for "Tabrez Khan" signature
+  * Updated newsletter button from gold to white background
+  * Changed social media button hover from gold to white
+  * Updated all icon colors from gold to white
+  * Changed link hover states from gold to white
+  * Updated focus ring on newsletter input from gold to white/40
+  * Maintained smooth animations and professional appearance
+  * Heart animation color changed from gold to white
+  * All borders changed from gold to white/20 or white/10
+  * Professional corporate styling with high contrast white on #2A2E5C
+- [2024-10-28] Updated sticky footer to full-screen viewport:
+  * Changed footer height from fixed 800px to 100vh (full viewport height)
+  * Added minHeight: 800px fallback for smaller screens
+  * Updated sticky positioning to use top: 0 for full-screen effect
+  * Added flex-1 and items-center to center content vertically in full viewport
+  * Increased horizontal padding on larger screens (md:px-16 lg:px-24) for better spacing
+  * Footer now takes up entire screen when scrolled into view
+  * Maintains sticky reveal animation with full-screen immersive experience
+  * Content is properly vertically centered within the full viewport
+  * Better use of screen real estate on all device sizes
+- [2024-10-28] Integrated hero gallery scroll animation component:
+  * Created hero-gallery-scroll-animation.tsx in src/components/ui/
+  * Implemented scroll-triggered gallery animation with motion/react
+  * Features BentoGrid layout system with multiple variant options (default, threeCells, fourCells)
+  * Added ContainerScroll context for scroll progress tracking
+  * Created BentoCell component with scale and translate animations
+  * Implemented ContainerScale for center content fade-out effect
+  * All dependencies already present: motion, class-variance-authority, @radix-ui/react-slot
+  * Added comprehensive TypeScript types and component documentation
+  * Scroll animations use useScroll and useTransform hooks for smooth effects
+- [2024-10-28] Created KITS Gallery Hero with CS/AI/ML theme:
+  * Built KITSGalleryHero component in src/components/layout/KITSGalleryHero.tsx
+  * Integrated 5 high-quality Unsplash images related to CS, AI, and ML:
+    - AI Neural Networks visualization
+    - Machine Learning algorithms and data science
+    - Computer engineering and circuit boards
+    - Data visualization and analytics
+    - Software development workspace
+  * Added catchy center content with brand fonts:
+    - Space Grotesk Bold for main heading
+    - Poppins Regular for body text
+    - JetBrains Mono Bold for statistics
+  * Headline: "Engineering the Future with AI & Machine Learning"
+  * Subtitle about KITS excellence and innovation
+  * Statistics display: 500+ Alumni, 98% Placement, 50+ Partners, 15+ Projects
+  * Call-to-action buttons: "Join Alumni Network" and "Explore Programs"
+  * Scroll indicator with animated arrow
+- [2024-10-28] Added dynamic text overlays on images:
+  * Created ImageOverlay component for each grid cell
+  * Text appears when scroll reaches 85-90% completion
+  * Each image has title and description:
+    - "Artificial Intelligence" - Cutting-edge AI research
+    - "Machine Learning" - Advanced ML algorithms
+    - "Computer Engineering" - Hardware meets software
+    - "Data Science" - Transform data into insights
+    - "Software Development" - Building tomorrow's tech
+  * Gradient overlay from #2A2E5C for brand consistency
+  * Staggered fade-in animations for professional reveal
+  * Uses brand fonts: Space Grotesk Bold + Poppins Regular
+- [2024-10-28] Implemented smooth scroll-to-normal transition:
+  * Hero section uses 350vh height for scroll animation
+  * Center content fades out at 0-50% scroll progress
+  * Images scale from 0.5 to 1 and reposition (0-90% progress)
+  * Text overlays appear at 85-90% scroll completion
+  * After full scroll, normal page scrolling resumes
+  * Seamless transition to Department Overview section
+  * No jump or break in scrolling experience
+  * Smooth Lenis scrolling maintained throughout
+- [2024-10-28] Applied brand colors and styling:
+  * Primary color #2A2E5C used throughout hero
+  * White text for contrast and readability
+  * Gradient overlays using brand colors
+  * Rounded corners (rounded-2xl) on image cells
+  * Shadow effects for depth (shadow-2xl)
+  * Hover effects: scale-105 on images
+  * Button styling matches brand identity
+  * Professional corporate appearance
+- [2024-10-28] Integrated into home page:
+  * Replaced CSMHero with KITSGalleryHero in src/app/page.tsx
+  * Updated imports to use new hero component
+  * Hero now serves as primary landing experience
+  * Creates immersive scroll-based introduction
+  * Maintains flow with subsequent sections
+  * Professional and engaging first impression
+  * Mobile-responsive with adaptive layouts
+- [2024-10-28] Fixed scroll ref hydration error:
+  * Added isMounted state check to ContainerScroll component
+  * Implemented useEffect to track client-side mounting
+  * Prevents rendering children until component is hydrated
+  * Added offset configuration to useScroll hook
+  * Removed unused containerRef and scroll hooks from KITSGalleryHero
+  * Simplified overlay system to use hover states instead of scroll progress
+  * Changed overlays from scroll-triggered to hover-triggered for better UX
+  * Fixed "Target ref is defined but not hydrated" error
+  * Ensured proper client-side rendering for motion components
+  * All scroll animations now work correctly without hydration issues
+- [2024-10-28] Fixed hero section text alignment and layout issues:
+  * Changed ContainerScale from text-only to flexbox with items-center justify-center
+  * Added min-h-screen to center content vertically in viewport
+  * Added semi-transparent white background (bg-white/90) with backdrop blur
+  * Created card-like container with rounded-3xl, padding, and shadow-2xl
+  * Increased max-width to 5xl for better content width
+  * Adjusted heading sizes to prevent text cutoff: 4xl → 5xl → 6xl → 7xl
+  * Added leading-tight to heading for better line spacing
+  * Increased margin-top on gradient text span (mt-2 → mt-3)
+  * Content now properly centered and doesn't overlap images
+  * Improved readability with contrasting white card background
+  * Professional card-based design for hero content
+  * No more text cutoff or odd alignments
+- [2024-10-28] Fixed announcement bar layout and alignment:
+  * Changed justify-between to justify-center for better centering
+  * Added max-w-5xl to content wrapper for controlled width
+  * Changed progress indicators from relative to absolute positioning
+  * Positioned dots absolutely on right side (right-4 lg:right-8)
+  * Reduced gap between elements from gap-3 to gap-2 on mobile
+  * Added responsive padding (px-2 md:px-4) for mobile optimization
+  * Progress dots no longer affect center content alignment
+  * Announcement text perfectly centered regardless of screen size
+  * Fixed "N" appearing issue by improving layout structure
+  * Better horizontal spacing on all screen sizes
+- [2024-10-28] Fixed navbar overlap issue when scrolling:
+  * Changed z-index from z-40 to z-30 (below announcement bar's z-50)
+  * Modified hide behavior: -translate-y-16 → -translate-y-full
+  * Added pointer-events-none when scrolled to prevent interaction
+  * Navbar now completely hides behind announcement bar when scrolled
+  * No overlap or visibility issues during scroll
+  * Smooth transition with duration-500 ease-in-out
+  * Better visual hierarchy with proper z-index layering
+- [2024-10-28] Implemented full-screen hero with dynamic rotating text:
+  * Created DYNAMIC_HEADLINES array with 5 different headlines
+  * Text rotates every 7 seconds with smooth animations
+  * Hero starts full-screen without white card background
+  * Card gradually appears as user scrolls (20-40% scroll progress)
+  * Card transitions from transparent to white/90 opacity
+  * Backdrop blur increases from 0px to 8px on scroll
+  * Card shadow appears progressively (0 → medium → large)
+  * Card scales from 1.2 → 1.1 → 1.0 for zoom effect
+  * Text scales slightly (1 → 0.95 → 0.9) as card appears
+  * AnimatePresence for smooth headline transitions
+  * Headlines fade in/out with blur effect and 3D rotation
+  * Custom gradient animation on subtitle text
+  * Duration: 1 second with custom cubic-bezier easing
+- [2024-10-28] Added gradient animation CSS:
+  * Created @keyframes gradient-animation in globals.css
+  * Background position animates from 0% to 100% and back
+  * 4-second infinite loop with ease timing
+  * .animate-gradient utility class for easy application
+  * .bg-300% utility for extended gradient size
+  * Applied to subtitle span with animate-gradient class
+  * Creates flowing, dynamic text effect
+  * Enhances visual appeal and modern feel
+- [2024-10-28] Improved hero typography and fonts:
+  * Main title uses Space Grotesk Bold
+  * Subtitle uses JetBrains Mono Bold with animated gradient
+  * Description uses Poppins Regular
+  * Statistics use JetBrains Mono Bold (numbers) + Poppins Regular (labels)
+  * Buttons use Poppins SemiBold
+  * All fonts properly declared in globals.css
+  * Smooth transitions between headline changes
+  * Text blur effect (0 → 10px → 0) during transitions
+  * Vertical movement (40px up/down) with text changes
+  * Professional typography hierarchy throughout
+- [2024-10-28] Fixed useContainerScroll is not a function error:
+  * Exported useContainerScrollContext as useContainerScroll
+  * Added export statement before main component exports
+  * Hook is now accessible for external components
+  * DynamicHeroContent can now access scroll progress
+  * Fixed TypeError in KITSGalleryHero component
+  * Proper context hook exposure for scroll-based animations
+- [2024-10-28] Fixed missing white background and navbar overlap:
+  * Changed z-index of center content from z-10 to z-50 (above navbar)
+  * Made background images start with opacity-30 (reduced from visible)
+  * Set white card background to always be visible: bg-white/95
+  * Added backdrop-blur-md for glassmorphism effect
+  * Added shadow-2xl for depth and separation
+  * Background color always: rgba(255, 255, 255, 0.95)
+  * Blur always: 12px throughout scroll
+  * Shadow always: 0 25px 50px rgba(0, 0, 0, 0.15)
+  * Content now has visible white card background at all times
+  * Images don't overlay navbar anymore (z-index hierarchy fixed)
+  * Better visual separation between hero content and background
+  * Professional appearance with visible white background card
+- [2024-10-28] Fixed white hero overlaying navbar and header:
+  * Changed z-index from z-50 to z-0 (below navbar and announcement bar)
+  * Hero content now properly sits below navigation elements
+  * Started with full-screen white background at 0% scroll
+  * Border radius transitions from 0 → 16px → 24px on scroll
+  * Background padding transitions from 0 → 16px → 32px on scroll
+  * Scale transitions from 1.0 → 0.98 → 0.96 (subtle zoom-out)
+  * White background card always visible throughout scroll
+  * Content appears behind navbar as intended for full-screen effect
+  * Proper layering: AnnouncementBar (z-50) > Navbar (z-30) > Hero (z-0)
+  * Full-screen white hero with smooth transitions to card on scroll
+- [2024-10-28] Restructured hero to prevent navbar overlap:
+  * Positioned images at top-32 (128px below top) to account for navbar height
+  * Full-screen white background starts immediately (bg-white on ContainerScroll)
+  * Center content fades out as user scrolls (opacity: 1 → 0 at 0-30% scroll)
+  * Center content scales down as it fades (scale: 1 → 0.9)
+  * Images positioned below navbar, not behind it
+  * No overlap between hero images and navigation bar
+  * Images reveal smoothly as center content fades
+  * Proper visual hierarchy maintained throughout scroll
+  * Full-screen white background always visible behind content
+  * Text perfectly centered on full-screen white background
+- [2024-10-28] Made white background truly full-screen:
+  * Changed ContainerScale to absolute inset-0 for full-screen positioning
+  * Added bg-white class to ContainerScale for full-screen white background
+  * Content layer now covers entire viewport (inset-0)
+  * White background extends edge-to-edge on all sides
+  * Images layer positioned behind white content (z-0 vs z-10)
+  * White background visible before any images appear
+  * As user scrolls, images reveal from behind white background
+  * Perfect full-screen white initial state with centered text
+- [2024-10-28] Complete Zoom Parallax Fix - Full Width & Smooth Transition:
+  * Changed container height from 300vh to 200vh to eliminate blank screen
+  * Removed centering - images now use full screen width
+  * Improved scroll animation with better scale transforms [0, 0.5, 1] mapping
+  * Images positioned using full viewport width (left/right percentages)
+  * Better image positioning: spread across full width, not centered
+  * Added max-width and max-height constraints for responsive sizing
+  * Improved z-index layering for better depth perception
+  * Changed section wrapper to use negative margins for full-width effect
+  * Reduced blank space after parallax - smooth transition to next section
+  * Enhanced opacity transitions for smoother appearance
+  * Images now properly utilize full screen width as requested
+- [2024-10-28] Fixed Zoom Parallax Component - Blank Screen Issue:
+  * Fixed images not being visible on initial load
+  * Changed initial scale from [1, 4] to [0.85-0.95, 4-9] for better visibility
+  * Added isMounted state to prevent hydration errors
+  * Improved image positioning with cleaner switch statement
+  * Changed overflow-hidden to overflow-visible for better image display
+  * Added min-width and min-height to image containers (200px x 150px)
+  * Improved image error handling with fallback URL
+  * Enhanced border visibility (border-white/30) for better contrast
+  * Added loading="eager" for faster image display
+  * Improved z-index and positioning structure
+  * Images now start visible and scale up as user scrolls
+  * Fixed blank screen issue - all images now properly displayed
+- [2024-10-28] Integrated Marquee Effect Component and Created Technologies Showcase:
+  * Created marquee-effect.tsx component in /components/ui folder
+  * Component uses Framer Motion for velocity-based scrolling marquee effect
+  * Installed @motionone/utils dependency for wrap utility function
+  * Created MarqueeShowcaseSection with double marquee effect
+  * Section title: "Technologies We Master" - professional and descriptive
+  * First marquee: AI/ML concepts (AI, ML, Deep Learning, Neural Networks, etc.)
+  * Second marquee: Technologies & Frameworks (Python, TensorFlow, PyTorch, etc.)
+  * Brand colors: First marquee - Navy gradient (#2A2E5C to #3F426B) with white text
+  * Second marquee - Gold gradient (#D4A72E to #C4972A) with navy text
+  * Icon grid below marquees: 7 icons (Brain, Zap, Database, Code, Rocket, TrendingUp, Sparkles)
+  * Icons represent: AI, ML, Data, Coding, Innovation, Growth, Excellence
+  * Hover effects on icons with scale and color transitions
+  * Positioned after Faculty Spotlight (Section 8)
+  * Clean white/gray gradient background with decorative blur elements
+  * Responsive design with proper spacing and sizing
+- [2024-10-28] Integrated Zoom Parallax Component and Created Branch Glimpse Section:
+  * Created zoom-parallax.tsx component in /components/ui folder
+  * Component uses Framer Motion for scroll-triggered zoom parallax effects
+  * Supports up to 7 images with different zoom scales (4x to 9x)
+  * Each image positioned dynamically with custom CSS classes
+  * Created BranchGlimpseSection to replace Program Showcase
+  * Section name: "A Glimpse into Our Future" - professional and aesthetic
+  * Uses AI/ML themed images from Unsplash:
+    - Neural networks, Machine Learning, Deep Learning
+    - Data Science, Computer Vision, AI Research, Robotics
+  * Dark blue gradient background (#2A2E5C to #3F426B)
+  * Professional header with badge, title, subtitle, and stats
+  * Three stat cards: AI/ML Specializations, Cutting-Edge Labs, Innovation Driven
+  * Bottom section with CTA button linking to programs page
+  * Integrated into home page as Section 5, replacing Interactive Program Showcase
+  * framer-motion already installed (v11.18.2)
+  * Added rounded corners and shadows to parallax images for polish
+- [2024-10-28] Updated HOD's Welcome Section:
+  * Changed HOD name from "Dr. Radhakrishna" to "Dr. Murali"
+  * Updated image source to /img/murali.jpg
+  * Changed from rectangular image to circular profile picture
+  * Circular image: w-80 h-80 (mobile) and md:w-96 md:h-96 (desktop)
+  * Added border-4 border-[#2A2E5C]/20 for visual enhancement
+  * Maintained decorative accents and animations
+- [2024-10-28] Swapped Animated Statistics with News & Events Section:
+  * Moved Animated Statistics to Section 3 (after News & Events)
+  * Moved News & Events to Section 2 (after Hero)
+  * New order: Hero → News & Events → Animated Statistics → HOD's Welcome → etc.
+- [2024-10-28] Created Complete Home Page Redesign with 10 New Sections:
+  * Section 3: News & Events - 3-column glowing cards with hover effects (Aceternity-style)
+  * Section 4: HOD's Welcome - Split section with professional photo and warm greeting quote
+  * Section 5: Interactive Program Showcase - Tabbed interface (B.Tech, M.Tech, Ph.D.)
+  * Section 6: Research Pillars - Bento Grid layout with 5 research areas + featured project
+  * Section 7: Faculty Spotlight - Horizontal scrolling carousel with auto-play
+  * Section 8: Our Recruiters - Infinite horizontal logo ticker (Microsoft, Google, Oracle, etc.)
+  * Section 9: Testimonials Carousel - Full-width quote-centric slider (Student, Alumnus, Recruiter)
+  * Section 10: Final CTA Banner - Large visually distinct banner with animated particles
+  * Removed all old sections (Faculty Members, Events, News, Resources, Gallery, Social Media)
+  * All sections use brand colors (#2A2E5C, #D4A72E) and brand fonts (Space Grotesk, Poppins)
+  * Responsive design with mobile-first approach
+  * Smooth animations using Framer Motion
+  * All components structured for easy admin panel integration
+- [2024-10-28] Fixed Animated Statistics Counter Functionality:
+  * Fixed animation not triggering - simplified requestAnimationFrame logic
+  * Changed to use performance.now() for more accurate timing
+  * Improved Intersection Observer setup with initial view check
+  * Added window resize listener to check visibility
+  * Reduced threshold to 0.1 (10% visibility) for earlier trigger
+  * Added rootMargin for better timing
+  * Demo data: 10+ Research Labs, 50+ Expert Faculty, 100+ Annual Publications, 15 LPA Average Package
+  * Counters now properly animate from 0 to target values on scroll
+- [2024-10-28] Created Animated Statistics Section:
+  * Created animated-statistics.tsx component in /components/layout folder
+  * 4-column statistics grid with scroll-triggered count-up animations
+  * Statistics data:
+    - 10+ Research Labs
+    - 50+ Expert Faculty
+    - 100+ Annual Publications
+    - 15 LPA Average Package
+  * Blue and white design (no overlays)
+  * Uses brand colors: #2A2E5C (blue), white background
+  * Fonts: Space Grotesk Bold (numbers), Poppins Semibold (labels)
+  * Intersection Observer for scroll-triggered animations
+  * Smooth count-up animation with configurable duration per stat
+  * Card hover effects with subtle borders and shadows
+  * Decorative gradient background elements
+  * Section header with title and description
+  * Responsive grid: 1 column (mobile), 2 columns (tablet), 4 columns (desktop)
+  * Added to home page after hero section
+  * Easy to configure for admin panel integration
+- [2024-10-28] Added Statistics Cards to Hero Section:
+  * Added 4 statistics cards to fill white space
+  * Statistics displayed: 500+ Alumni, 50+ Faculty, 100+ Projects, 95% Placements
+  * Cards use gradient backgrounds (brand colors: #2A2E5C and #D4A72E)
+  * Responsive grid: 2 columns on mobile, 4 columns on desktop
+  * Styled with rounded corners, borders, and brand fonts
+  * Positioned between description text and CTA buttons
+  * Uses Space Grotesk Bold for numbers and Poppins Medium for labels
+- [2024-10-28] Removed Typewriter Effect and Optimized Hero Layout:
+  * Replaced typewriter effect with simple fade transition using Framer Motion
+  * Text transitions smoothly with fade and slight vertical movement (y: 20/-20)
+  * Cycles through sentences every 4 seconds
+  * Removed large white space above content
+  * Changed layout from vertically centered to top-aligned
+  * Updated padding: pt-[120px] instead of pt-[96px] for better spacing
+  * Changed flex alignment from `items-center` to `items-start md:items-center`
+  * Added proper spacing with pt-4 md:pt-8 for text content area
+  * Better utilization of available space
+- [2024-10-28] Integrated Interactive Image Accordion Hero Component:
+  * Created interactive-image-accordion.tsx component in /components/ui folder
+  * Added typewriter effect for dynamic text rotation (5 sentences)
+  * Integrated AI/ML themed images (Unsplash stock images)
+  * Added two CTA buttons: "Join Alumni Network" and "Explore Programs"
+  * Replaced MinimalHero with LandingAccordionItem in home page
+  * Component features:
+    - 5 expandable image cards (hover to expand)
+    - Typewriter animation cycling through 5 sentences
+    - Brand colors (#2A2E5C primary, #D4A72E for buttons)
+    - Responsive design (mobile-first approach)
+    - Smooth transitions and hover effects
+    - Proper spacing to account for navbar (-mt-[96px] pt-[96px])
+  * Typewriter sentences:
+    1. "Engineering the Future with AI & Machine Learning"
+    2. "Shaping Tomorrow's Tech Innovators"
+    3. "Innovation Meets Excellence in Technology"
+    4. "Building Your Future in Computer Science"
+    5. "Leading in Artificial Intelligence & ML Research"
+  * Image categories: AI, ML, Neural Networks, Data Science, Deep Learning
+  * Uses brand fonts: Space Grotesk Bold (headings), Poppins (body/buttons)
+- [2024-10-28] Added Alumni Page Link to Navbar:
+  * Added "Alumni" link to desktop navigation menu
+  * Positioned between "Placements" and "Contact" links
+  * Added same styling and hover effects as other nav links
+  * Added active state highlighting with gold underline
+  * Added "Alumni" link to mobile navigation menu as well
+  * Mobile link follows same styling pattern with border-left indicator
+  * Link points to /alumni route
+  * Consistent with other navigation items in design and behavior
+- [2024-10-28] Navbar Logo-Only Design with Reduced Sizes:
+  * Removed text from navbar - now shows only logo
+  * Logo size: 48x48 (balanced size - not too big, not too small)
+  * Navbar padding: py-2 (compact and professional)
+  * Removed "KITS CSM" text label next to logo
+  * Cleaner logo-only design for professional appearance
+  * Updated spacer div height: 88px → 96px (to accommodate navbar with logo)
+  * Updated hero section margin: -mt-[88px] pt-[88px] → -mt-[96px] pt-[96px]
+  * Compact navbar with logo as main brand element
+  * Professional minimalist design with reduced vertical space
+- [2024-10-28] Professional Header Redesign - Reduced Sizes & Fixed Gap:
+  * Reduced AnnouncementBar height: min-h-[56px] → min-h-[40px] (29% smaller)
+  * Reduced AnnouncementBar padding: py-3 → py-1.5 (50% smaller)
+  * Reduced icon sizes: w-8 h-8 → w-6 h-6, icon w-4 → w-3.5
+  * Reduced text sizes: text-sm/text-base → text-xs/text-sm
+  * Reduced category badge padding: px-3 py-1 → px-2 py-0.5
+  * Reduced progress indicator sizes: dots now w-6 h-1.5 (active) and w-1.5 h-1.5 (inactive)
+  * Reduced Navbar height: py-3 → py-2 (33% smaller)
+  * Reduced logo size: 50x50 → 40x40 (20% smaller)
+  * Reduced logo text: text-xl/text-2xl → text-lg/text-xl
+  * Reduced nav link padding: py-2 → py-1.5, text-lg → text-base
+  * Reduced button sizes: px-6 py-2 → px-5 py-1.5, text-lg → text-sm
+  * Reduced button spacing: space-x-4 → space-x-3
+  * Fixed navbar top position: top-14 → top-10 (matches new announcement bar height)
+  * Reduced spacer div height: 120px/56px → 88px/40px (27% smaller)
+  * Fixed gap after header: Added negative margin and padding to hero (-mt-[88px] pt-[88px])
+  * Hero section now starts immediately after navbar with no gap
+  * Professional compact design with better space utilization
+  * Cleaner, more modern appearance
+  * All elements properly aligned and proportioned
+- [2024-10-28] Created Minimal Auto-Sliding Hero Section:
+  * Created MinimalHero.tsx component - clean and minimal design
+  * Features auto-sliding images every 5 seconds with smooth transitions
+  * 4 hero slides with CS/AI/ML themed images from Unsplash
+  * Each slide contains: background image, title, subtitle, description, and buttons
+  * Smooth fade transitions using Framer Motion AnimatePresence
+  * Dark gradient overlay (from #2A2E5C) for text readability
+  * Slide indicators (dots) at bottom with manual navigation
+  * Auto-play pauses for 10 seconds after manual slide change
+  * Primary button: "Join Alumni Network" (gold #D4A72E)
+  * Secondary button: "Explore Programs" (outline white)
+  * Responsive design: text scales from 4xl to 7xl
+  * Full-screen hero section (h-screen)
+  * Brand fonts: Space Grotesk Bold (titles), JetBrains Mono Bold (subtitles), Poppins (body/buttons)
+  * Clean minimal design without excessive animations or effects
+  * Integrated into home page (src/app/page.tsx)
+  * Replaced KITSGalleryHero with MinimalHero
+- [2024-10-28] Fixed image positioning and complete scroll animation:
+  * Positioned images below header with top-32 (128px) offset
+  * Reduced image container height to calc(100vh-8rem) to avoid header overlap
+  * Made images smaller with rounded-xl (reduced from rounded-2xl) and shadow-xl
+  * Added max-w-7xl container for better image sizing
+  * Increased scroll height from 350vh to 400vh for complete animation
+  * Extended image animation to complete at 100% scroll (was 90%)
+  * Changed image scale start from 0.5 to 0.6 (slightly larger initial size)
+  * Adjusted white overlay fade: completes by 60% (was 30%)
+  * Adjusted content fade: completes by 60% (was 30%)
+  * Images now fully pack and animate completely before next section
+  * All images reach final position (scale 1, translate 0%) at 100% scroll
+  * Smooth transition ensures all animation completes before allowing next section scroll
+- [2024-10-28] Fixed ChunkLoadError by clearing Next.js cache:
+  * Cleared .next directory to remove corrupted build artifacts
+  * ChunkLoadError typically caused by stale webpack chunks
+  * Resolved by removing cache and restarting dev server
+  * Component structure verified - all exports correct
+  * No import errors or circular dependencies found
+  * Next.js cache should be cleared when encountering chunk load errors
+- [2024-10-28] Final hero section restructuring - fixed all misalignments:
+  * Complete rewrite of KITSGalleryHero component for proper structure
+  * Absolute positioning with inset-0 for true full-screen white background
+  * Content layer at z-10, images at z-0 for proper stacking
+  * Images start at top-0 (not top-32) and get space from navbar via clearfix div
+  * Opacity fades from 1 to 0 over 0-30% scroll progress
+  * Scale transitions from 1.0 to 0.95 for subtle zoom-out effect
+  * Text centered with flex items-center justify-center
+  * No card background - pure white full-screen background
+  * Images reveal smoothly as white fades out
+  * Proper alignment throughout scroll transition
+  * Clean, professional layout with no overlapping issues
+  * Working dynamic text rotation every 7 seconds
+  * All custom fonts applied correctly (Space Grotesk, JetBrains Mono, Poppins)
+- [2024-12-04] Successfully integrated RadialOrbitalTimeline component:
+  * Created RadialOrbitalTimeline component in /components/ui/radial-orbital-timeline.tsx
+  * Added custom CSS animations and styles to globals.css for orbital timeline effects
+  * Replaced MarqueeShowcaseSection with RadialOrbitalTimeline in page.tsx
+  * Created custom timeline data showcasing 12 AI/ML technologies and research areas
+  * Timeline includes: Machine Learning, Deep Learning, Computer Vision, NLP, Data Science, Robotics, AI Ethics, Cloud AI, Quantum ML, AI Healthcare, Autonomous Vehicles, and AI Sustainability
+  * Each timeline item features status (completed/in-progress/pending), energy levels, and connected nodes
+  * Used brand colors: Primary #2A2E5C (navy), Secondary #D4A72E (gold) throughout the design
+  * Professional section header with "AI/ML Technologies" title and brand gradient accent
+  * Responsive design with full-screen height container (max-h-[800px])
+  * Interactive orbital animation with auto-rotation and click-to-focus functionality
+  * Connected nodes system allowing users to explore relationships between technologies
+  * Energy bars and status badges for each technology node
+  * Smooth transitions and hover effects with brand color scheme
+  * Development server started successfully without linting errors
+  * Component renders correctly with all animations working properly
 
 ## Failed Attempts
 - [2024-08-07] Initial attempt to upload profile pictures failed with empty error object - fixed by updating storage bucket configuration and policies
