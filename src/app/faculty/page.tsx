@@ -14,7 +14,7 @@ export default function FacultyPage() {
       <Hero
         title="Meet Our Faculty"
         subtitle="Dedicated educators and researchers leading the way in AI & Machine Learning."
-        size={500}
+        variant="geometric"
       />
       <FacultyMembers />
     </div>

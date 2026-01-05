@@ -3,19 +3,15 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight, Sparkles, Tag } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-/**
- * Mock news and events data
- * Will be replaced with dynamic data from admin panel later
- */
 const newsAndEvents = [
   {
     id: 1,
     title: "AI Research Symposium 2024",
     date: "December 15, 2024",
-    image: "/img/conference.jpg",
+    image: "https://images.unsplash.com/photo-1591453089816-0fbb971b454c?q=80&w=800&auto=format&fit=crop",
     category: "Event",
     summary: "Join leading researchers and industry experts for cutting-edge AI discussions.",
   },
@@ -23,7 +19,7 @@ const newsAndEvents = [
     id: 2,
     title: "New Research Partnership with Tech Giants",
     date: "December 10, 2024",
-    image: "/img/aiquest.jpg",
+    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop",
     category: "News",
     summary: "KITS CSM announces groundbreaking collaboration with major technology companies.",
   },
@@ -31,118 +27,101 @@ const newsAndEvents = [
     id: 3,
     title: "Student Innovation Day Celebration",
     date: "December 5, 2024",
-    image: "/img/innovationday.jpg",
+    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop",
     category: "Event",
     summary: "Showcasing exceptional student projects and technological innovations.",
   },
 ];
 
-/**
- * News & Events Section
- * Improved stable 3-column grid with consistent spacing and animations
- */
 export function NewsEventsSection() {
   return (
-    <section className="py-20 md:py-24 bg-white relative overflow-hidden">
-      {/* Background decorative elements - subtle */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-[#2A2E5C]/3 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#D4A72E]/3 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
-
-      <div className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#2A2E5C] mb-4 font-space-grotesk-bold">
-            What's Happening at{" "}
-            <span className="text-[#D4A72E]">CSM</span>
-          </h2>
-          <div className="w-24 h-1 bg-[#2A2E5C] mx-auto rounded-full mb-6"></div>
-          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto font-poppins-regular leading-relaxed">
-            Stay updated with the latest news, events, and achievements from our department
-          </p>
+    <section className="py-32 bg-gray-50/50 relative overflow-hidden">
+      {/* Background patterns */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-navy/5 rounded-full blur-[120px] translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
+          <div className="max-w-2xl">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-3 mb-4"
+            >
+               <div className="w-10 h-1 bg-gold rounded-full" />
+               <span className="text-gold font-bold uppercase tracking-[0.3em] text-[10px]">Stay Updated</span>
+            </motion.div>
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-4xl md:text-5xl font-bold text-navy font-space-grotesk tracking-tight leading-tight"
+            >
+              What's Happening at <span className="text-transparent bg-clip-text bg-gradient-to-r from-navy to-navy-light">KITS CSM</span>
+            </motion.h2>
+          </div>
+          
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+          >
+            <Link href="/events">
+              <button className="group flex items-center gap-3 px-8 py-4 bg-white border border-gray-200 text-navy font-bold rounded-full hover:bg-navy hover:text-white transition-all shadow-xl shadow-navy/5">
+                VIEW ALL EVENTS
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </Link>
+          </motion.div>
         </div>
 
-        {/* 3-Column Grid - Stable Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {newsAndEvents.map((item, index) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.4, delay: index * 0.1, ease: "easeOut" }}
-              className="group relative h-full"
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1, duration: 0.6 }}
+              className="group bg-white rounded-[2.5rem] overflow-hidden border border-gray-100 shadow-xl shadow-navy/5 hover:shadow-2xl hover:shadow-navy/15 hover:border-gold/30 transition-all duration-500"
             >
-              {/* Card Container - Stable height */}
-              <div className="relative bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[#2A2E5C]/30 h-full flex flex-col">
-                {/* Hover overlay - solid color */}
-                <div className="absolute inset-0 bg-[#2A2E5C]/0 group-hover:bg-[#2A2E5C]/5 rounded-xl transition-all duration-300 pointer-events-none z-0"></div>
+              <div className="relative h-64 overflow-hidden">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute top-6 right-6">
+                   <span className="px-4 py-1.5 bg-white/90 backdrop-blur-md rounded-xl text-[10px] font-bold text-navy shadow-lg border border-white/20 uppercase tracking-widest">
+                     {item.category}
+                   </span>
+                </div>
+              </div>
 
-                {/* Image Container - Fixed height to prevent layout shift */}
-                <div className="relative h-56 md:h-52 overflow-hidden bg-gray-100">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    priority={index === 0}
-                  />
-                  {/* Solid overlay for text readability */}
-                  <div className="absolute inset-0 bg-black/40"></div>
-
-                  {/* Category Badge */}
-                  <div className="absolute top-4 left-4 z-10">
-                    <span className={`px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm ${
-                      item.category === 'News'
-                        ? 'bg-[#D4A72E] text-[#2A2E5C]'
-                        : 'bg-[#2A2E5C] text-white'
-                    } font-poppins-semibold shadow-sm`}>
-                      {item.category}
-                    </span>
-                  </div>
+              <div className="p-10">
+                <div className="flex items-center gap-3 text-gold mb-6">
+                   <Calendar className="w-4 h-4" />
+                   <span className="text-xs font-bold uppercase tracking-widest">{item.date}</span>
                 </div>
 
-                {/* Content - Flex grow for consistent spacing */}
-                <div className="p-5 md:p-6 relative z-10 flex flex-col flex-grow">
-                  {/* Date */}
-                  <div className="flex items-center gap-2 text-xs md:text-sm text-gray-500 mb-3 font-poppins-medium">
-                    <Calendar className="w-4 h-4 flex-shrink-0" />
-                    <span>{item.date}</span>
+                <h3 className="text-2xl font-space-grotesk font-bold text-navy mb-4 group-hover:text-gold transition-colors duration-300 leading-tight">
+                  {item.title}
+                </h3>
+
+                <p className="text-gray-500 font-medium mb-8 line-clamp-2">
+                  {item.summary}
+                </p>
+
+                <Link href={`/${item.category.toLowerCase()}/${item.id}`} className="inline-flex items-center gap-2 text-navy font-bold text-xs uppercase tracking-widest group/link">
+                  Learn More
+                  <div className="w-8 h-8 rounded-full bg-navy/5 flex items-center justify-center group-hover/link:bg-gold transition-all duration-300">
+                     <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
                   </div>
-
-                  {/* Title - Fixed height to prevent layout shift */}
-                  <h3 className="text-lg md:text-xl font-bold text-[#2A2E5C] mb-3 font-space-grotesk-bold group-hover:text-[#3F426B] transition-colors duration-300 line-clamp-2 min-h-[3.5rem]">
-                    {item.title}
-                  </h3>
-
-                  {/* Summary - Flex grow to push button down */}
-                  <p className="text-sm md:text-base text-gray-600 mb-4 line-clamp-2 font-poppins-regular flex-grow leading-relaxed">
-                    {item.summary}
-                  </p>
-
-                  {/* Read More Link */}
-                  <Link
-                    href={`/${item.category.toLowerCase()}/${item.id}`}
-                    className="inline-flex items-center gap-2 text-[#2A2E5C] font-semibold hover:text-[#3F426B] transition-colors duration-300 group/link font-poppins-semibold text-sm md:text-base mt-auto"
-                  >
-                    Read More
-                    <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform duration-300" />
-                  </Link>
-                </div>
+                </Link>
               </div>
             </motion.div>
           ))}
-        </div>
-
-        {/* View All Button */}
-        <div className="text-center">
-          <Link
-            href="/news"
-            className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#3F426B] text-white font-semibold rounded-xl hover:bg-[#2A2E5C] transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg font-poppins-semibold text-base"
-          >
-            View All News
-            <ArrowRight className="w-5 h-5" />
-          </Link>
         </div>
       </div>
     </section>

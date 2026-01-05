@@ -1,213 +1,129 @@
 "use client"
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight, User, Star, ArrowRight } from 'lucide-react';
 
-/**
- * Featured Faculty Data
- * Faculty marked as "featured" will appear in the carousel
- */
 const featuredFaculty = [
   {
     id: 1,
     name: "Dr. Radhakrishna",
     designation: "Head of Computer Science",
-    image: "/img/radhakrshnasir.jpg",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop",
     profile: "/faculty/radhakrishna",
+    expertise: "Neural Networks & Deep Learning"
   },
   {
     id: 2,
     name: "Dr. Nagendra Prasad",
     designation: "Principal",
-    image: "/img/nagendraPrasadsir.jpg",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop",
     profile: "/faculty/nagendra-prasad",
+    expertise: "Advanced Algorithms"
   },
   {
     id: 3,
     name: "Dr. Srinivas",
     designation: "Professor of Engineering",
-    image: "/img/srinivassir.jpg",
+    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop",
     profile: "/faculty/srinivas",
-  },
-  {
-    id: 4,
-    name: "Dr. John Saida",
-    designation: "Professor of Mathematics",
-    image: "/img/johnsaidasir.jpg",
-    profile: "/faculty/john-saida",
-  },
+    expertise: "Computer Vision"
+  }
 ];
 
-/**
- * Faculty Spotlight Section
- * Horizontal scrolling carousel of featured faculty
- */
 export function FacultySpotlightSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const carouselRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll functionality
-  useEffect(() => {
-    if (!isAutoPlaying) return;
-
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % featuredFaculty.length);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [isAutoPlaying]);
-
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-    setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 10000); // Resume after 10s
-  };
-
-  const goToPrevious = () => {
-    goToSlide((currentIndex - 1 + featuredFaculty.length) % featuredFaculty.length);
-  };
-
-  const goToNext = () => {
-    goToSlide((currentIndex + 1) % featuredFaculty.length);
-  };
+  const next = () => setCurrentIndex((prev) => (prev + 1) % featuredFaculty.length);
+  const prev = () => setCurrentIndex((prev) => (prev - 1 + featuredFaculty.length) % featuredFaculty.length);
 
   return (
-    <section className="py-20 bg-white relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-[#D4A72E]/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-
-      <div className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#2A2E5C] mb-6 font-space-grotesk-bold">
-            Faculty <span className="text-[#D4A72E]">Spotlight</span>
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-[#2A2E5C] to-[#D4A72E] mx-auto rounded-full mb-6"></div>
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-poppins-regular">
-            Meet our distinguished faculty members leading innovation in AI and Machine Learning
-          </p>
-        </div>
-
-        {/* Carousel */}
-        <div className="relative max-w-6xl mx-auto">
-          {/* Navigation Buttons */}
-          <button
-            onClick={goToPrevious}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white text-[#2A2E5C] rounded-full p-3 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110"
-            aria-label="Previous faculty"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          <button
-            onClick={goToNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-white text-[#2A2E5C] rounded-full p-3 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110"
-            aria-label="Next faculty"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
-
-          {/* Carousel Container */}
-          <div className="overflow-hidden" ref={carouselRef}>
+    <section className="py-32 bg-gray-50/50 relative overflow-hidden">
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
+          <div className="max-w-2xl">
             <motion.div
-              className="flex"
-              animate={{ x: `-${currentIndex * 100}%` }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-3 mb-4"
             >
-              {featuredFaculty.map((faculty, index) => (
-                <div
-                  key={faculty.id}
-                  className="min-w-full px-4 md:px-8"
-                >
-                  <Link href={faculty.profile}>
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5 }}
-                      className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 md:p-12 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300 cursor-pointer group"
-                    >
-                      <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
-                        {/* Faculty Photo */}
-                        <div className="relative w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden shadow-2xl group-hover:scale-105 transition-transform duration-300">
-                          <Image
-                            src={faculty.image}
-                            alt={faculty.name}
-                            fill
-                            className="object-cover"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#2A2E5C]/20 to-transparent"></div>
-                        </div>
-
-                        {/* Faculty Info */}
-                        <div className="flex-1 text-center md:text-left">
-                          <h3 className="text-3xl md:text-4xl font-bold text-[#2A2E5C] mb-4 font-space-grotesk-bold group-hover:text-[#D4A72E] transition-colors duration-300">
-                            {faculty.name}
-                          </h3>
-                          <p className="text-xl md:text-2xl text-gray-600 mb-6 font-poppins-semibold">
-                            {faculty.designation}
-                          </p>
-                          <p className="text-gray-700 font-poppins-regular leading-relaxed max-w-2xl">
-                            Leading research and innovation in Computer Science and Machine Learning.
-                            Dedicated to mentoring the next generation of technology leaders.
-                          </p>
-                          <div className="mt-6 inline-flex items-center gap-2 text-[#2A2E5C] font-semibold group-hover:text-[#D4A72E] transition-colors duration-300 font-poppins-semibold">
-                            View Full Profile
-                            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </Link>
-                </div>
-              ))}
+               <div className="w-10 h-1 bg-gold rounded-full" />
+               <span className="text-gold font-bold uppercase tracking-[0.3em] text-[10px]">Academic Leaders</span>
             </motion.div>
+            <h2 className="text-4xl md:text-5xl font-bold text-navy font-space-grotesk tracking-tight leading-tight">
+              Faculty <span className="text-gold">Spotlight</span>
+            </h2>
           </div>
-
-          {/* Dots Indicator */}
-          <div className="flex justify-center gap-3 mt-8">
-            {featuredFaculty.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`h-3 rounded-full transition-all duration-300 ${
-                  index === currentIndex
-                    ? 'w-8 bg-[#D4A72E]'
-                    : 'w-3 bg-gray-300 hover:bg-gray-400'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
+          
+          <div className="flex gap-4">
+             <button onClick={prev} className="w-14 h-14 rounded-full border border-gray-200 flex items-center justify-center hover:bg-navy hover:text-white transition-all">
+                <ChevronLeft className="w-6 h-6" />
+             </button>
+             <button onClick={next} className="w-14 h-14 rounded-full bg-navy text-white flex items-center justify-center hover:bg-gold hover:text-navy transition-all">
+                <ChevronRight className="w-6 h-6" />
+             </button>
           </div>
         </div>
 
-        {/* View All Button */}
-        <div className="text-center mt-12">
-          <Link
-            href="/faculty"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[#2A2E5C] text-white font-semibold rounded-xl hover:bg-[#3F426B] transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-2xl font-poppins-semibold"
-          >
-            View All Faculty
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
+        <div className="relative overflow-hidden rounded-[4rem] bg-white border border-gray-100 shadow-2xl shadow-navy/5 p-8 md:p-20">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.6 }}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
+            >
+              <div className="relative aspect-square md:aspect-video lg:aspect-square rounded-[3rem] overflow-hidden">
+                 <Image 
+                   src={featuredFaculty[currentIndex].image}
+                   alt={featuredFaculty[currentIndex].name}
+                   fill
+                   className="object-cover"
+                 />
+                 <div className="absolute top-8 left-8">
+                    <div className="bg-white/90 backdrop-blur-xl p-4 rounded-3xl shadow-xl flex items-center gap-3 border border-white/20">
+                       <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center">
+                          <Star className="w-5 h-5 text-navy" />
+                       </div>
+                       <div>
+                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Expertise</p>
+                          <p className="text-sm font-bold text-navy leading-none">{featuredFaculty[currentIndex].expertise}</p>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+
+              <div>
+                 <h3 className="text-4xl md:text-5xl font-space-grotesk font-bold text-navy mb-4">{featuredFaculty[currentIndex].name}</h3>
+                 <p className="text-xl text-gold font-bold mb-10">{featuredFaculty[currentIndex].designation}</p>
+                 
+                 <p className="text-gray-500 text-lg leading-relaxed mb-12">
+                   Leading research and innovation in Computer Science and Machine Learning. Dedicated to mentoring the next generation of technology leaders at KITS.
+                 </p>
+
+                 <div className="flex flex-wrap gap-8 items-center">
+                    <Link href={featuredFaculty[currentIndex].profile}>
+                      <button className="px-10 py-5 bg-navy text-white font-bold rounded-full hover:bg-gold hover:text-navy transition-all shadow-2xl shadow-navy/20 flex items-center gap-3">
+                        VIEW FULL PROFILE
+                        <User className="w-4 h-4" />
+                      </button>
+                    </Link>
+                    
+                    <Link href="/faculty" className="group flex items-center gap-3 text-navy font-bold text-sm tracking-widest uppercase">
+                       Meet All Faculty
+                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                 </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>
   );
 }
-
-
-
-
-
-
-
-
-
-

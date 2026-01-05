@@ -57,7 +57,7 @@ export default async function BlogPage() {
       <Hero 
         title="Alumni Insights & Stories"
         subtitle="Discover a wealth of knowledge, professional experiences, and technical insights shared by the KITS Computer Science & Machine Learning alumni community."
-        size={400}
+        variant="entropy"
       />
 
       <section className="container mx-auto px-6 py-20">

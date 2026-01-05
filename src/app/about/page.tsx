@@ -15,7 +15,7 @@ export default function AboutPage() {
       <Hero
         title="About KITS CSM Department"
         subtitle="Discover our engineering excellence, cutting-edge research, and commitment to shaping the future of Computer Science & Machine Learning."
-        size={500}
+        variant="dots"
       />
       <AboutSection />
       <Timeline />

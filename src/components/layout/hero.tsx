@@ -1,92 +1,139 @@
-'use client'
+'use client';
 
-import React, { useEffect, useState } from 'react'
-import { Entropy } from '@/components/ui/entropy'
-import { useInView } from 'react-intersection-observer'
-import { motion } from 'framer-motion'
+import React from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { Entropy } from '@/components/ui/entropy';
+import { cn } from '@/lib/utils';
 
 interface HeroProps {
-  title: string
-  subtitle?: string
-  size?: number // ignored, for compatibility
+  title: string;
+  subtitle?: string;
+  variant?: 'entropy' | 'grid' | 'dots' | 'geometric' | 'simple';
+  className?: string;
 }
 
-export function Hero({ title, subtitle }: HeroProps) {
+export function Hero({ title, subtitle, variant = 'entropy', className }: HeroProps) {
   const { ref, inView } = useInView({
     threshold: 0.1,
     triggerOnce: true,
-  })
-  const [dimensions, setDimensions] = useState({ width: 1920, height: 500 })
+  });
 
-  useEffect(() => {
-    function handleResize() {
-      setDimensions({
-        width: window.innerWidth,
-        height: Math.max(window.innerHeight, 400),
-      })
-    }
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.6,
-        staggerChildren: 0.2
-      }
-    }
-  }
+        duration: 0.8,
+        staggerChildren: 0.2,
+      },
+    },
+  };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { y: 30, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.5 }
-    }
-  }
+      transition: { duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] },
+    },
+  };
 
   return (
     <section
       ref={ref}
-      className="relative w-full min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ background: '#301936' }}
+      className={cn(
+        "relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden bg-[#0A0118]",
+        className
+      )}
     >
-      {/* Entropy background */}
-      <Entropy
-        width={dimensions.width}
-        height={dimensions.height}
-        className="z-0"
-      />
-      {/* Overlay for readability if needed */}
-      <div className="absolute inset-0 bg-[#301936]/80 z-10" aria-hidden="true" />
-      <div className="container relative z-20 flex flex-col items-center justify-center px-4 md:flex-row md:space-x-8">
-        <motion.div
-          className="mb-8 flex flex-col items-center text-center md:mb-0 md:w-1/2 md:items-start md:text-left"
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          variants={containerVariants}
-        >
+      {/* Background Variants */}
+      {variant === 'entropy' && (
+        <div className="absolute inset-0 z-0 opacity-40">
+           <Entropy width={2000} height={1000} />
+        </div>
+      )}
+
+      {variant === 'grid' && (
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-navy/20 to-navy/80" />
+        </div>
+      )}
+
+      {variant === 'dots' && (
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-[radial-gradient(#ffffff10_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]" />
+        </div>
+      )}
+
+      {variant === 'geometric' && (
+        <div className="absolute inset-0 z-0">
+           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-gold/10 rounded-full blur-[120px] animate-pulse" />
+           <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-navy/40 rounded-full blur-[120px]" />
+           <div className="absolute top-[20%] right-[10%] w-[20%] h-[20%] bg-white/5 rotate-45 border border-white/10" />
+           <div className="absolute bottom-[20%] left-[15%] w-[15%] h-[15%] rounded-full border border-white/5" />
+        </div>
+      )}
+
+      {/* Decorative Blobs */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full z-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gold/5 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-navy-light/10 rounded-full blur-[120px]" />
+      </div>
+
+      {/* Content */}
+      <motion.div
+        style={{ y: y1, opacity }}
+        className="container relative z-20 px-6 pt-20"
+        initial="hidden"
+        animate={inView ? "visible" : "hidden"}
+        variants={containerVariants}
+      >
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div variants={itemVariants} className="inline-block mb-6">
+             <span className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-gold uppercase tracking-[0.3em] backdrop-blur-sm">
+                Department of CSM
+             </span>
+          </motion.div>
+          
           <motion.h1
-            className="mb-4 text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl"
+            className="text-5xl md:text-7xl lg:text-8xl font-space-grotesk font-bold tracking-tight text-white mb-8 leading-[1.1]"
             variants={itemVariants}
           >
-            {title}
+            {title.split(' ').map((word, i) => (
+              <span key={i} className={cn(
+                "inline-block mr-3",
+                word.toLowerCase() === 'csm' || word.toLowerCase() === 'faculty' || word.toLowerCase() === 'events' ? "text-gold" : ""
+              )}>
+                {word}
+              </span>
+            ))}
           </motion.h1>
+
           {subtitle && (
             <motion.p
-              className="max-w-md text-lg text-gray-200"
+              className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto font-medium leading-relaxed"
               variants={itemVariants}
             >
               {subtitle}
             </motion.p>
           )}
-        </motion.div>
-      </div>
+
+          <motion.div variants={itemVariants} className="mt-12 flex flex-wrap items-center justify-center gap-6">
+             <div className="w-12 h-1 bg-gold/50 rounded-full" />
+             <span className="text-white/40 text-xs font-bold uppercase tracking-widest">Engineering Excellence Since 2008</span>
+             <div className="w-12 h-1 bg-gold/50 rounded-full" />
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Bottom Gradient Overlay */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white to-transparent z-10" />
     </section>
-  )
+  );
 }

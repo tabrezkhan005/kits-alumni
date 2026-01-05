@@ -4,102 +4,107 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Quote } from 'lucide-react';
+import { Quote, ArrowRight, Award, BookOpen, Star } from 'lucide-react';
 
-/**
- * HOD Welcome Section
- * Split section with photo on left, greeting on right
- */
 export function HodWelcomeSection() {
   return (
-    <section className="py-20 bg-white relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#3F426B]/3 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
-
-      <div className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-
-          {/* Left: HOD Photo - Circular */}
+    <section className="py-32 bg-white relative overflow-hidden">
+      {/* Decorative patterns */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none" 
+           style={{ backgroundImage: 'radial-gradient(#301936 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="flex flex-col lg:flex-row items-center gap-20 max-w-7xl mx-auto">
+          
+          {/* Left: Professional Portrait with decorative elements */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative flex items-center justify-center"
+            transition={{ duration: 0.8 }}
+            className="w-full lg:w-1/2 relative"
           >
-            <div className="relative w-80 h-80 md:w-96 md:h-96 rounded-full overflow-hidden shadow-2xl border-4 border-[#3F426B]/20">
+            <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl shadow-navy/20 aspect-[4/5]">
               <Image
-                src="/img/hodsir.jpg"
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop"
                 alt="Head of Department"
                 fill
                 className="object-cover"
-                priority
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent"></div>
+              
+              <div className="absolute bottom-10 left-10 right-10 p-8 bg-white/10 backdrop-blur-xl rounded-[2rem] border border-white/20">
+                 <h4 className="text-white font-space-grotesk font-bold text-xl mb-1">Dr. S. K. Sharma</h4>
+                 <p className="text-white/70 text-sm font-medium">Head of CSM Department</p>
+              </div>
             </div>
 
-            {/* Decorative accent */}
-            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#D4A72E]/15 rounded-full blur-2xl pointer-events-none"></div>
-            <div className="absolute -top-6 -left-6 w-24 h-24 bg-[#3F426B]/8 rounded-full blur-xl pointer-events-none"></div>
-          </motion.div>
-
-          {/* Right: Welcome Message */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-6"
-          >
-            {/* Section Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#3F426B]/10 border border-[#3F426B]/20 rounded-full text-[#3F426B] text-sm font-semibold font-poppins-semibold">
-              <Quote className="w-4 h-4" />
-              HOD's Welcome
-            </div>
-
-            {/* Greeting */}
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#3F426B] font-space-grotesk-bold leading-tight">
-              Welcome to{" "}
-              <span className="text-[#D4A72E]">KITS CSM</span>
-            </h2>
-
-            {/* Warm Message */}
-            <p className="text-lg md:text-xl text-gray-700 font-poppins-regular leading-relaxed">
-              As the Head of the Computer Science & Machine Learning Department,
-              I am thrilled to welcome you to a community of innovation, excellence,
-              and boundless opportunities. Our department stands at the forefront of
-              technological advancement, where cutting-edge research meets practical application.
-            </p>
-
-            {/* Quote */}
-            <div className="relative bg-white rounded-xl p-6 border-l-4 border-[#D4A72E] shadow-lg">
-              <Quote className="absolute top-4 right-4 w-12 h-12 text-[#D4A72E]/20" />
-              <p className="text-xl md:text-2xl font-semibold text-[#3F426B] italic font-space-grotesk-semibold relative z-10">
-                "We don't just teach technology; we shape the innovators who will
-                transform tomorrow's digital landscape."
-              </p>
-            </div>
-
-            {/* HOD Info */}
-            <div className="space-y-2">
-              <h3 className="text-2xl font-bold text-[#3F426B] font-space-grotesk-bold">
-                Head of Department
-              </h3>
-              <p className="text-lg text-gray-600 font-poppins-medium">
-                Computer Science & Machine Learning
-              </p>
-            </div>
-
-            {/* CTA Button */}
-            <Link
-              href="/about"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-[#D4A72E] text-[#2A2E5C] font-semibold rounded-xl hover:bg-[#C4972A] transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-2xl font-poppins-semibold mt-6"
+            {/* Floating Stats/Accolades */}
+            <motion.div 
+              initial={{ x: 20, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="absolute -right-10 top-20 z-20 bg-gold p-6 rounded-3xl shadow-xl hidden xl:block"
             >
-              Know more
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
+               <Award className="w-8 h-8 text-navy mb-2" />
+               <div className="text-navy font-bold text-lg leading-tight">15+ Years<br/><span className="text-navy/60 text-xs font-bold uppercase tracking-widest">Experience</span></div>
+            </motion.div>
+
+            <motion.div 
+              initial={{ x: -20, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="absolute -left-10 bottom-40 z-20 bg-navy p-6 rounded-3xl shadow-xl hidden xl:block"
+            >
+               <Star className="w-8 h-8 text-gold mb-2" />
+               <div className="text-white font-bold text-lg leading-tight">Ph.D.<br/><span className="text-white/60 text-xs font-bold uppercase tracking-widest">IIT Kharagpur</span></div>
+            </motion.div>
           </motion.div>
+
+          {/* Right: Message Content */}
+          <div className="w-full lg:w-1/2">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <div className="flex items-center gap-3 mb-6">
+                 <div className="w-10 h-1 bg-gold rounded-full" />
+                 <span className="text-gold font-bold uppercase tracking-[0.3em] text-[10px]">Leader's Perspective</span>
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-bold text-navy font-space-grotesk tracking-tight leading-tight mb-10">
+                Cultivating Excellence in <span className="text-gold">Next-Gen</span> Technology
+              </h2>
+
+              <div className="relative mb-12">
+                 <Quote className="absolute -top-10 -left-6 w-20 h-20 text-gray-100 -z-10" />
+                 <p className="text-xl text-gray-600 font-medium leading-relaxed italic">
+                   "Our mission transcends traditional education. We are building a vibrant ecosystem where theoretical machine learning meets real-world industry impact, fostering innovators who will lead the AI revolution."
+                 </p>
+              </div>
+
+              <p className="text-gray-500 mb-12 leading-relaxed">
+                As the Department of Computer Science & Machine Learning, we pride ourselves on a curriculum that evolves with the industry. Our students don't just learn algorithms; they build solutions for humanity. Whether it's through our dedicated AI research labs or our strong alumni network, every student at KITS is given the tools to excel.
+              </p>
+
+              <div className="flex flex-wrap gap-8 items-center">
+                <Link href="/about">
+                  <button className="px-10 py-5 bg-navy text-white font-bold rounded-full hover:bg-gold hover:text-navy transition-all shadow-2xl shadow-navy/20 flex items-center gap-3">
+                    READ FULL MISSION
+                    <BookOpen className="w-4 h-4" />
+                  </button>
+                </Link>
+                
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center">
+                     <ArrowRight className="w-5 h-5 text-navy" />
+                  </div>
+                  <span className="text-navy font-bold text-sm tracking-widest uppercase">Department Brochure</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>

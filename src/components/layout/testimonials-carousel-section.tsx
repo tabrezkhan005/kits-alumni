@@ -1,14 +1,10 @@
 "use client"
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Quote } from 'lucide-react';
+import { Quote, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 
-/**
- * Testimonials Data
- * One slide for Student, Alumnus, and Recruiter
- */
 const testimonials = [
   {
     id: 1,
@@ -16,7 +12,7 @@ const testimonials = [
     quote: "The CSM department at KITS has been a transformative experience. The cutting-edge curriculum and hands-on projects have prepared me for real-world challenges in AI and Machine Learning.",
     author: "Priya Sharma",
     title: "Final Year Student, B.Tech CSM",
-    image: "/img/default-avatar.png",
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop",
   },
   {
     id: 2,
@@ -24,7 +20,7 @@ const testimonials = [
     quote: "My time at KITS CSM laid the foundation for my career at Google. The faculty's mentorship and state-of-the-art labs equipped me with skills that directly translate to industry success.",
     author: "Rajesh Kumar",
     title: "Software Engineer @ Google, Class of '22",
-    image: "/img/default-avatar.png",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop",
   },
   {
     id: 3,
@@ -32,134 +28,108 @@ const testimonials = [
     quote: "KITS CSM graduates consistently demonstrate exceptional problem-solving skills and technical expertise. They're always our top choice for AI/ML roles.",
     author: "Sarah Johnson",
     title: "Senior Recruiter, Microsoft India",
-    image: "/img/default-avatar.png",
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop",
   },
 ];
 
-/**
- * Testimonials Carousel Section
- * Full-width quote-centric carousel slider
- */
 export function TestimonialsCarouselSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-  // Auto-scroll functionality
+  const next = () => setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+  const prev = () => setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+
   useEffect(() => {
-    if (!isAutoPlaying) return;
-
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 6000);
-
-    return () => clearInterval(interval);
-  }, [isAutoPlaying]);
-
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-    setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 12000); // Resume after 12s
-  };
-
-  const currentTestimonial = testimonials[currentIndex];
+    const timer = setInterval(next, 8000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <section className="py-20 bg-gradient-to-br from-white to-gray-50 relative overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-[#2A2E5C]/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#D4A72E]/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
-
-      <div className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#2A2E5C] mb-6 font-space-grotesk-bold">
-            What People <span className="text-[#D4A72E]">Say</span>
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-[#2A2E5C] to-[#D4A72E] mx-auto rounded-full mb-6"></div>
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-poppins-regular">
-            Hear from our students, alumni, and industry partners about their experiences
-          </p>
+    <section className="py-32 bg-white relative overflow-hidden">
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="flex flex-col items-center mb-20 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-3 mb-4"
+          >
+             <div className="w-10 h-1 bg-gold rounded-full" />
+             <span className="text-gold font-bold uppercase tracking-[0.3em] text-[10px]">Voices of Success</span>
+          </motion.div>
+          <h2 className="text-4xl md:text-5xl font-bold text-navy font-space-grotesk tracking-tight">Community <span className="text-gold">Perspectives</span></h2>
         </div>
 
-        {/* Carousel */}
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto relative">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -50 }}
-              transition={{ duration: 0.5 }}
-              className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl border border-gray-100"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
             >
-              {/* Quote Icon */}
-              <div className="flex justify-center mb-8">
-                <div className="w-20 h-20 bg-[#D4A72E]/10 rounded-full flex items-center justify-center">
-                  <Quote className="w-10 h-10 text-[#D4A72E]" />
-                </div>
+              {/* Image Side */}
+              <div className="lg:col-span-5 relative">
+                 <div className="aspect-square relative rounded-[3rem] overflow-hidden shadow-2xl shadow-navy/20">
+                    <Image 
+                      src={testimonials[currentIndex].image}
+                      alt={testimonials[currentIndex].author}
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-navy/40 to-transparent"></div>
+                 </div>
+                 <div className="absolute -bottom-6 -right-6 bg-gold p-8 rounded-[2rem] shadow-xl">
+                    <Quote className="w-8 h-8 text-navy" />
+                 </div>
               </div>
 
-              {/* Quote Text */}
-              <blockquote className="text-2xl md:text-3xl lg:text-4xl font-semibold text-[#2A2E5C] text-center mb-12 leading-relaxed font-space-grotesk-semibold italic">
-                "{currentTestimonial.quote}"
-              </blockquote>
+              {/* Text Side */}
+              <div className="lg:col-span-7 lg:pl-12">
+                 <div className="flex items-center gap-2 mb-6">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-gold text-gold" />
+                    ))}
+                 </div>
+                 
+                 <blockquote className="text-2xl md:text-3xl font-space-grotesk font-bold text-navy mb-8 leading-relaxed">
+                   "{testimonials[currentIndex].quote}"
+                 </blockquote>
 
-              {/* Author Info */}
-              <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-                {/* Author Photo */}
-                <div className="relative w-20 h-20 rounded-full overflow-hidden shadow-lg">
-                  <Image
-                    src={currentTestimonial.image}
-                    alt={currentTestimonial.author}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                 <div className="mb-10">
+                    <h4 className="text-2xl font-bold text-navy mb-1">{testimonials[currentIndex].author}</h4>
+                    <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">{testimonials[currentIndex].title}</p>
+                 </div>
 
-                {/* Author Details */}
-                <div className="text-center md:text-left">
-                  <h3 className="text-xl md:text-2xl font-bold text-[#2A2E5C] mb-2 font-space-grotesk-bold">
-                    {currentTestimonial.author}
-                  </h3>
-                  <p className="text-lg text-gray-600 font-poppins-medium">
-                    {currentTestimonial.title}
-                  </p>
-                  {/* Type Badge */}
-                  <div className="inline-block mt-3 px-4 py-1 bg-[#2A2E5C]/10 text-[#2A2E5C] rounded-full text-sm font-semibold font-poppins-semibold">
-                    {currentTestimonial.type}
-                  </div>
-                </div>
+                 <div className="flex items-center gap-4">
+                    <button 
+                      onClick={prev}
+                      className="w-14 h-14 rounded-full border border-gray-100 flex items-center justify-center hover:bg-navy hover:text-white transition-all shadow-xl shadow-navy/5"
+                    >
+                      <ChevronLeft className="w-6 h-6" />
+                    </button>
+                    <button 
+                      onClick={next}
+                      className="w-14 h-14 rounded-full bg-navy text-white flex items-center justify-center hover:bg-gold hover:text-navy transition-all shadow-xl shadow-navy/10"
+                    >
+                      <ChevronRight className="w-6 h-6" />
+                    </button>
+                    
+                    <div className="flex gap-2 ml-4">
+                       {testimonials.map((_, i) => (
+                         <div 
+                           key={i} 
+                           className={`h-1.5 rounded-full transition-all duration-300 ${i === currentIndex ? 'w-8 bg-gold' : 'w-2 bg-gray-200'}`}
+                         />
+                       ))}
+                    </div>
+                 </div>
               </div>
             </motion.div>
           </AnimatePresence>
-
-          {/* Dots Indicator */}
-          <div className="flex justify-center gap-3 mt-8">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`h-3 rounded-full transition-all duration-300 ${
-                  index === currentIndex
-                    ? 'w-8 bg-[#D4A72E]'
-                    : 'w-3 bg-gray-300 hover:bg-gray-400'
-                }`}
-                aria-label={`Go to testimonial ${index + 1}`}
-              />
-            ))}
-          </div>
         </div>
       </div>
     </section>
   );
 }
-
-
-
-
-
-
-
-
-
-

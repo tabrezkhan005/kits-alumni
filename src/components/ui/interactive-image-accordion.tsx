@@ -2,41 +2,42 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Globe, Zap, Shield, Database, Cpu } from 'lucide-react';
+import Link from 'next/link';
 
-/**
- * AI/ML related images and content for KITS CSM
- */
 const accordionItems = [
   {
     id: 1,
     title: 'Artificial Intelligence',
+    icon: <Globe className="w-5 h-5" />,
     imageUrl: 'https://images.unsplash.com/photo-1555255707-c07966088b7b?q=80&w=1974&auto=format&fit=crop',
   },
   {
     id: 2,
     title: 'Machine Learning',
+    icon: <Zap className="w-5 h-5" />,
     imageUrl: 'https://images.unsplash.com/photo-1527474305487-b87b222841cc?q=80&w=2070&auto=format&fit=crop',
   },
   {
     id: 3,
     title: 'Neural Networks',
+    icon: <Shield className="w-5 h-5" />,
     imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1974&auto=format&fit=crop',
   },
   {
     id: 4,
     title: 'Data Science',
+    icon: <Database className="w-5 h-5" />,
     imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2090&auto=format&fit=crop',
   },
   {
     id: 5,
     title: 'Deep Learning',
+    icon: <Cpu className="w-5 h-5" />,
     imageUrl: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=2070&auto=format&fit=crop',
   },
 ];
 
-/**
- * Typewriter sentences for dynamic text effect
- */
 const typewriterSentences = [
   "Engineering the Future with AI & Machine Learning",
   "Shaping Tomorrow's Tech Innovators",
@@ -45,165 +46,179 @@ const typewriterSentences = [
   "Leading in Artificial Intelligence & ML Research"
 ];
 
-/**
- * Accordion Item Component
- * Individual expandable image card
- */
 const AccordionItem = ({ item, isActive, onMouseEnter }: {
   item: typeof accordionItems[0];
   isActive: boolean;
   onMouseEnter: () => void;
 }) => {
   return (
-    <div
+    <motion.div
+      layout
       className={`
-        relative h-[450px] rounded-2xl overflow-hidden cursor-pointer
-        transition-all duration-700 ease-in-out
-        ${isActive ? 'w-[400px]' : 'w-[60px]'}
+        relative h-[550px] rounded-[2.5rem] overflow-hidden cursor-pointer
+        transition-all duration-700 ease-in-out border border-white/10
+        ${isActive ? 'w-[450px] shadow-2xl shadow-navy/40' : 'w-[80px] opacity-70 hover:opacity-100'}
       `}
       onMouseEnter={onMouseEnter}
     >
-      {/* Background Image */}
       <img
         src={item.imageUrl}
         alt={item.title}
         className="absolute inset-0 w-full h-full object-cover"
-        onError={(e) => {
-          (e.target as HTMLImageElement).onerror = null;
-          (e.target as HTMLImageElement).src = 'https://placehold.co/400x450/2d3748/ffffff?text=Image+Error';
-        }}
       />
-      {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/50"></div>
+      <div className={`absolute inset-0 bg-gradient-to-b from-transparent via-navy/20 to-navy/90 transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-60'}`} />
 
-      {/* Caption Text */}
-      <span
-        className={`
-          absolute text-white text-lg font-semibold whitespace-nowrap
-          transition-all duration-300 ease-in-out
-          ${
-            isActive
-              ? 'bottom-6 left-1/2 -translate-x-1/2 rotate-0'
-              : 'w-auto text-left bottom-24 left-1/2 -translate-x-1/2 rotate-90'
-          }
-        `}
-      >
-        {item.title}
-      </span>
-    </div>
+      <AnimatePresence>
+        {isActive && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            className="absolute bottom-10 left-10 right-10 z-20"
+          >
+             <div className="w-12 h-12 bg-gold rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                {item.icon}
+             </div>
+             <h3 className="text-2xl font-space-grotesk font-bold text-white mb-2">{item.title}</h3>
+             <p className="text-white/60 text-sm font-medium">Empowering students through cutting-edge technological education.</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {!isActive && (
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+           <span className="rotate-90 text-white/40 text-xs font-bold uppercase tracking-[0.3em] whitespace-nowrap">
+              {item.title}
+           </span>
+        </div>
+      )}
+    </motion.div>
   );
 };
 
-/**
- * Simple Text Transition Component
- * Cycles through sentences with smooth fade transitions
- */
 function TransitioningText({ sentences }: { sentences: string[] }) {
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
 
   useEffect(() => {
-    // Cycle through sentences every 4 seconds
     const interval = setInterval(() => {
       setCurrentSentenceIndex((prev) => (prev + 1) % sentences.length);
-    }, 4000);
-
+    }, 5000);
     return () => clearInterval(interval);
   }, [sentences.length]);
 
   return (
-    <div className="relative h-32 md:h-40 lg:h-48 overflow-hidden">
+    <div className="relative h-40 md:h-48 lg:h-56">
       <AnimatePresence mode="wait">
         <motion.h1
           key={currentSentenceIndex}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#2A2E5C] leading-tight tracking-tighter font-space-grotesk-bold absolute inset-0"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 20 }}
+          transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="text-5xl md:text-6xl lg:text-7xl font-bold text-navy leading-[1.1] tracking-tight font-space-grotesk absolute inset-0"
         >
-          {sentences[currentSentenceIndex]}
+          {sentences[currentSentenceIndex].split(' ').map((word, i) => (
+            <span key={i} className={i % 3 === 0 ? "text-gold" : ""}>
+               {word}{' '}
+            </span>
+          ))}
         </motion.h1>
       </AnimatePresence>
     </div>
   );
 }
 
-/**
- * Main Landing Accordion Component
- * Interactive image accordion with typewriter text
- */
 export function LandingAccordionItem() {
-  const [activeIndex, setActiveIndex] = useState(2);
-
-  const handleItemHover = (index: number) => {
-    setActiveIndex(index);
-  };
+  const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <div className="bg-white font-sans min-h-screen -mt-[96px] pt-[120px] pb-12 md:pb-24">
-      <section className="container mx-auto px-4 md:px-6 lg:px-8 w-full">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 md:gap-12">
+    <div className="bg-white min-h-screen pt-[140px] pb-24 overflow-hidden relative">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-gold/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[30%] h-[30%] bg-navy/5 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2" />
 
-          {/* Left Side: Text Content */}
-          <div className="w-full md:w-1/2 text-center md:text-left pt-4 md:pt-8">
-            {/* Simple Transition Title */}
+      <section className="container mx-auto px-6 lg:px-12 relative z-10">
+        <div className="flex flex-col xl:flex-row items-center justify-between gap-20">
+
+          <div className="w-full xl:w-[45%]">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="mb-8"
+            >
+               <span className="px-4 py-1.5 rounded-full bg-navy/5 text-navy text-[10px] font-bold uppercase tracking-[0.3em] border border-navy/10">
+                  Welcome to CSM Department
+               </span>
+            </motion.div>
+            
             <TransitioningText sentences={typewriterSentences} />
 
-            <p className="mt-8 text-lg md:text-xl text-gray-700 max-w-xl mx-auto md:mx-0 font-poppins-regular leading-relaxed">
-              Build high-performance AI applications and cutting-edge machine learning solutions.
-              Join KITS CSM Department where innovation meets excellence, and tomorrow's tech leaders are shaped today.
-            </p>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="mt-8 text-lg md:text-xl text-gray-500 max-w-xl font-medium leading-relaxed"
+            >
+              Building the next generation of AI leaders at KITS. Our curriculum is designed to merge theoretical excellence with practical industry standards.
+            </motion.p>
 
-            {/* Statistics Cards */}
-            <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-xl mx-auto md:mx-0">
-              <div className="bg-gray-50 rounded-xl p-4 border border-[#2A2E5C]/10">
-                <div className="text-3xl md:text-4xl font-bold text-[#2A2E5C] font-space-grotesk-bold mb-1">500+</div>
-                <div className="text-sm md:text-base text-gray-600 font-poppins-medium">Alumni</div>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-4 border border-[#2A2E5C]/10">
-                <div className="text-3xl md:text-4xl font-bold text-[#2A2E5C] font-space-grotesk-bold mb-1">50+</div>
-                <div className="text-sm md:text-base text-gray-600 font-poppins-medium">Faculty</div>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-4 border border-[#2A2E5C]/10">
-                <div className="text-3xl md:text-4xl font-bold text-[#2A2E5C] font-space-grotesk-bold mb-1">100+</div>
-                <div className="text-sm md:text-base text-gray-600 font-poppins-medium">Projects</div>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-4 border border-[#2A2E5C]/10">
-                <div className="text-3xl md:text-4xl font-bold text-[#2A2E5C] font-space-grotesk-bold mb-1">95%</div>
-                <div className="text-sm md:text-base text-gray-600 font-poppins-medium">Placements</div>
-              </div>
-            </div>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-6"
+            >
+              {[
+                { label: 'Alumni', val: '500+' },
+                { label: 'Faculty', val: '50+' },
+                { label: 'Projects', val: '120+' },
+                { label: 'Placements', val: '98%' }
+              ].map((stat, i) => (
+                <div key={i} className="group p-4 rounded-3xl bg-gray-50/50 border border-gray-100 hover:border-gold/30 hover:bg-white hover:shadow-xl hover:shadow-navy/5 transition-all duration-300">
+                  <div className="text-2xl font-bold text-navy mb-1 group-hover:text-gold">{stat.val}</div>
+                  <div className="text-[10px] uppercase font-bold text-gray-400 tracking-widest">{stat.label}</div>
+                </div>
+              ))}
+            </motion.div>
 
-            {/* Two Buttons */}
-            <div className="mt-8 flex flex-col sm:flex-row items-center md:items-start gap-4">
-              <a
-                href="/register"
-                className="inline-block bg-[#D4A72E] hover:bg-[#C4972A] text-[#2A2E5C] font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 font-poppins-semibold text-lg"
-              >
-                Join Alumni Network
-              </a>
-              <a
-                href="/about"
-                className="inline-block bg-white border-2 border-[#2A2E5C] text-[#2A2E5C] font-semibold px-8 py-4 rounded-xl hover:bg-[#2A2E5C] hover:text-white transition-all duration-300 hover:scale-105 font-poppins-semibold text-lg"
-              >
-                Explore Programs
-              </a>
-            </div>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="mt-12 flex flex-wrap gap-6"
+            >
+              <Link href="/register">
+                <button className="px-10 py-5 bg-navy text-white font-bold rounded-full hover:bg-gold hover:text-navy transition-all shadow-2xl shadow-navy/20 flex items-center gap-3">
+                  JOIN OUR NETWORK
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </Link>
+              <Link href="/about">
+                <button className="px-10 py-5 bg-white border-2 border-navy text-navy font-bold rounded-full hover:bg-navy hover:text-white transition-all">
+                  EXPLORE DEPARTMENT
+                </button>
+              </Link>
+            </motion.div>
           </div>
 
-          {/* Right Side: Image Accordion */}
-          <div className="w-full md:w-1/2 flex items-center justify-center">
-            <div className="flex flex-row items-center justify-center gap-4 overflow-x-auto p-4">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="w-full xl:w-[55%] flex items-center justify-center lg:justify-end"
+          >
+            <div className="flex flex-row items-center gap-4 p-4">
               {accordionItems.map((item, index) => (
                 <AccordionItem
                   key={item.id}
                   item={item}
                   isActive={index === activeIndex}
-                  onMouseEnter={() => handleItemHover(index)}
+                  onMouseEnter={() => setActiveIndex(index)}
                 />
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>
