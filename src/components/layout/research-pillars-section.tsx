@@ -81,7 +81,7 @@ const featuredProject = {
 /**
  * Research Pillars Section
  */
-export function ResearchPillarsSection() {
+export default function ResearchPillarsSection() {
   const [activeIndex, setActiveIndex] = React.useState(null);
   const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
 

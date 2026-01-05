@@ -1,11 +1,10 @@
 import { Metadata } from 'next';
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { Calendar, User, ArrowRight, BookOpen, MessageSquare, Heart } from 'lucide-react';
 import { Hero } from '@/components/layout/hero';
-import { cn } from '@/lib/utils';
+import { AnimatedContribution } from '@/components/blog/animated-contribution';
 
 // Blog type
 interface Blog {
@@ -23,29 +22,30 @@ export const metadata: Metadata = {
   description: 'Explore technical insights, alumni experiences, and academic stories from the KITS Computer Science & Machine Learning community.',
 };
 
-// Server-side data fetching
+// Server-side data fetching using admin client for better reliability
 async function getApprovedBlogs(): Promise<Blog[]> {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('blogs')
+      .select('id, name, title, blog, created_at')
+      .eq('status', 'approved')
+      .order('created_at', { ascending: false });
 
-  const { data, error } = await supabase
-    .from('blogs')
-    .select('id, name, title, blog, created_at')
-    .eq('status', 'approved')
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    console.error('Error fetching blogs:', error);
+    if (error) {
+      console.error('Error fetching blogs:', error.message || JSON.stringify(error));
+      return [];
+    }
+    
+    // Add mock categories and images for a better UI since real data might lack them
+    return (data || []).map((blog, index) => ({
+      ...blog,
+      category: ['Technology', 'Career', 'Academic', 'Machine Learning'][index % 4],
+      image: `https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800&auto=format&fit=crop`
+    }));
+  } catch (err: any) {
+    console.error('Fetch exception in getApprovedBlogs:', err.message || err);
     return [];
   }
-  
-  // Add mock categories and images for a better UI since real data might lack them
-  return (data || []).map((blog, index) => ({
-    ...blog,
-    category: ['Technology', 'Career', 'Academic', 'Machine Learning'][index % 4],
-    image: `https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=800&auto=format&fit=crop`
-  }));
 }
 
 export default async function BlogPage() {
@@ -213,31 +213,7 @@ export default async function BlogPage() {
       </section>
 
       {/* Contribution CTA */}
-      <section className="bg-navy py-20 relative overflow-hidden">
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <span className="text-gold font-bold tracking-[0.3em] text-[10px] uppercase mb-4 block">Share Your Experience</span>
-            <h2 className="text-4xl md:text-5xl font-space-grotesk font-bold text-white mb-8">Have a story to tell?</h2>
-            <p className="text-white/60 max-w-2xl mx-auto mb-10 font-medium">
-              We encourage our alumni to share their professional journey, technical expertise, and life lessons with the student community.
-            </p>
-            <Link href="/student-dashboard/blogs">
-              <button className="px-10 py-4 bg-gold text-navy font-bold rounded-full hover:bg-gold-light transition-all shadow-2xl shadow-gold/20 flex items-center gap-3 mx-auto">
-                CONTRIBUTE A STORY
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </Link>
-          </motion.div>
-        </div>
-        
-        {/* Decorative elements */}
-        <div className="absolute top-0 left-0 w-64 h-64 bg-gold/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
-      </section>
+      <AnimatedContribution />
     </main>
   );
 }
