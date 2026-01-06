@@ -667,6 +667,12 @@
   - Static site generation working correctly with Supabase integration
   - Bundle sizes optimized: Largest page (Forum) at 203kB, smallest at 103kB
   - All routes properly generated including admin, student dashboard, and API endpoints
+|- [2025-01-06] Fixed critical security vulnerabilities:
+  - Removed vulnerable aceternity-ui package (had lodash.template Command Injection vulnerability)
+  - Implemented missing sendOtpEmail function in email.ts using nodemailer
+  - Upgraded Next.js to version 16.1.1 (latest stable with security patches)
+  - Build now passes security checks with 0 vulnerabilities
+  - All npm audit issues resolved successfully
 |- [2025-01-06] Implemented comprehensive mobile responsiveness across the entire website:
   - Fixed interactive accordion hero to stack vertically on mobile with proper touch interactions
   - Created mobile-friendly grid layout for research pillars section (desktop keeps network visualization)
