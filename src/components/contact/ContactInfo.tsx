@@ -62,106 +62,134 @@ export default function ContactInfo() {
     }
   };
 
-  const ContactCard = ({ icon, title, content, index }: { icon: React.ReactNode, title: string, content: string | React.ReactNode, index: number }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl shadow-navy/5 hover:shadow-2xl hover:shadow-navy/10 hover:border-gold/30 transition-all duration-500 group"
-    >
-      <div className="w-16 h-16 bg-navy/5 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-gold transition-colors duration-300">
-        <div className="text-navy transition-colors duration-300">
-          {icon}
+  const ContactCard = ({ icon, title, content, index }: { icon: React.ReactNode, title: string, content: string | React.ReactNode, index: number }) => {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: index * 0.1, duration: 0.5 }}
+        className="bg-white p-6 rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl hover:border-gold/50 transition-all duration-300 group"
+      >
+        <div className="w-12 h-12 bg-navy/5 rounded-xl flex items-center justify-center mb-4 group-hover:bg-gold/10 transition-colors duration-300">
+          <div className="text-navy group-hover:text-gold transition-colors duration-300">
+            {icon}
+          </div>
         </div>
-      </div>
-      <h4 className="text-xl font-space-grotesk font-bold text-navy mb-3">{title}</h4>
-      <div className="text-gray-500 text-sm leading-relaxed font-medium">
-        {content}
-      </div>
-    </motion.div>
-  );
+        <h4 className="text-lg font-bold text-navy mb-3">{title}</h4>
+        <div className="text-gray-600 text-sm leading-relaxed">
+          {content}
+        </div>
+      </motion.div>
+    );
+  };
 
   return (
-    <div className="container mx-auto px-6 py-24">
+    <div className="container mx-auto px-6 py-24 bg-gray-50">
       {/* Contact Information Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
-        <ContactCard 
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+        <ContactCard
           index={0}
           icon={<MapPin className="w-8 h-8" />}
           title="Campus Location"
           content={
-            <p>
-              Department of CS & ML<br />
-              KKR & KSR Institute of Technology and Sciences<br />
-              Vinjanampadu, Guntur, AP - 522017
-            </p>
+            <div>
+              <p className="text-sm leading-relaxed mb-3">
+                Department of CS & ML<br />
+                KKR & KSR Institute of Technology and Sciences<br />
+                Vinjanampadu, Guntur, AP - 522017
+              </p>
+              <button
+                onClick={() => window.open('https://maps.google.com/?q=KKR & KSR Institute of Technology and Sciences, Vinjanampadu, Guntur', '_blank')}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-navy text-white text-xs font-semibold rounded-lg hover:bg-gold hover:text-navy transition-all duration-300"
+              >
+                <MapPin className="w-3 h-3" />
+                Get Directions
+              </button>
+            </div>
           }
         />
-        <ContactCard 
+        <ContactCard
           index={1}
           icon={<Phone className="w-8 h-8" />}
           title="Direct Contact"
           content={
-            <p>
-              Department Head Office<br />
-              <span className="text-navy font-bold">+91 98485 08545</span>
-            </p>
+            <div>
+              <p className="text-sm leading-relaxed mb-3">
+                Department Head Office<br />
+                <span className="text-navy font-bold">+91 98485 08545</span>
+              </p>
+              <a
+                href="/schedule"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-navy text-white text-xs font-semibold rounded-lg hover:bg-gold hover:text-navy transition-all duration-300"
+              >
+                <Phone className="w-3 h-3" />
+                Schedule Meet
+              </a>
+            </div>
           }
         />
-        <ContactCard 
+        <ContactCard
           index={2}
           icon={<Mail className="w-8 h-8" />}
           title="Email Support"
           content={
-            <p>
-              Inquiries & Admissions<br />
-              <span className="text-navy font-bold">hod_csm@kits.edu.in</span>
-            </p>
+            <div>
+              <p className="text-sm leading-relaxed mb-3">
+                Inquiries & Admissions<br />
+                <span className="text-navy font-bold">hod_csm@kits.edu.in</span>
+              </p>
+              <button
+                onClick={() => window.open('mailto:hod_csm@kits.edu.in')}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-navy text-white text-xs font-semibold rounded-lg hover:bg-gold hover:text-navy transition-all duration-300"
+              >
+                <Mail className="w-3 h-3" />
+                Send Email
+              </button>
+            </div>
           }
         />
       </div>
 
       {/* Contact Form and Map */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start" id="contact-form">
         {/* Form Side */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          className="bg-navy p-10 md:p-14 rounded-[3rem] shadow-2xl shadow-navy/30 relative overflow-hidden"
+          className="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-gray-200"
         >
-          {/* Abstract background shapes */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gold/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-          
-          <div className="relative z-10">
+          <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
-               <span className="text-gold font-bold tracking-[0.3em] text-[10px] uppercase">Contact Us</span>
-               <div className="w-10 h-0.5 bg-gold/30"></div>
+               <span className="text-gold font-bold tracking-[0.3em] text-xs uppercase">Get in Touch</span>
+               <div className="w-8 h-0.5 bg-gold/30"></div>
             </div>
-            <h3 className="text-3xl font-space-grotesk font-bold text-white mb-10">Send a Query</h3>
-            
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <h3 className="text-2xl md:text-3xl font-space-grotesk font-bold text-navy mb-2">Send us a Message</h3>
+            <p className="text-gray-600">We'll get back to you within 24 hours</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-white/50 uppercase tracking-widest ml-4">Full Name</label>
+                  <label className="text-xs font-semibold text-navy uppercase tracking-wide">Full Name</label>
                   <input
                     type="text"
                     id="name"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-gold transition-all"
-                    placeholder="John Doe"
+                    className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-navy placeholder:text-gray-400 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all"
+                    placeholder="Enter your full name"
                     value={formData.name}
                     onChange={handleChange}
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-white/50 uppercase tracking-widest ml-4">Email Address</label>
+                  <label className="text-xs font-semibold text-navy uppercase tracking-wide">Email Address</label>
                   <input
                     type="email"
                     id="email"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-gold transition-all"
-                    placeholder="john@example.com"
+                    className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-navy placeholder:text-gray-400 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all"
+                    placeholder="your.email@example.com"
                     value={formData.email}
                     onChange={handleChange}
                     required
@@ -170,61 +198,73 @@ export default function ContactInfo() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold text-white/50 uppercase tracking-widest ml-4">Query Category</label>
+                <label className="text-xs font-semibold text-navy uppercase tracking-wide">Query Category</label>
                 <select
                   id="category"
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white/70 focus:outline-none focus:border-gold transition-all appearance-none"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-navy focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all"
                   value={formData.category}
                   onChange={handleChange}
                   required
                 >
-                  <option value="" disabled className="bg-navy">Select a category</option>
-                  <option value="general" className="bg-navy">General Inquiry</option>
-                  <option value="alumni" className="bg-navy">Alumni Registration</option>
-                  <option value="event" className="bg-navy">Event Proposal</option>
-                  <option value="mentorship" className="bg-navy">Mentorship Program</option>
+                  <option value="" disabled>Select a category</option>
+                  <option value="general">General Inquiry</option>
+                  <option value="alumni">Alumni Registration</option>
+                  <option value="event">Event Proposal</option>
+                  <option value="mentorship">Mentorship Program</option>
+                  <option value="technical">Technical Support</option>
                 </select>
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-bold text-white/50 uppercase tracking-widest ml-4">Your Message</label>
+                <label className="text-xs font-semibold text-navy uppercase tracking-wide">Your Message</label>
                 <textarea
                   id="message"
                   rows={5}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-gold transition-all resize-none"
-                  placeholder="How can we help you?"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-navy placeholder:text-gray-400 focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all resize-none"
+                  placeholder="Tell us how we can help you..."
                   value={formData.message}
                   onChange={handleChange}
                   required
                 ></textarea>
               </div>
 
-              <button
+              <motion.button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gold text-navy font-bold py-5 rounded-2xl hover:bg-gold-light transition-all shadow-xl shadow-gold/10 flex items-center justify-center gap-3 disabled:opacity-50 group"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full bg-navy text-white font-bold py-4 rounded-xl hover:bg-gold hover:text-navy transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 shadow-lg hover:shadow-xl"
               >
-                {isSubmitting ? "Processing..." : "Submit Message"}
-                <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </form>
-          </div>
+                {isSubmitting ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <Send className="w-5 h-5" />
+                  </>
+                )}
+              </motion.button>
+          </form>
         </motion.div>
 
         {/* Map Side */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           className="h-full flex flex-col"
         >
-          <div className="flex items-center gap-3 mb-4">
-             <span className="text-gold font-bold tracking-[0.3em] text-[10px] uppercase">Location</span>
-             <div className="w-10 h-0.5 bg-gold/30"></div>
+          <div className="flex items-center gap-3 mb-6">
+             <span className="text-gold font-bold tracking-[0.3em] text-xs uppercase">Location</span>
+             <div className="w-8 h-0.5 bg-gold/30"></div>
           </div>
-          <h3 className="text-3xl font-space-grotesk font-bold text-navy mb-10">Find our Campus</h3>
-          
-          <div className="flex-1 min-h-[400px] rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white shadow-navy/10 relative group">
+          <h3 className="text-2xl md:text-3xl font-space-grotesk font-bold text-navy mb-6">Visit Our Campus</h3>
+          <p className="text-gray-600 mb-8 text-sm">Located in the heart of Guntur, Andhra Pradesh</p>
+
+          <div className="flex-1 min-h-[400px] rounded-2xl overflow-hidden shadow-xl border border-gray-200 relative group">
              <iframe
                 src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d957.6140388892469!2d80.42868853498763!3d16.248375264983594!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a4a74eab6bb902d%3A0x256a70b621cbfbf0!2sKKR%20AND%20KSR%20Institute%20Of%20Technology%20And%20Sciences!5e0!3m2!1sen!2sin!4v1744625377772!5m2!1sen!2sin"
                 width="100%"
@@ -233,14 +273,26 @@ export default function ContactInfo() {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                className="grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700"
+                className="transition-all duration-500"
+                title="KITS Campus Location"
               ></iframe>
-              <div className="absolute bottom-6 left-6 right-6">
-                 <div className="bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-white/20 shadow-lg flex items-center gap-3">
-                    <div className="w-10 h-10 bg-navy rounded-xl flex items-center justify-center">
-                       <Info className="text-gold w-5 h-5" />
+              <div className="absolute bottom-4 left-4 right-4">
+                 <div className="bg-white/95 backdrop-blur-md p-4 rounded-xl border border-gray-200 shadow-lg">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-8 h-8 bg-navy rounded-lg flex items-center justify-center">
+                         <MapPin className="text-gold w-4 h-4" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-navy">KKR & KSR Institute</p>
+                        <p className="text-xs text-gray-600">Vinjanampadu, Guntur</p>
+                      </div>
                     </div>
-                    <p className="text-[11px] font-bold text-navy uppercase tracking-tight">Main Campus Entrance, Vinjanampadu</p>
+                    <button
+                      onClick={() => window.open('https://maps.google.com/?q=KKR & KSR Institute of Technology and Sciences, Vinjanampadu, Guntur', '_blank')}
+                      className="w-full px-4 py-2 bg-navy text-white text-xs font-semibold rounded-lg hover:bg-gold hover:text-navy transition-all duration-300"
+                    >
+                      Get Directions
+                    </button>
                  </div>
               </div>
           </div>

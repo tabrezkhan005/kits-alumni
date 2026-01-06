@@ -1,148 +1,267 @@
 "use client";
 
-import Image from 'next/image';
+import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Button } from "@/components/ui/button";
-import { 
-    Settings, 
-    Network, 
-    BookOpen, 
-    Briefcase, 
-    Handshake, 
-    GraduationCap,
-    CheckCircle2,
-    Target,
-    Zap
+import {
+    Brain,
+    Cpu,
+    Network,
+    BookOpen,
+    Sparkles,
+    ArrowRight,
+    Award,
+    CheckCircle2
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const AboutSection = () => {
-    return (
-        <section className="py-24 bg-white relative overflow-hidden">
-            {/* Background elements */}
-            <div className="absolute top-0 right-0 w-1/3 h-full bg-navy/5 -skew-x-12 translate-x-1/2 -z-10"></div>
-            <div className="absolute bottom-10 left-10 w-64 h-64 bg-gold/5 rounded-full blur-3xl -z-10"></div>
+    const features = [
+        {
+            icon: Brain,
+            title: "AI & Machine Learning",
+            description: "Cutting-edge research in artificial intelligence and advanced machine learning algorithms.",
+            stats: "15+ Research Papers"
+        },
+        {
+            icon: Cpu,
+            title: "Edge Computing",
+            description: "Developing intelligent systems for resource-constrained environments and IoT applications.",
+            stats: "8 Active Projects"
+        },
+        {
+            icon: Network,
+            title: "Neural Networks",
+            description: "Deep learning architectures and cognitive computing systems for complex problem-solving.",
+            stats: "12 Model Architectures"
+        },
+        {
+            icon: BookOpen,
+            title: "Industry Curriculum",
+            description: "Continuously updated syllabus aligned with current industry standards and emerging technologies.",
+            stats: "25+ Industry Partners"
+        }
+    ];
 
-            <div className="container mx-auto px-6">
-                <div className="flex flex-col lg:flex-row gap-16 items-center">
-                    {/* Image Column */}
-                    <motion.div 
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+    const values = [
+        "Academic Excellence",
+        "Industry Integration",
+        "Research Innovation",
+        "Student Success"
+    ];
+
+    return (
+        <section className="py-24 md:py-32 bg-white relative overflow-hidden">
+            {/* Subtle Background Pattern */}
+            <div className="absolute inset-0 opacity-[0.015]">
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)] bg-[size:48px_48px]" />
+            </div>
+
+            <div className="container mx-auto px-6 relative z-10">
+                {/* Header Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                    className="text-center mb-16 md:mb-20 max-w-4xl mx-auto"
+                >
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
-                        className="lg:w-1/2 relative"
+                        transition={{ delay: 0.1, duration: 0.5 }}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-full mb-6"
                     >
-                        <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl shadow-navy/20 border-8 border-white group">
-                            <Image
-                                src="https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1000&auto=format&fit=crop"
-                                alt="KITS Campus"
-                                width={800}
-                                height={600}
-                                className="object-cover h-[500px] group-hover:scale-105 transition-transform duration-700"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent opacity-60"></div>
-                            
-                            <div className="absolute bottom-10 left-10 right-10">
-                                <div className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-gold rounded-xl flex items-center justify-center shadow-lg">
-                                            <Target className="text-navy w-6 h-6" />
+                        <Sparkles className="w-4 h-4 text-gold" />
+                        <span className="text-navy font-medium text-sm">About KITS CSM</span>
+                    </motion.div>
+
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-space-grotesk font-bold text-navy mb-6 leading-tight">
+                        Pioneering{" "}
+                        <span className="text-gold">Innovation</span>{" "}
+                        in AI Education
+                    </h2>
+
+                    <p className="text-lg md:text-xl text-gray-600 leading-relaxed mb-8">
+                        The Department of Computer Science & Machine Learning at KKR Institute stands at the forefront of technological education,
+                        combining academic excellence with industry-integrated learning to prepare the next generation of AI innovators.
+                    </p>
+
+                    {/* Accreditation Badge */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3, duration: 0.5 }}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-navy/5 rounded-lg border border-navy/10"
+                    >
+                        <Award className="w-4 h-4 text-navy" />
+                        <span className="text-navy font-medium text-sm">AICTE Accredited | NAAC A+ Grade</span>
+                    </motion.div>
+                </motion.div>
+
+                {/* Main Content Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 mb-20">
+                    {/* Left: Feature Cards */}
+                    <div className="space-y-4">
+                        {features.map((feature, index) => {
+                            const IconComponent = feature.icon;
+
+                            return (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                                    className="group p-6 rounded-2xl bg-white border border-gray-200 hover:border-gold/50 hover:shadow-lg transition-all duration-300"
+                                >
+                                    <div className="flex items-start gap-4">
+                                        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-navy/5 flex items-center justify-center group-hover:bg-gold/10 transition-colors duration-300">
+                                            <IconComponent className="w-6 h-6 text-navy group-hover:text-gold transition-colors duration-300" />
                                         </div>
-                                        <div>
-                                            <p className="text-white font-bold text-lg">Excellence Driven</p>
-                                            <p className="text-white/70 text-sm">Shaping tomorrow's engineers today.</p>
+
+                                        <div className="flex-1 min-w-0">
+                                            <h3 className="text-lg font-bold text-navy mb-2">
+                                                {feature.title}
+                                            </h3>
+                                            <p className="text-gray-600 leading-relaxed mb-3 text-sm">
+                                                {feature.description}
+                                            </p>
+                                            <div className="inline-block px-3 py-1 bg-gray-50 rounded-lg text-xs font-medium text-gray-700">
+                                                {feature.stats}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Right: Values & Stats */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="space-y-8"
+                    >
+                        {/* Core Values */}
+                        <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 border border-gray-200">
+                            <h3 className="text-xl font-bold text-navy mb-6 font-space-grotesk">
+                                Our Core Values
+                            </h3>
+                            <div className="space-y-4">
+                                {values.map((value, index) => (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, x: 20 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: index * 0.1, duration: 0.4 }}
+                                        className="flex items-center gap-3"
+                                    >
+                                        <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0" />
+                                        <span className="text-gray-700 font-medium">{value}</span>
+                                    </motion.div>
+                                ))}
                             </div>
                         </div>
 
-                        {/* Floating elements */}
-                        <motion.div 
-                            animate={{ y: [0, -20, 0] }}
-                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                            className="absolute -top-10 -right-10 bg-white p-6 rounded-3xl shadow-xl border border-gray-100 hidden md:block"
-                        >
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-navy/10 rounded-full flex items-center justify-center">
-                                    <CheckCircle2 className="text-navy w-5 h-5" />
-                                </div>
-                                <p className="text-navy font-bold">AICTE Approved</p>
-                            </div>
-                        </motion.div>
+                        {/* Key Statistics */}
+                        <div className="grid grid-cols-2 gap-4">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.2, duration: 0.5 }}
+                                className="bg-white rounded-xl p-6 border border-gray-200 text-center"
+                            >
+                                <div className="text-3xl font-bold text-navy mb-1 font-space-grotesk">500+</div>
+                                <div className="text-xs text-gray-600 font-medium">Students</div>
+                            </motion.div>
+
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.3, duration: 0.5 }}
+                                className="bg-white rounded-xl p-6 border border-gray-200 text-center"
+                            >
+                                <div className="text-3xl font-bold text-gold mb-1 font-space-grotesk">98%</div>
+                                <div className="text-xs text-gray-600 font-medium">Placement Rate</div>
+                            </motion.div>
+
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.4, duration: 0.5 }}
+                                className="bg-white rounded-xl p-6 border border-gray-200 text-center"
+                            >
+                                <div className="text-3xl font-bold text-navy mb-1 font-space-grotesk">50+</div>
+                                <div className="text-xs text-gray-600 font-medium">Expert Faculty</div>
+                            </motion.div>
+
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.5, duration: 0.5 }}
+                                className="bg-white rounded-xl p-6 border border-gray-200 text-center"
+                            >
+                                <div className="text-3xl font-bold text-gold mb-1 font-space-grotesk">120+</div>
+                                <div className="text-xs text-gray-600 font-medium">Research Projects</div>
+                            </motion.div>
+                        </div>
                     </motion.div>
-
-                    {/* Content Column */}
-                    <div className="lg:w-1/2">
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            <span className="text-gold font-bold tracking-[0.3em] text-[10px] uppercase mb-4 block">Our Legacy</span>
-                            <h2 className="text-4xl md:text-5xl font-space-grotesk font-bold text-navy mb-8 leading-tight">
-                                Pioneering the Future of <span className="text-gold">Tech Education</span>
-                            </h2>
-                            <p className="text-gray-600 text-lg mb-10 leading-relaxed font-medium">
-                                The KKR Institute of Technology and Sciences Department of Computer Science & Machine Learning (CSM) stands at the forefront of technical education. We combine academic rigor with industry-integrated learning to empower our students for the global stage.
-                            </p>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-10 mb-12">
-                                <FeatureItem 
-                                    icon={<Zap className="w-5 h-5" />} 
-                                    title="Innovation Lab"
-                                    desc="State-of-the-art facilities for research."
-                                />
-                                <FeatureItem 
-                                    icon={<Network className="w-5 h-5" />} 
-                                    title="Global Network"
-                                    desc="Alumni working in Fortune 500s."
-                                />
-                                <FeatureItem 
-                                    icon={<BookOpen className="w-5 h-5" />} 
-                                    title="Modern Curriculum"
-                                    desc="Always updated with industry trends."
-                                />
-                                <FeatureItem 
-                                    icon={<GraduationCap className="w-5 h-5" />} 
-                                    title="Career Success"
-                                    desc="Dedicated placement and mentoring."
-                                />
-                            </div>
-
-                            <div className="flex flex-wrap gap-4">
-                                <Link href="/register">
-                                    <Button className="px-10 py-6 bg-navy text-white rounded-full hover:bg-navy-dark transition-all shadow-xl shadow-navy/20 font-bold text-sm uppercase tracking-widest">
-                                        Join Our Community
-                                    </Button>
-                                </Link>
-                                <Link href="/contact">
-                                    <Button variant="outline" className="px-10 py-6 border-2 border-navy text-navy rounded-full hover:bg-navy hover:text-white transition-all font-bold text-sm uppercase tracking-widest">
-                                        Contact Us
-                                    </Button>
-                                </Link>
-                            </div>
-                        </motion.div>
-                    </div>
                 </div>
+
+                {/* Bottom CTA Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.4, duration: 0.6 }}
+                    className="text-center max-w-3xl mx-auto"
+                >
+                    <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 md:p-12 border border-gray-200">
+                        <h3 className="text-2xl md:text-3xl font-bold text-navy mb-4 font-space-grotesk">
+                            Ready to Join Our Community?
+                        </h3>
+                        <p className="text-gray-600 mb-8 leading-relaxed">
+                            Take the next step in your journey towards becoming a leader in AI and machine learning.
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                            <motion.div
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                            >
+                                <Link href="/register">
+                                    <button className="group px-8 py-4 bg-navy text-white font-semibold rounded-xl hover:bg-navy-dark transition-all duration-300 flex items-center gap-2 shadow-sm hover:shadow-md">
+                                        <span>Join Our Community</span>
+                                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                    </button>
+                                </Link>
+                            </motion.div>
+
+                            <motion.div
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                            >
+                                <Link href="/contact">
+                                    <button className="px-8 py-4 bg-white border-2 border-gray-200 text-navy font-semibold rounded-xl hover:border-gold hover:text-gold transition-all duration-300 shadow-sm hover:shadow-md">
+                                        Learn More About Us
+                                    </button>
+                                </Link>
+                            </motion.div>
+                        </div>
+                    </div>
+                </motion.div>
             </div>
         </section>
     );
 };
-
-const FeatureItem = ({ icon, title, desc }: { icon: React.ReactNode, title: string, desc: string }) => (
-    <div className="flex items-start gap-4 group">
-        <div className="w-12 h-12 bg-navy/5 text-navy rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-gold group-hover:text-navy transition-all duration-300">
-            {icon}
-        </div>
-        <div>
-            <h4 className="text-navy font-bold text-lg mb-1">{title}</h4>
-            <p className="text-gray-500 text-sm">{desc}</p>
-        </div>
-    </div>
-);
 
 export default AboutSection;

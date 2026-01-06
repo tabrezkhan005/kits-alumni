@@ -83,22 +83,24 @@ const FacultyMembers = () => {
       transition={{ delay: index * 0.1, duration: 0.5 }}
       className="group bg-white rounded-[2rem] overflow-hidden border border-gray-100 hover:border-gold/30 hover:shadow-2xl hover:shadow-navy/10 transition-all duration-500"
     >
-      <div className="relative h-72 overflow-hidden bg-gray-50">
-        <Image
-          src={faculty.image}
-          alt={faculty.name}
-          fill
-          className="object-cover object-top group-hover:scale-110 transition-transform duration-700"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-           <div className="absolute bottom-6 left-6 right-6 flex justify-center gap-4">
-              <button className="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-gold transition-colors">
-                <Mail className="w-4 h-4 text-white" />
-              </button>
-              <button className="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-gold transition-colors">
-                <Linkedin className="w-4 h-4 text-white" />
-              </button>
-           </div>
+      <div className="relative h-72 flex items-center justify-center p-8 bg-gray-50">
+        <div className="relative w-56 h-56 rounded-full overflow-hidden border-4 border-white shadow-lg group-hover:border-gold/50 transition-all duration-300">
+          <Image
+            src={faculty.image}
+            alt={faculty.name}
+            fill
+            className="object-cover object-top group-hover:scale-110 transition-transform duration-700"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full">
+             <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-4">
+                <button className="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-gold transition-colors">
+                  <Mail className="w-4 h-4 text-white" />
+                </button>
+                <button className="w-10 h-10 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-gold transition-colors">
+                  <Linkedin className="w-4 h-4 text-white" />
+                </button>
+             </div>
+          </div>
         </div>
       </div>
       <div className="p-8 text-center">

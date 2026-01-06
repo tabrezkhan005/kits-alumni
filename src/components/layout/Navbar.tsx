@@ -23,12 +23,31 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
     const pathname = usePathname();
 
     useEffect(() => {
+        let lastScrollY = window.scrollY;
+
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
+            const currentScrollY = window.scrollY;
+            const scrollingDown = currentScrollY > lastScrollY;
+            const scrollDifference = Math.abs(currentScrollY - lastScrollY);
+
+            // Hide navbar when scrolling down, show when scrolling up (after minimum scroll)
+            if (scrollDifference > 5) {
+                if (scrollingDown && currentScrollY > 80) {
+                    setIsVisible(false);
+                } else if (!scrollingDown) {
+                    setIsVisible(true);
+                }
+            }
+
+            setIsScrolled(currentScrollY > 50);
+            lastScrollY = currentScrollY;
         };
+
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
@@ -37,6 +56,7 @@ const Navbar = () => {
         { name: "Home", href: "/" },
         { name: "About", href: "/about" },
         { name: "Faculty", href: "/faculty" },
+        { name: "Schedule", href: "/schedule" },
         { name: "Events", href: "/events" },
         { name: "Achievements", href: "/achievements" },
         { name: "Blog", href: "/blog" },
@@ -46,12 +66,15 @@ const Navbar = () => {
 
     return (
         <div className="w-full relative">
-            <motion.div 
+            <motion.div
                 initial={{ y: -100 }}
-                animate={{ y: 0 }}
+                animate={{
+                    y: isVisible ? 0 : -100,
+                    transition: { duration: 0.3, ease: "easeInOut" }
+                }}
                 className={cn(
                     "w-full fixed z-40 transition-all duration-500",
-                    isScrolled ? "top-0 shadow-xl" : "top-10"
+                    isScrolled ? "top-0 shadow-xl" : "top-[40px]"
                 )}
             >
                 <div className={cn(
@@ -75,31 +98,24 @@ const Navbar = () => {
                                         className="rounded-lg transition-all duration-300 shadow-sm group-hover:shadow-md"
                                     />
                                 </motion.div>
-                                <div className="ml-3 hidden sm:block">
-                                    <h1 className={cn(
-                                        "font-space-grotesk font-bold leading-none transition-all duration-300",
-                                        isScrolled ? "text-lg text-navy" : "text-xl text-navy"
-                                    )}>KITS CSM</h1>
-                                    <p className="text-[10px] text-gold font-bold tracking-widest uppercase">Department</p>
-                                </div>
                             </Link>
 
                             {/* Desktop Navigation */}
                             <div className="hidden lg:flex items-center space-x-1">
                                 {navLinks.map((link) => (
-                                    <Link 
+                                    <Link
                                         key={link.name}
-                                        href={link.href} 
+                                        href={link.href}
                                         className={cn(
                                             "relative px-4 py-2 text-[14px] font-bold tracking-wide transition-all duration-300 rounded-full",
-                                            pathname === link.href 
-                                                ? "text-navy bg-navy/5" 
+                                            pathname === link.href
+                                                ? "text-navy bg-navy/5"
                                                 : "text-gray-600 hover:text-navy hover:bg-navy/5"
                                         )}
                                     >
                                         {link.name}
                                         {pathname === link.href && (
-                                            <motion.span 
+                                            <motion.span
                                                 layoutId="nav-underline"
                                                 className="absolute bottom-1 left-4 right-4 h-0.5 bg-gold-primary rounded-full"
                                             />
@@ -110,20 +126,20 @@ const Navbar = () => {
 
                             {/* Portal Access Button */}
                             <div className="hidden lg:flex items-center">
-                                <Link href="/login">
+                                <Link href="/schedule">
                                     <motion.button
                                         whileHover="hover"
                                         whileTap="tap"
                                         initial="initial"
                                         variants={{
-                                            initial: { 
-                                                boxShadow: "0 0 20px rgba(0,31,63,0.1)"
+                                            initial: {
+                                                boxShadow: "0 0 20px rgba(0,0,0,0.1)"
                                             },
                                             hover: {
                                                 boxShadow: [
-                                                    "0 0 20px rgba(0,31,63,0.1)",
-                                                    "0 0 40px rgba(212,175,55,0.4)",
-                                                    "0 0 20px rgba(0,31,63,0.1)"
+                                                    "0 0 20px rgba(0,0,0,0.1)",
+                                                    "0 0 40px rgba(212,175,55,0.3)",
+                                                    "0 0 20px rgba(0,0,0,0.1)"
                                                 ],
                                                 transition: {
                                                     boxShadow: {
@@ -134,7 +150,7 @@ const Navbar = () => {
                                                 }
                                             }
                                         }}
-                                        className="relative group px-6 py-2.5 bg-navy text-white rounded-full overflow-hidden transition-all duration-500 text-sm font-bold flex items-center gap-3 border border-white/10"
+                                        className="relative group px-6 py-2.5 bg-white text-navy rounded-full overflow-hidden transition-all duration-500 text-sm font-bold flex items-center gap-3 border border-navy/20"
                                     >
                                         {/* Shimmer Effect */}
                                         <motion.div
@@ -147,11 +163,11 @@ const Navbar = () => {
                                         />
 
                                         {/* Background Glow */}
-                                        <div className="absolute inset-0 bg-navy group-hover:bg-navy-dark transition-colors duration-300" />
-                                        
-                                        <span className="relative z-20">Portal Access</span>
-                                        
-                                        <motion.div 
+                                        <div className="absolute inset-0 bg-white group-hover:bg-gray-50 transition-colors duration-300 z-10" />
+
+                                        <span className="relative z-20">Schedule a Meet</span>
+
+                                        <motion.div
                                             variants={{
                                                 initial: { x: 0 },
                                                 hover: { x: 3 }
@@ -171,7 +187,7 @@ const Navbar = () => {
                             <div className="lg:hidden flex items-center">
                                 <Sheet>
                                     <SheetTrigger asChild>
-                                        <Button variant="ghost" size="icon" className="text-navy hover:bg-navy/5">
+                                        <Button variant="ghost" size="icon" className="text-navy hover:bg-navy/5 h-12 w-12">
                                             <Menu className="h-6 w-6" />
                                         </Button>
                                     </SheetTrigger>
@@ -184,15 +200,15 @@ const Navbar = () => {
                                                     <p className="text-[10px] text-gold font-bold tracking-widest uppercase">Navigation</p>
                                                 </div>
                                             </div>
-                                            <div className="flex flex-col space-y-1">
+                                            <div className="flex flex-col space-y-2">
                                                 {navLinks.map((link) => (
-                                                    <Link 
+                                                    <Link
                                                         key={link.name}
-                                                        href={link.href} 
+                                                        href={link.href}
                                                         className={cn(
-                                                            "px-4 py-4 text-lg font-bold transition-all duration-300 flex items-center justify-between rounded-xl",
-                                                            pathname === link.href 
-                                                                ? "text-navy bg-navy/5 translate-x-2" 
+                                                            "px-6 py-5 text-lg font-bold transition-all duration-300 flex items-center justify-between rounded-xl min-h-[60px]",
+                                                            pathname === link.href
+                                                                ? "text-navy bg-navy/5 translate-x-2"
                                                                 : "text-gray-600 hover:text-navy hover:bg-navy/5 hover:translate-x-2"
                                                         )}
                                                     >
@@ -202,9 +218,9 @@ const Navbar = () => {
                                                 ))}
                                             </div>
                                             <div className="mt-auto px-4 pb-10">
-                                                <Link href="/login" className="w-full relative group flex items-center justify-center gap-3 bg-navy text-white py-4 rounded-2xl font-bold shadow-xl shadow-navy/20 overflow-hidden border border-white/10">
+                                                <Link href="/schedule" className="w-full relative group flex items-center justify-center gap-3 bg-white text-navy py-5 rounded-2xl font-bold shadow-xl shadow-navy/20 overflow-hidden border border-navy/20 min-h-[60px]">
                                                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                                                    <span className="relative z-10">Student Login</span>
+                                                    <span className="relative z-10">Schedule a Meet</span>
                                                     <ChevronRight className="w-5 h-5 relative z-10 transition-transform group-hover:translate-x-1" />
                                                 </Link>
                                             </div>
@@ -219,7 +235,7 @@ const Navbar = () => {
 
             {/* Spacer */}
             <div className="w-full transition-all duration-500" style={{
-                height: isScrolled ? '40px' : '106px'
+                height: isScrolled ? '60px' : '100px'
             }}></div>
         </div>
     );

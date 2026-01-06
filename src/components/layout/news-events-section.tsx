@@ -38,7 +38,7 @@ export function NewsEventsSection() {
     <section className="py-32 bg-gray-50/50 relative overflow-hidden">
       {/* Background patterns */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-navy/5 rounded-full blur-[120px] translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
-      
+
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
           <div className="max-w-2xl">
@@ -51,25 +51,29 @@ export function NewsEventsSection() {
                <div className="w-10 h-1 bg-gold rounded-full" />
                <span className="text-gold font-bold uppercase tracking-[0.3em] text-[10px]">Stay Updated</span>
             </motion.div>
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-4xl md:text-5xl font-bold text-navy font-space-grotesk tracking-tight leading-tight"
+              className="text-3xl md:text-4xl lg:text-5xl font-bold text-navy font-space-grotesk tracking-tight leading-tight"
             >
               What's Happening at <span className="text-transparent bg-clip-text bg-gradient-to-r from-navy to-navy-light">KITS CSM</span>
             </motion.h2>
           </div>
-          
+
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
           >
             <Link href="/events">
-              <button className="group flex items-center gap-3 px-8 py-4 bg-white border border-gray-200 text-navy font-bold rounded-full hover:bg-navy hover:text-white transition-all shadow-xl shadow-navy/5">
-                VIEW ALL EVENTS
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <button className="group relative overflow-hidden flex items-center gap-3 px-10 py-5 bg-navy border border-navy/20 text-white font-bold rounded-full hover:bg-navy-dark hover:text-white transition-all duration-500 shadow-2xl shadow-navy/20 hover:shadow-[0_0_40px_rgba(44,62,124,0.4)] hover:scale-[1.05] active:scale-[0.98]">
+                <span className="relative z-10 flex items-center gap-3">
+                  VIEW ALL EVENTS
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                <div className="absolute inset-0 rounded-full border border-white/0 group-hover:border-white/30 transition-all duration-500" />
               </button>
             </Link>
           </motion.div>
@@ -85,12 +89,14 @@ export function NewsEventsSection() {
               transition={{ delay: index * 0.1, duration: 0.6 }}
               className="group bg-white rounded-[2.5rem] overflow-hidden border border-gray-100 shadow-xl shadow-navy/5 hover:shadow-2xl hover:shadow-navy/15 hover:border-gold/30 transition-all duration-500"
             >
-              <div className="relative h-64 overflow-hidden">
+              <div className="relative h-48 md:h-64 overflow-hidden">
                 <Image
                   src={item.image}
                   alt={item.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  loading="lazy"
                 />
                 <div className="absolute top-6 right-6">
                    <span className="px-4 py-1.5 bg-white/90 backdrop-blur-md rounded-xl text-[10px] font-bold text-navy shadow-lg border border-white/20 uppercase tracking-widest">

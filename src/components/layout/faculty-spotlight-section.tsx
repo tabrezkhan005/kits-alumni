@@ -9,27 +9,24 @@ import { ChevronLeft, ChevronRight, User, Star, ArrowRight } from 'lucide-react'
 const featuredFaculty = [
   {
     id: 1,
-    name: "Dr. Radhakrishna",
-    designation: "Head of Computer Science",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop",
-    profile: "/faculty/radhakrishna",
-    expertise: "Neural Networks & Deep Learning"
+    name: "Dr. S Nagendram",
+    designation: "Associate Professor",
+    image: "/img/nagendrammam.jpg",
+    profile: "/faculty/nagendram"
   },
   {
     id: 2,
-    name: "Dr. Nagendra Prasad",
-    designation: "Principal",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop",
-    profile: "/faculty/nagendra-prasad",
-    expertise: "Advanced Algorithms"
+    name: "Dr. S. Radhakrishnan",
+    designation: "Professor",
+    image: "/img/radhakrshnasir.jpg",
+    profile: "/faculty/radhakrishnan"
   },
   {
     id: 3,
-    name: "Dr. Srinivas",
-    designation: "Professor of Engineering",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop",
-    profile: "/faculty/srinivas",
-    expertise: "Computer Vision"
+    name: "Dr. D Harikrishna",
+    designation: "Associate Professor",
+    image: "/img/harii.jpg",
+    profile: "/faculty/harikrishna"
   }
 ];
 
@@ -57,7 +54,7 @@ export function FacultySpotlightSection() {
               Faculty <span className="text-gold">Spotlight</span>
             </h2>
           </div>
-          
+
           <div className="flex gap-4">
              <button onClick={prev} className="w-14 h-14 rounded-full border border-gray-200 flex items-center justify-center hover:bg-navy hover:text-white transition-all">
                 <ChevronLeft className="w-6 h-6" />
@@ -79,29 +76,20 @@ export function FacultySpotlightSection() {
               className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
             >
               <div className="relative aspect-square md:aspect-video lg:aspect-square rounded-[3rem] overflow-hidden">
-                 <Image 
+                 <Image
                    src={featuredFaculty[currentIndex].image}
                    alt={featuredFaculty[currentIndex].name}
                    fill
+                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                    className="object-cover"
+                   loading="lazy"
                  />
-                 <div className="absolute top-8 left-8">
-                    <div className="bg-white/90 backdrop-blur-xl p-4 rounded-3xl shadow-xl flex items-center gap-3 border border-white/20">
-                       <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center">
-                          <Star className="w-5 h-5 text-navy" />
-                       </div>
-                       <div>
-                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Expertise</p>
-                          <p className="text-sm font-bold text-navy leading-none">{featuredFaculty[currentIndex].expertise}</p>
-                       </div>
-                    </div>
-                 </div>
               </div>
 
               <div>
-                 <h3 className="text-4xl md:text-5xl font-space-grotesk font-bold text-navy mb-4">{featuredFaculty[currentIndex].name}</h3>
+                 <h3 className="text-3xl md:text-4xl lg:text-5xl font-space-grotesk font-bold text-navy mb-4">{featuredFaculty[currentIndex].name}</h3>
                  <p className="text-xl text-gold font-bold mb-10">{featuredFaculty[currentIndex].designation}</p>
-                 
+
                  <p className="text-gray-500 text-lg leading-relaxed mb-12">
                    Leading research and innovation in Computer Science and Machine Learning. Dedicated to mentoring the next generation of technology leaders at KITS.
                  </p>
@@ -113,7 +101,7 @@ export function FacultySpotlightSection() {
                         <User className="w-4 h-4" />
                       </button>
                     </Link>
-                    
+
                     <Link href="/faculty" className="group flex items-center gap-3 text-navy font-bold text-sm tracking-widest uppercase">
                        Meet All Faculty
                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

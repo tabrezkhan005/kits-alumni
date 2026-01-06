@@ -32,8 +32,7 @@ export default function Home() {
       {/* Section 8: Our Recruiters */}
       <RecruitersSection />
 
-      {/* Section 9: Testimonials Carousel */}
-      <TestimonialsCarouselSection />
+      
 
       {/* Section 10: Final CTA */}
       <FinalCTASection />

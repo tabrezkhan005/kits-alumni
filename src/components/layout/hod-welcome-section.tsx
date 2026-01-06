@@ -10,12 +10,12 @@ export function HodWelcomeSection() {
   return (
     <section className="py-32 bg-white relative overflow-hidden">
       {/* Decorative patterns */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none" 
+      <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none"
            style={{ backgroundImage: 'radial-gradient(#301936 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
-      
+
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-20 max-w-7xl mx-auto">
-          
+
           {/* Left: Professional Portrait with decorative elements */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -26,39 +26,19 @@ export function HodWelcomeSection() {
           >
             <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl shadow-navy/20 aspect-[4/5]">
               <Image
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop"
-                alt="Head of Department"
+                src="/img/hodsir.jpg"
+                alt="Dr. G. Murali - Head of Department"
                 fill
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent"></div>
-              
+
               <div className="absolute bottom-10 left-10 right-10 p-8 bg-white/10 backdrop-blur-xl rounded-[2rem] border border-white/20">
-                 <h4 className="text-white font-space-grotesk font-bold text-xl mb-1">Dr. S. K. Sharma</h4>
+                 <h4 className="text-white font-space-grotesk font-bold text-xl mb-1">Dr. G. Murali</h4>
                  <p className="text-white/70 text-sm font-medium">Head of CSM Department</p>
               </div>
             </div>
 
-            {/* Floating Stats/Accolades */}
-            <motion.div 
-              initial={{ x: 20, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="absolute -right-10 top-20 z-20 bg-gold p-6 rounded-3xl shadow-xl hidden xl:block"
-            >
-               <Award className="w-8 h-8 text-navy mb-2" />
-               <div className="text-navy font-bold text-lg leading-tight">15+ Years<br/><span className="text-navy/60 text-xs font-bold uppercase tracking-widest">Experience</span></div>
-            </motion.div>
-
-            <motion.div 
-              initial={{ x: -20, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="absolute -left-10 bottom-40 z-20 bg-navy p-6 rounded-3xl shadow-xl hidden xl:block"
-            >
-               <Star className="w-8 h-8 text-gold mb-2" />
-               <div className="text-white font-bold text-lg leading-tight">Ph.D.<br/><span className="text-white/60 text-xs font-bold uppercase tracking-widest">IIT Kharagpur</span></div>
-            </motion.div>
           </motion.div>
 
           {/* Right: Message Content */}
@@ -72,7 +52,7 @@ export function HodWelcomeSection() {
                  <div className="w-10 h-1 bg-gold rounded-full" />
                  <span className="text-gold font-bold uppercase tracking-[0.3em] text-[10px]">Leader's Perspective</span>
               </div>
-              
+
               <h2 className="text-4xl md:text-5xl font-bold text-navy font-space-grotesk tracking-tight leading-tight mb-10">
                 Cultivating Excellence in <span className="text-gold">Next-Gen</span> Technology
               </h2>
@@ -95,7 +75,7 @@ export function HodWelcomeSection() {
                     <BookOpen className="w-4 h-4" />
                   </button>
                 </Link>
-                
+
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center">
                      <ArrowRight className="w-5 h-5 text-navy" />

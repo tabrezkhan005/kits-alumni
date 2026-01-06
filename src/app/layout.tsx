@@ -30,8 +30,7 @@ export default function RootLayout({
   const pathname = usePathname();
   const isAdminPage = pathname?.startsWith('/admin');
   const isStudentDashboard = pathname?.startsWith('/student-dashboard');
-  const isForumPage = pathname?.startsWith('/forum');
-  const shouldHideNavbarAndFooter = isAdminPage || isStudentDashboard || isForumPage;
+  const shouldHideNavbarAndFooter = isAdminPage || isStudentDashboard;
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -79,7 +78,7 @@ export default function RootLayout({
           {!shouldHideNavbarAndFooter && <Navbar />}
 
           {/* Main content area with appropriate padding */}
-          <main className={`flex min-h-screen flex-col ${shouldHideNavbarAndFooter ? '' : 'pt-16'}`}>
+          <main className={`flex min-h-screen flex-col`}>
             {children}
           </main>
 

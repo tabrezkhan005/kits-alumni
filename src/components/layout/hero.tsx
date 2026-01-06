@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Entropy } from '@/components/ui/entropy';
@@ -22,6 +22,34 @@ export function Hero({ title, subtitle, variant = 'entropy', className }: HeroPr
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+
+  // Interactive Background State
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = ref.current?.getBoundingClientRect();
+      if (rect) {
+        setMousePosition({
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top
+        });
+      }
+    };
+
+    const sectionElement = ref.current;
+    if (sectionElement) {
+      sectionElement.addEventListener('mousemove', handleMouseMove);
+      sectionElement.addEventListener('mouseenter', () => setIsHovering(true));
+      sectionElement.addEventListener('mouseleave', () => setIsHovering(false));
+      return () => {
+        sectionElement.removeEventListener('mousemove', handleMouseMove);
+        sectionElement.removeEventListener('mouseenter', () => setIsHovering(true));
+        sectionElement.removeEventListener('mouseleave', () => setIsHovering(false));
+      };
+    }
+  }, [ref]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -47,135 +75,211 @@ export function Hero({ title, subtitle, variant = 'entropy', className }: HeroPr
     <section
       ref={ref}
       className={cn(
-        "relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden bg-[#0A0118]",
+        "relative w-full min-h-[75vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden",
+        "bg-gradient-to-br from-[#2A2E5C] via-[#2A2E5C] to-[#1E2235]",
         className
       )}
     >
-      {/* Background Variants */}
-        {variant === 'entropy' && (
-          <div className="absolute inset-0 z-0 opacity-60">
-             <Entropy width={2000} height={1000} />
-             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-navy/20 to-navy" />
-          </div>
-        )}
+      {/* Professional Background Layers */}
+      <div className="absolute inset-0">
+        {/* Subtle Pattern Overlay */}
+        <div className="absolute inset-0 opacity-[0.02] bg-[radial-gradient(circle_at_1px_1px,#ffffff_1px,transparent_0)] bg-[size:32px_32px]" />
 
-        {variant === 'grid' && (
-          <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#D4AF3705_2px,transparent_2px),linear-gradient(to_bottom,#D4AF3705_2px,transparent_2px)] bg-[size:200px_200px]" />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-navy/20 to-navy/80" />
-          </div>
-        )}
+        {/* Primary Interactive Gradient */}
+        <motion.div
+          className="absolute inset-0"
+          animate={{
+            background: isHovering
+              ? `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(212, 167, 46, 0.08) 0%, rgba(42, 46, 92, 0.06) 30%, transparent 60%)`
+              : `radial-gradient(circle at 50% 50%, rgba(212, 167, 46, 0.04) 0%, rgba(42, 46, 92, 0.03) 30%, transparent 60%)`
+          }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+        />
 
-        {variant === 'dots' && (
-          <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-[radial-gradient(#D4AF3715_1px,transparent_1px)] [background-size:32px_32px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]" />
-            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_30%,#D4AF3705_0%,transparent_50%)]" />
-          </div>
-        )}
+        {/* Sophisticated Geometric Elements */}
+        <motion.div
+          className="absolute top-1/5 left-1/6 w-40 h-40 border border-gold/10 rounded-2xl backdrop-blur-sm"
+          animate={{
+            rotate: mousePosition.x * 0.005,
+            scale: 1 + mousePosition.y * 0.00002,
+          }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        />
 
-          {variant === 'forum' && (
-            <div className="absolute inset-0 z-0">
-               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-navy via-navy-light/40 to-navy" />
-               <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
-               <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gold/20 rounded-full blur-[100px] animate-pulse" />
-               <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-navy-light/30 rounded-full blur-[80px]" />
-            </div>
-          )}
+        <motion.div
+          className="absolute bottom-1/4 right-1/5 w-28 h-28 border border-white/5 rounded-full backdrop-blur-sm"
+          animate={{
+            rotate: mousePosition.y * -0.003,
+            scale: 1 + mousePosition.x * 0.00001,
+          }}
+          transition={{ duration: 1, ease: "easeOut" }}
+        />
 
-          {variant === 'excellence' && (
-            <div className="absolute inset-0 z-0">
-               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold/15 via-navy/40 to-navy" />
-               <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20" />
-               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold/10 rounded-full blur-[150px] animate-pulse" />
-               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-navy/90" />
-            </div>
-          )}
+        {/* Professional Light Rays */}
+        <motion.div
+          className="absolute inset-0 opacity-25"
+          style={{
+            background: `linear-gradient(${mousePosition.x * 0.02}deg, transparent 0%, rgba(212, 167, 46, 0.04) 40%, rgba(42, 46, 92, 0.02) 60%, transparent 100%)`
+          }}
+        />
 
-          {variant === 'geometric' && (
-          <div className="absolute inset-0 z-0">
-             <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-gold/15 rounded-full blur-[120px] animate-pulse" />
-             <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-navy-light/40 rounded-full blur-[120px]" />
-             <div className="absolute top-[20%] right-[10%] w-[20%] h-[20%] bg-white/5 rotate-45 border border-white/10 backdrop-blur-3xl" />
-             <div className="absolute bottom-[20%] left-[15%] w-[15%] h-[15%] rounded-full border border-white/5 backdrop-blur-2xl" />
-             <div className="absolute top-1/2 right-1/4 w-32 h-32 border border-gold/10 rotate-12" />
-          </div>
-        )}
-
-        {/* Decorative Floating Elements */}
-        <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
-           <motion.div 
-             animate={{ 
-               y: [0, -20, 0],
-               opacity: [0.2, 0.5, 0.2]
-             }}
-             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-             className="absolute top-1/4 right-[10%] w-2 h-2 bg-gold rounded-full blur-sm"
-           />
-           <motion.div 
-             animate={{ 
-               y: [0, 20, 0],
-               opacity: [0.1, 0.3, 0.1]
-             }}
-             transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-             className="absolute bottom-1/3 left-[15%] w-3 h-3 bg-white rounded-full blur-sm"
-           />
-        </div>
-
-      {/* Decorative Blobs */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full z-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gold/5 rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-navy-light/10 rounded-full blur-[120px]" />
+        {/* Subtle Accent Lines */}
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       </div>
 
-      {/* Content */}
+      {/* Professional Content Layer */}
       <motion.div
         style={{ y: y1, opacity }}
-        className="container relative z-20 px-6 pt-20"
+        className="container relative z-20 px-6 py-12 md:py-16"
         initial="hidden"
         animate={inView ? "visible" : "hidden"}
         variants={containerVariants}
       >
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div variants={itemVariants} className="inline-block mb-6">
-             <span className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-gold uppercase tracking-[0.3em] backdrop-blur-sm">
-                Department of CSM
-             </span>
-          </motion.div>
-          
-          <motion.h1
-            className="text-5xl md:text-7xl lg:text-8xl font-space-grotesk font-bold tracking-tight text-white mb-8 leading-[1.1]"
-            variants={itemVariants}
-          >
-            {title.split(' ').map((word, i) => (
-              <span key={i} className={cn(
-                "inline-block mr-3",
-                word.toLowerCase() === 'csm' || word.toLowerCase() === 'faculty' || word.toLowerCase() === 'events' || word.toLowerCase() === 'excellence' || word.toLowerCase() === 'achievements' ? "text-gold" : ""
-              )}>
-                {word}
-              </span>
-            ))}
-          </motion.h1>
+        <div className="max-w-5xl mx-auto">
 
-          {subtitle && (
-            <motion.p
-              className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto font-medium leading-relaxed"
+          {/* Header Section */}
+          <div className="text-center mb-12 md:mb-14">
+            {/* Elegant Badge */}
+            <motion.div
+              variants={itemVariants}
+              className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl mb-8"
+            >
+              <div className="w-2 h-2 bg-gold rounded-full animate-pulse" />
+              <span className="text-gold text-sm font-semibold uppercase tracking-wider">
+                Department of CSM
+              </span>
+              <div className="w-2 h-2 bg-gold rounded-full animate-pulse" />
+            </motion.div>
+
+            {/* Premium Title */}
+            <motion.h1
+              className="text-4xl md:text-6xl lg:text-7xl font-space-grotesk font-black text-white mb-6 leading-[0.95] tracking-tight"
               variants={itemVariants}
             >
-              {subtitle}
-            </motion.p>
-          )}
+              <span className="block mb-2 md:mb-3">
+                {title.split(' ').slice(0, 2).join(' ')}
+              </span>
+              <motion.span
+                className="block text-gold bg-gradient-to-r from-gold via-gold-light to-gold bg-clip-text text-transparent"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+              >
+                {title.split(' ').slice(2).join(' ')}
+              </motion.span>
+            </motion.h1>
 
-          <motion.div variants={itemVariants} className="mt-12 flex flex-wrap items-center justify-center gap-6">
-             <div className="w-12 h-1 bg-gold/50 rounded-full" />
-             <span className="text-white/40 text-xs font-bold uppercase tracking-widest">Engineering Excellence Since 2008</span>
-             <div className="w-12 h-1 bg-gold/50 rounded-full" />
+            {/* Refined Subtitle */}
+            {subtitle && (
+              <motion.div
+                variants={itemVariants}
+                className="max-w-3xl mx-auto"
+              >
+                <p className="text-lg md:text-xl text-white/80 font-light leading-relaxed mb-3">
+                  {subtitle}
+                </p>
+                <div className="w-20 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mt-6" />
+              </motion.div>
+            )}
+          </div>
+
+          {/* Compact Stats Section */}
+          <motion.div
+            variants={itemVariants}
+            className="flex flex-wrap justify-center gap-8 md:gap-12 max-w-3xl mx-auto mb-12"
+          >
+            {[
+              { value: "500+", label: "Students" },
+              { value: "50+", label: "Faculty" },
+              { value: "15+", label: "Labs" }
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                className="text-center group"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              >
+                <motion.div
+                  className="text-3xl md:text-4xl font-black text-gold mb-1"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{
+                    delay: 0.8 + index * 0.1,
+                    duration: 0.6,
+                    type: "spring",
+                    stiffness: 200
+                  }}
+                >
+                  {stat.value}
+                </motion.div>
+                <div className="text-white/70 text-sm font-medium group-hover:text-white transition-colors duration-300">
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Compact CTA Section */}
+          <motion.div
+            variants={itemVariants}
+            className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-10"
+          >
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <button className="group relative overflow-hidden px-8 py-4 bg-gradient-to-r from-gold to-gold-light text-navy font-bold rounded-xl hover:shadow-xl hover:shadow-gold/25 transition-all duration-300 shadow-lg shadow-gold/15">
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-gold-light to-gold opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                />
+                <span className="relative z-10 flex items-center gap-2 text-base">
+                  Discover Excellence
+                  <motion.div
+                    animate={{ x: [0, 3, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    →
+                  </motion.div>
+                </span>
+              </button>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <button className="group px-8 py-4 border-2 border-white/25 text-white font-bold rounded-xl hover:border-gold hover:text-gold hover:bg-gold/5 transition-all duration-300 backdrop-blur-sm text-base">
+                <span className="flex items-center gap-2">
+                  Explore Programs
+                  <motion.span
+                    className="text-gold opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    ↗
+                  </motion.span>
+                </span>
+              </button>
+            </motion.div>
+          </motion.div>
+
+          {/* Minimal Timeline */}
+          <motion.div
+            variants={itemVariants}
+            className="text-center"
+          >
+            <div className="inline-flex items-center gap-4 px-6 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full">
+              <div className="w-2 h-2 bg-gold rounded-full animate-pulse" />
+              <span className="text-white/70 text-xs font-medium">
+                Pioneering Computer Science Since 2008
+              </span>
+              <div className="w-2 h-2 bg-gold rounded-full animate-pulse" />
+            </div>
           </motion.div>
         </div>
       </motion.div>
 
-      {/* Bottom Gradient Overlay */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white to-transparent z-10" />
+      {/* Subtle Bottom Transition */}
+      <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-white/3 to-transparent" />
     </section>
   );
 }

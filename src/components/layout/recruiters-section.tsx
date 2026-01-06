@@ -6,16 +6,15 @@ import { motion } from 'framer-motion';
 import { InfiniteLogoTicker } from './infinite-logo-ticker';
 
 const recruiters = [
-  { name: "Microsoft", logo: "/logo.png" },
-  { name: "Google", logo: "/logo1.png" },
-  { name: "Oracle", logo: "/logo.png" },
-  { name: "Amazon", logo: "/logo1.png" },
-  { name: "IBM", logo: "/logo.png" },
-  { name: "Apple", logo: "/logo1.png" },
-  { name: "Intel", logo: "/logo.png" },
-  { name: "NVIDIA", logo: "/logo1.png" },
-  { name: "Meta", logo: "/logo.png" },
-  { name: "Cisco", logo: "/logo1.png" },
+  { name: "Flipkart", logo: "/logos/flipkart.webp" },
+  { name: "IDFC First Bank", logo: "/logos/idfc.webp" },
+  { name: "IBM", logo: "/logos/ibm.webp" },
+  { name: "Infosys", logo: "/logos/infos.webp" },
+  { name: "TCS", logo: "/logos/tcs.webp" },
+  { name: "Miracle Software", logo: "/logos/miracle.webp" },
+  { name: "MOV", logo: "/logos/mov.webp" },
+  { name: "DX", logo: "/logos/dx.webp" },
+  { name: "HCL", logo: "/logos/hcl.png" },
 ];
 
 export function RecruitersSection() {
@@ -23,7 +22,7 @@ export function RecruitersSection() {
     <section className="py-32 bg-[#0A0118] relative overflow-hidden">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] opacity-20"></div>
-      
+
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-20">
           <motion.div
@@ -34,7 +33,7 @@ export function RecruitersSection() {
           >
              <span className="text-gold font-bold uppercase tracking-[0.3em] text-[10px]">Placement Partners</span>
           </motion.div>
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -56,7 +55,7 @@ export function RecruitersSection() {
         <div className="relative">
           <div className="absolute left-0 top-0 bottom-0 w-40 bg-gradient-to-r from-[#0A0118] to-transparent z-10"></div>
           <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-[#0A0118] to-transparent z-10"></div>
-          
+
           <InfiniteLogoTicker
             direction="right"
             speed="slow"
@@ -67,12 +66,15 @@ export function RecruitersSection() {
                 key={`${recruiter.name}-${i}`}
                 className="flex items-center justify-center h-32 w-64 mx-6 bg-white/5 backdrop-blur-xl rounded-[2rem] p-8 border border-white/10 hover:bg-white/10 hover:border-gold/30 transition-all duration-500 group"
               >
-                <div className="relative w-full h-full">
-                  <Image
+                <div className="relative w-full h-full flex items-center justify-center">
+                  <img
                     src={recruiter.logo}
                     alt={recruiter.name}
-                    fill
-                    className="object-contain filter brightness-0 invert opacity-60 group-hover:opacity-100 transition-opacity duration-300"
+                    className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                    onError={(e) => {
+                      // Hide the img element if it fails to load
+                      e.currentTarget.style.display = 'none';
+                    }}
                   />
                 </div>
               </div>
