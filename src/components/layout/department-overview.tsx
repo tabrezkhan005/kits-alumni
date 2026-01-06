@@ -3,6 +3,7 @@
 import React from 'react';
 import { BentoGrid, BentoGridItem } from '@/components/aceternity/bento-grid';
 import { Brain, Database, Shield, Cloud, Code, FlaskConical } from 'lucide-react';
+import Image from 'next/image';
 
 const departments = [
   {
@@ -11,10 +12,12 @@ const departments = [
     header: (
       <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-navy to-navy-light relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gold-primary/20 to-transparent" />
-        <img
+        <Image
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=200&fit=crop&crop=center"
           alt="AI & ML"
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
+          className="object-cover opacity-30"
         />
         <Brain className="absolute top-4 right-4 w-8 h-8 text-gold-primary drop-shadow-lg" />
         <div className="absolute bottom-4 left-4 right-4">
@@ -32,10 +35,12 @@ const departments = [
     header: (
       <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-navy to-navy-light relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gold-primary/20 to-transparent" />
-        <img
+        <Image
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=200&fit=crop&crop=center"
           alt="Data Science"
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
+          className="object-cover opacity-30"
         />
         <Database className="absolute top-4 right-4 w-8 h-8 text-gold-primary drop-shadow-lg" />
         <div className="absolute bottom-4 left-4 right-4">
@@ -52,10 +57,10 @@ const departments = [
     header: (
       <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-navy to-navy-light relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gold-primary/20 to-transparent" />
-        <img
+        <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           src="https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400&h=200&fit=crop&crop=center"
           alt="Software Engineering"
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
+          className="object-cover opacity-30"
         />
         <Code className="absolute top-4 right-4 w-8 h-8 text-gold-primary drop-shadow-lg" />
         <div className="absolute bottom-4 left-4 right-4">
@@ -72,10 +77,10 @@ const departments = [
     header: (
       <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-navy to-navy-light relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gold-primary/20 to-transparent" />
-        <img
+        <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&h=200&fit=crop&crop=center"
           alt="Cybersecurity"
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
+          className="object-cover opacity-30"
         />
         <Shield className="absolute top-4 right-4 w-8 h-8 text-gold-primary drop-shadow-lg" />
         <div className="absolute bottom-4 left-4 right-4">
@@ -92,10 +97,10 @@ const departments = [
     header: (
       <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-navy to-navy-light relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gold-primary/20 to-transparent" />
-        <img
+        <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=200&fit=crop&crop=center"
           alt="Cloud Computing"
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
+          className="object-cover opacity-30"
         />
         <Cloud className="absolute top-4 right-4 w-8 h-8 text-gold-primary drop-shadow-lg" />
         <div className="absolute bottom-4 left-4 right-4">
@@ -112,10 +117,10 @@ const departments = [
     header: (
       <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-navy to-navy-light relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gold-primary/20 to-transparent" />
-        <img
+        <Image fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&h=200&fit=crop&crop=center"
           alt="Research & Innovation"
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
+          className="object-cover opacity-30"
         />
         <FlaskConical className="absolute top-4 right-4 w-8 h-8 text-gold-primary drop-shadow-lg" />
         <div className="absolute bottom-4 left-4 right-4">

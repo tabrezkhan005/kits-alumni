@@ -4,37 +4,38 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Globe, Zap, Shield, Database, Cpu } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const accordionItems = [
   {
     id: 1,
     title: 'Artificial Intelligence',
     icon: <Globe className="w-5 h-5" />,
-    imageUrl: 'https://images.unsplash.com/photo-1555255707-c07966088b7b?q=80&w=1974&auto=format&fit=crop',
+    imageUrl: '/img/AI.jpg',
   },
   {
     id: 2,
     title: 'Machine Learning',
     icon: <Zap className="w-5 h-5" />,
-    imageUrl: 'https://images.unsplash.com/photo-1527474305487-b87b222841cc?q=80&w=2070&auto=format&fit=crop',
+    imageUrl: '/img/ML.jpg',
   },
   {
     id: 3,
     title: 'Neural Networks',
     icon: <Shield className="w-5 h-5" />,
-    imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1974&auto=format&fit=crop',
+    imageUrl: '/img/NN.jpg',
   },
   {
     id: 4,
     title: 'Data Science',
     icon: <Database className="w-5 h-5" />,
-    imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2090&auto=format&fit=crop',
+    imageUrl: '/img/DS.jpg',
   },
   {
     id: 5,
     title: 'Deep Learning',
     icon: <Cpu className="w-5 h-5" />,
-    imageUrl: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=2070&auto=format&fit=crop',
+    imageUrl: '/img/DL.jpg',
   },
 ];
 
@@ -46,11 +47,15 @@ const typewriterSentences = [
   "Leading in Artificial Intelligence & ML Research"
 ];
 
-const AccordionItem = ({ item, isActive, onMouseEnter, onClick }: {
+const AccordionItem = ({ item, isActive, isHovered, hoveredIndex, onMouseEnter, onMouseLeave, onClick, index }: {
     item: typeof accordionItems[0];
     isActive: boolean;
+    isHovered: boolean;
+    hoveredIndex: number | null;
     onMouseEnter: () => void;
+    onMouseLeave: () => void;
     onClick?: () => void;
+    index: number;
   }) => {
     return (
       <motion.div
@@ -58,21 +63,45 @@ const AccordionItem = ({ item, isActive, onMouseEnter, onClick }: {
         className={`
           relative rounded-3xl overflow-hidden cursor-pointer
           transition-all duration-700 ease-in-out border border-white/10
-          ${isActive
-            ? 'h-[300px] md:h-[450px] xl:h-[550px] xl:flex-[4] md:flex-[5] shadow-2xl shadow-navy/40 xl:flex-1'
-            : 'h-[120px] md:h-[180px] xl:h-[550px] xl:flex-1 opacity-70 hover:opacity-100'
+          ${isHovered
+            ? 'h-[300px] md:h-[450px] xl:h-[550px] xl:flex-[10] md:flex-[10] shadow-2xl shadow-navy/40 flex-1 min-w-[300px] z-20 opacity-100'
+            : 'h-[120px] md:h-[180px] xl:h-[550px] xl:flex-1 opacity-70 hover:opacity-100 min-w-[150px]'
           }
           xl:flex-initial
         `}
         onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         onClick={onClick}
       >
-      <img
-        src={item.imageUrl}
-        alt={item.title}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-110"
-      />
-      <div className={`absolute inset-0 bg-gradient-to-b from-transparent via-navy/10 to-navy/90 transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-60'}`} />
+      {/* Show image only when hovered */}
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={item.imageUrl}
+              alt={item.title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-contain transition-transform duration-700 hover:scale-110"
+              priority={index === 0}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Light background when not hovered */}
+      {!isHovered && (
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100" />
+      )}
+
+      {/* Subtle overlay for active state */}
+      <div className={`absolute inset-0 bg-gradient-to-b from-transparent via-navy/10 to-navy/70 transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-0'}`} />
 
       <AnimatePresence>
         {isActive && (
@@ -93,18 +122,19 @@ const AccordionItem = ({ item, isActive, onMouseEnter, onClick }: {
 
       {!isActive && (
         <div className="absolute inset-0 flex items-center justify-center z-10 xl:hidden">
-           <span className="text-white/70 text-xs md:text-sm font-bold uppercase tracking-wide text-center px-2">
+           <span className="text-navy text-xs md:text-sm font-bold uppercase tracking-wide text-center px-2">
               {item.title}
            </span>
         </div>
       )}
       {!isActive && (
         <div className="absolute inset-0 flex items-center justify-center z-10 hidden xl:flex">
-           <span className="rotate-90 text-white/50 text-[10px] font-bold uppercase tracking-[0.4em] whitespace-nowrap">
+           <span className="rotate-90 text-navy text-[10px] font-bold uppercase tracking-[0.4em] whitespace-nowrap">
               {item.title}
            </span>
         </div>
       )}
+
     </motion.div>
   );
 };
@@ -120,19 +150,19 @@ function TransitioningText({ sentences }: { sentences: string[] }) {
   }, [sentences.length]);
 
   return (
-    <div className="relative h-[160px] md:h-[200px] lg:h-[240px] flex flex-col justify-center overflow-hidden">
+    <div className="relative h-[120px] md:h-[140px] lg:h-[160px] flex flex-col justify-center overflow-hidden">
       <AnimatePresence mode="wait">
         <motion.h1
           key={currentSentenceIndex}
-          initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
+          initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          exit={{ opacity: 0, y: -40, filter: "blur(12px)" }}
+          exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
           transition={{
-            duration: 0.9,
-            ease: [0.16, 1, 0.3, 1],
-            opacity: { duration: 0.6 }
+            duration: 1.2,
+            ease: [0.25, 0.46, 0.45, 0.94],
+            opacity: { duration: 0.8 }
           }}
-          className="text-3xl md:text-4xl lg:text-6xl xl:text-7xl font-bold text-navy leading-[1.1] tracking-tight font-space-grotesk"
+          className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-navy leading-[1.1] tracking-tight font-space-grotesk"
         >
           {sentences[currentSentenceIndex].split(' ').map((word, i) => {
             const isHighlight = ['AI', '&', 'Machine', 'Learning', 'Innovators', 'Technology', 'Excellence', 'Artificial', 'Intelligence', 'ML', 'Research'].includes(word.replace(/[^a-zA-Z&]/g, ''));
@@ -158,10 +188,11 @@ function TransitioningText({ sentences }: { sentences: string[] }) {
 }
 
 export function LandingAccordionItem() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <div className="bg-white min-h-screen pt-[120px] pb-20 overflow-hidden relative selection:bg-gold/30">
+    <div className="bg-white min-h-screen pt-[80px] pb-12 overflow-hidden relative selection:bg-gold/30">
       {/* Premium Background Elements */}
       <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-gold/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4 animate-pulse" />
       <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-navy/5 rounded-full blur-[120px] translate-y-1/4 -translate-x-1/4" />
@@ -170,10 +201,10 @@ export function LandingAccordionItem() {
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
            style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #001F3F 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
-      <section className="container mx-auto px-4 md:px-6 lg:px-12 relative z-10">
-        <div className="flex flex-col xl:flex-row items-center justify-between gap-12 md:gap-16 lg:gap-24">
+      <section className="container mx-auto px-4 md:px-6 lg:px-12 py-12 relative z-10">
+        <div className="flex flex-col xl:flex-row items-center justify-between gap-8 md:gap-12 lg:gap-16">
 
-          <div className="w-full xl:w-[45%] flex flex-col justify-center text-center xl:text-left">
+          <div className="w-full xl:w-[55%] flex flex-col justify-center text-center xl:text-left">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -245,7 +276,7 @@ export function LandingAccordionItem() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full xl:w-[55%] flex items-center"
+            className="w-full xl:w-[45%] flex items-center"
           >
             {/* Mobile: Stack vertically */}
             <div className="flex flex-col xl:flex-row items-center gap-3 md:gap-4 w-full h-full min-h-[450px] md:min-h-[550px] xl:min-h-[600px]">
@@ -254,8 +285,18 @@ export function LandingAccordionItem() {
                   key={item.id}
                   item={item}
                   isActive={index === activeIndex}
-                  onMouseEnter={() => setActiveIndex(index)}
+                  isHovered={index === hoveredIndex}
+                  hoveredIndex={hoveredIndex}
+                  onMouseEnter={() => {
+                    setActiveIndex(index);
+                    setHoveredIndex(index);
+                  }}
+                  onMouseLeave={() => {
+                    setActiveIndex(null);
+                    setHoveredIndex(null);
+                  }}
                   onClick={() => setActiveIndex(index)}
+                  index={index}
                 />
               ))}
             </div>

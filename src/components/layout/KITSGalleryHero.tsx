@@ -8,6 +8,7 @@ import {
   useContainerScroll
 } from "@/components/ui/hero-gallery-scroll-animation";
 import { motion, AnimatePresence, useTransform } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
@@ -93,8 +94,10 @@ function ImageGridContent() {
             key={index}
             className="relative overflow-hidden rounded-xl shadow-xl group"
           >
-            <img
-              className="size-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+            <Image
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
               src={image.url}
               alt={image.title}
               loading="lazy"

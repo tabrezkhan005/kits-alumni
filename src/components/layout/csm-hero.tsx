@@ -6,6 +6,7 @@ import { HeroParallax } from '@/components/aceternity/hero-parallax';
 import { AnimatedCounter } from '@/components/magicui/animated-counter';
 import { Button } from '@/components/ui/button';
 import { ChevronDown, GraduationCap, Users, TrendingUp, Award } from 'lucide-react';
+import Image from 'next/image';
 
 // Department images for the hero parallax - Engineering focused
 const departmentImages = [
@@ -145,10 +146,12 @@ export function CSMHero() {
                   }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-navy-light/30 to-gold-primary/30" />
-                  <img
+                  <Image
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     src={dept.thumbnail}
                     alt={dept.title}
-                    className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"
+                    className="object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-navy-dark via-transparent to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">

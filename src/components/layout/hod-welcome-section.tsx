@@ -8,7 +8,7 @@ import { Quote, ArrowRight, Award, BookOpen, Star } from 'lucide-react';
 
 export function HodWelcomeSection() {
   return (
-    <section className="py-32 bg-white relative overflow-hidden">
+    <section className="py-12 bg-white relative overflow-hidden">
       {/* Decorative patterns */}
       <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none"
            style={{ backgroundImage: 'radial-gradient(#301936 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>

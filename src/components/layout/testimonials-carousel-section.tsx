@@ -86,7 +86,7 @@ export function TestimonialsCarouselSection() {
 
   return (
     <section
-      className="py-32 bg-gradient-to-b from-white via-gray-50/50 to-white relative overflow-hidden"
+      className="py-12 bg-gradient-to-b from-white via-gray-50/50 to-white relative overflow-hidden"
       onMouseEnter={() => setIsAutoPlaying(false)}
       onMouseLeave={() => setIsAutoPlaying(true)}
     >

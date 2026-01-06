@@ -35,7 +35,7 @@ const newsAndEvents = [
 
 export function NewsEventsSection() {
   return (
-    <section className="py-32 bg-gray-50/50 relative overflow-hidden">
+    <section className="py-12 bg-gray-50/50 relative overflow-hidden">
       {/* Background patterns */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-navy/5 rounded-full blur-[120px] translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
 

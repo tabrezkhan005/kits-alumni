@@ -1,6 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import React from "react";
+import Image from "next/image";
 
 interface Product {
   title: string;
@@ -83,10 +84,12 @@ export const HeroParallax: React.FC<HeroParallaxProps> = ({
                 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-navy-light/20 to-gold-primary/20" />
-                <img
+                <Image
                   src={product.thumbnail}
                   alt={product.title}
-                  className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-300"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-dark via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">

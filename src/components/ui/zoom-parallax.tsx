@@ -2,6 +2,7 @@
 
 import { useScroll, useTransform, motion } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
+import Image from 'next/image';
 
 /**
  * Image interface for zoom parallax
@@ -115,10 +116,12 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
 										transform: transform || 'none',
 									}}
 								>
-									<img
+									<Image
+										fill
+										sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 										src={src || '/placeholder.svg'}
 										alt={alt || `Parallax image ${index + 1}`}
-										className="h-full w-full object-cover rounded-xl shadow-2xl border-2 border-white/30"
+										className="object-cover rounded-xl shadow-2xl border-2 border-white/30"
 										loading="eager"
 										onError={(e) => {
 											// Fallback to placeholder if image fails to load

@@ -19,7 +19,7 @@ const recruiters = [
 
 export function RecruitersSection() {
   return (
-    <section className="py-32 bg-[#0A0118] relative overflow-hidden">
+    <section className="py-12 bg-[#0A0118] relative overflow-hidden">
       {/* Background patterns */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] opacity-20"></div>
 
@@ -67,10 +67,12 @@ export function RecruitersSection() {
                 className="flex items-center justify-center h-32 w-64 mx-6 bg-white/5 backdrop-blur-xl rounded-[2rem] p-8 border border-white/10 hover:bg-white/10 hover:border-gold/30 transition-all duration-500 group"
               >
                 <div className="relative w-full h-full flex items-center justify-center">
-                  <img
+                  <Image
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     src={recruiter.logo}
                     alt={recruiter.name}
-                    className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                    className="object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
                     onError={(e) => {
                       // Hide the img element if it fails to load
                       e.currentTarget.style.display = 'none';
