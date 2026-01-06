@@ -52,6 +52,9 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
         />
+
+        {/* Favicon */}
+        <link rel="icon" type="image/png" href="/favicon.png" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
