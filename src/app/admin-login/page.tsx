@@ -4,14 +4,13 @@ import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, Lock, LogIn, ArrowLeft, ShieldCheck, GraduationCap } from "lucide-react";
-import { authenticateStudent, saveStudentSession, isStudentAuthenticated } from "@/lib/hooks/useStudentAuth";
+import { Mail, Lock, LogIn, ArrowLeft, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-export default function LoginPage() {
+export default function AdminLoginPage() {
   const router = useRouter();
-  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [checkingAuth, setCheckingAuth] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -19,14 +18,6 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    if (isStudentAuthenticated()) {
-      router.push('/student-dashboard');
-    } else {
-      setCheckingAuth(false);
-    }
-  }, [router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -61,12 +52,17 @@ export default function LoginPage() {
       setIsLoading(true);
       setAuthError(null);
       try {
-        const authResult = await authenticateStudent(formData.email, formData.password);
-        if (authResult.success && authResult.student) {
-          saveStudentSession(authResult.student);
-          router.push('/student-dashboard');
+        const response = await fetch('/api/admin-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: formData.email, password: formData.password }),
+        });
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          router.push(`/admin`);
         } else {
-          throw new Error(authResult.message || 'Authentication failed');
+          throw new Error(data.error || 'Admin login failed');
         }
       } catch (error) {
         setAuthError(error instanceof Error ? error.message : 'Login failed');
@@ -87,11 +83,10 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-white flex overflow-hidden font-inter">
       {/* Visual Side */}
-      <div className="hidden lg:flex lg:w-1/2 bg-navy relative items-center justify-center p-20 overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-navy to-black relative items-center justify-center p-20 overflow-hidden">
          <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-gold/10 via-navy to-navy" />
             <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold/5 rounded-full blur-[120px]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold/10 rounded-full blur-[120px]" />
          </div>
 
          <motion.div
@@ -103,26 +98,15 @@ export default function LoginPage() {
                <ArrowLeft className="w-4 h-4" /> Back to Home
             </Link>
             <div className="w-24 h-24 bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] flex items-center justify-center mx-auto mb-10 shadow-2xl">
-               <Image src="/img/alumini logo2.jpg" alt="Logo" width={60} height={60} className="rounded-2xl" />
+               <ShieldCheck className="w-12 h-12 text-gold" />
             </div>
             <h1 className="text-5xl font-space-grotesk font-bold text-white mb-6 leading-tight">
-               Excellence in <span className="text-gold">Engineering</span>
+               Admin <span className="text-gold">Portal</span>
             </h1>
             <p className="text-white/60 font-medium leading-relaxed">
-               Securely access the KITS CSM portal to connect with your community, share research, and grow your professional network.
+               Securely manage the KITS CSM alumni network, authenticate users, and govern platform content.
             </p>
          </motion.div>
-
-         <div className="absolute bottom-10 left-10 flex gap-10 opacity-30">
-            <div className="flex items-center gap-2">
-               <div className="w-1.5 h-1.5 bg-gold rounded-full"></div>
-               <span className="text-white text-[10px] font-bold uppercase tracking-widest">Innovation</span>
-            </div>
-            <div className="flex items-center gap-2">
-               <div className="w-1.5 h-1.5 bg-gold rounded-full"></div>
-               <span className="text-white text-[10px] font-bold uppercase tracking-widest">Collaboration</span>
-            </div>
-         </div>
       </div>
 
       {/* Form Side */}
@@ -133,8 +117,8 @@ export default function LoginPage() {
           className="w-full max-w-md"
         >
           <div className="mb-12">
-            <h2 className="text-4xl font-space-grotesk font-bold text-navy mb-4">Welcome Back</h2>
-            <p className="text-gray-500 font-medium">Please enter your credentials to continue</p>
+            <h2 className="text-4xl font-space-grotesk font-bold text-navy mb-4">Admin Access</h2>
+            <p className="text-gray-500 font-medium">Please enter your authorized credentials</p>
           </div>
 
           {authError && (
@@ -150,7 +134,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest ml-4">Email Address</label>
+              <label className="text-[10px] font-bold text-navy/40 uppercase tracking-widest ml-4">Admin Email</label>
               <div className="relative">
                 <Mail className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
@@ -162,7 +146,7 @@ export default function LoginPage() {
                     "w-full bg-gray-50 border border-gray-100 rounded-[1.5rem] pl-14 pr-6 py-5 text-navy font-bold text-sm placeholder:text-gray-300 focus:outline-none focus:border-navy transition-all",
                     errors.email && "border-red-500"
                   )}
-                  placeholder="name@university.edu"
+                  placeholder="admin@university.edu"
                 />
               </div>
               {errors.email && <p className="text-[10px] text-red-500 font-bold uppercase ml-4">{errors.email}</p>}
@@ -193,30 +177,23 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-navy text-white font-bold py-6 rounded-[1.5rem] hover:bg-gold hover:text-navy transition-all shadow-2xl shadow-navy/20 flex items-center justify-center gap-3 disabled:opacity-70 group overflow-hidden relative"
+              className="w-full bg-navy text-white font-bold py-6 rounded-[1.5rem] hover:bg-gold hover:text-navy transition-all shadow-2xl shadow-navy/20 flex items-center justify-center gap-3 disabled:opacity-70 group overflow-hidden relative mt-8"
             >
               {isLoading ? (
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+               <div className="flex items-center gap-3">
+                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                 <span>LOGGING IN...</span>
+               </div>
               ) : (
                 <>
-                  LOGIN TO PORTAL
-                  <LogIn className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  LOGIN
+                  <ShieldCheck className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 </>
               )}
             </button>
           </form>
-
-          <div className="mt-12 text-center">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-              Don't have an account? {" "}
-              <Link href="/register" className="text-gold hover:text-navy transition-colors ml-2">
-                Create Account
-              </Link>
-            </p>
-          </div>
         </motion.div>
 
-        {/* Background decorative blob */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-gold/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 -z-10"></div>
       </div>
     </main>

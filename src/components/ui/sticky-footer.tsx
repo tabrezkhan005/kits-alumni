@@ -281,6 +281,7 @@ const footerLinkGroups: FooterLinkGroup[] = [
 			{ title: 'Forum', href: '/forum' },
 			{ title: 'Learning Resources', href: '/resources' },
 			{ title: 'FAQ', href: '/faq' },
+			{ title: 'Admin Portal', href: '/admin-login' },
 		],
 	},
 	{

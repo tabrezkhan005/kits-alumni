@@ -199,7 +199,7 @@ export function LaunchPage() {
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-center"
       >
         <p className="text-white/70 text-sm drop-shadow-sm">
-          © 2025 KITS CSM Department. All rights reserved.
+          © 2026 KITS CSM Department. All rights reserved.
         </p>
       </motion.div>
     </div>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Award, Plus, Calendar, BookOpen, Medal, FileCheck, Loader2, Trophy, AlertCircle, ChevronLeft } from "lucide-react";
+import { Award, Plus, Calendar, BookOpen, Medal, FileCheck, Loader2, Trophy, AlertCircle, ChevronLeft, ImagePlus } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { getStudentSession, StudentUser } from "@/lib/hooks/useStudentAuth";
 
@@ -23,6 +23,7 @@ interface Achievement {
   type: string;
   status: string;
   created_at: string;
+  image_url?: string;
 }
 
 export default function AchievementsPage() {
@@ -40,6 +41,8 @@ export default function AchievementsPage() {
   const [achievementDate, setAchievementDate] = useState("");
   const [achievementType, setAchievementType] = useState("Competition wins");
   const [formError, setFormError] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   // Check authentication and load student data
   useEffect(() => {
@@ -223,6 +226,26 @@ export default function AchievementsPage() {
 
       console.log("Submitting achievement for student:", fullName); // Debug submitted name
 
+      // Upload image if selected
+      let imageUrl: string | null = null;
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append('file', imageFile);
+
+        const uploadResponse = await fetch('/api/upload-image', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const uploadResult = await uploadResponse.json();
+
+        if (!uploadResponse.ok) {
+          throw new Error(`Image upload failed: ${uploadResult.error || 'Unknown error'}`);
+        }
+
+        imageUrl = uploadResult.url;
+      }
+
       // Method 1: Try using the RPC function first
       try {
         const { data: rpcData, error: rpcError } = await supabase.rpc(
@@ -239,6 +262,14 @@ export default function AchievementsPage() {
         if (rpcError) {
           console.log("RPC method failed, trying direct insert:", rpcError);
           throw rpcError;
+        }
+
+        // If image was uploaded, update the record with the URL
+        if (rpcData && imageUrl) {
+          await supabase
+            .from('achievements')
+            .update({ image_url: imageUrl })
+            .eq('id', rpcData);
         }
 
         // If successful, get the newly created achievement
@@ -264,7 +295,8 @@ export default function AchievementsPage() {
               description: description,
               date: achievementDate,
               type: achievementType,
-              status: 'pending' // Initial status
+              status: 'pending',
+              image_url: imageUrl
             }
           ])
           .select();
@@ -284,6 +316,8 @@ export default function AchievementsPage() {
       setDescription("");
       setAchievementDate("");
       setAchievementType("Competition wins");
+      setImageFile(null);
+      setImagePreview(null);
       setFormVisible(false);
 
     } catch (error: any) {
@@ -413,6 +447,45 @@ export default function AchievementsPage() {
               </div>
             </div>
 
+            {/* Image Upload */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Upload Image (Optional)
+              </label>
+              <div className="flex items-center gap-4">
+                <label className="cursor-pointer flex items-center gap-2 px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-burgundy transition-colors">
+                  <ImagePlus size={18} className="text-gray-500" />
+                  <span className="text-sm text-gray-600">{imageFile ? imageFile.name : 'Choose image...'}</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        setImageFile(file);
+                        const reader = new FileReader();
+                        reader.onload = () => setImagePreview(reader.result as string);
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                  />
+                </label>
+                {imagePreview && (
+                  <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-gray-200">
+                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => { setImageFile(null); setImagePreview(null); }}
+                      className="absolute top-0 right-0 bg-red-500 text-white w-5 h-5 flex items-center justify-center text-xs rounded-bl-lg"
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
             <div className="flex justify-end">
               <button
                 type="submit"
@@ -471,6 +544,11 @@ export default function AchievementsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {achievements.map((achievement) => (
               <div key={achievement.id} className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200 flex flex-col">
+                {achievement.image_url && (
+                  <div className="h-40 overflow-hidden">
+                    <img src={achievement.image_url} alt={achievement.subject} className="w-full h-full object-cover" />
+                  </div>
+                )}
                 <div className="p-5 flex-grow">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center">

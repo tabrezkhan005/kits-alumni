@@ -10,6 +10,7 @@ export interface RegistrationFormData {
   regNumber: string;
   batchYear: string;
   branch: string;
+  phone?: string;
   email: string;
   password: string;
   confirmPassword?: string;
@@ -65,7 +66,8 @@ export const submitRegistration = async (
       branch_param: formData.branch,
       email_param: formData.email,
       password_param: formData.password,
-      linkedin_url_param: formData.linkedinUrl || null
+      linkedin_url_param: formData.linkedinUrl || null,
+      phone_param: formData.phone || null
     });
 
     if (rpcError) {
@@ -77,48 +79,9 @@ export const submitRegistration = async (
       };
     }
 
-    // --- OTP Logic for Admin Registration ---
-    // If this registration is for an admin, generate and send OTP
-    // TODO: Add a real check to determine if this is an admin registration
-    const isAdminRegistration = true; // <-- Replace with real check if needed
-    if (isAdminRegistration) {
-      const otp = generateOtp();
-      const otpHash = hashOtp(otp);
-      const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString(); // 10 minutes from now
-
-      // Store OTP in admin_otps table
-      const { error: otpError } = await supabase.from('admin_otps').insert([
-        {
-          email: formData.email,
-          otp_hash: otpHash,
-          expires_at: expiresAt
-        }
-      ]);
-      if (otpError) {
-        console.error('Failed to store OTP:', otpError);
-        return {
-          success: false,
-          message: 'Failed to send OTP. Please try again later.',
-          error: otpError
-        };
-      }
-
-      // Send OTP email directly (no fetch)
-      try {
-        await sendOtpEmail({ to: formData.email, otp });
-      } catch (emailError) {
-        console.error('Failed to send OTP email:', emailError);
-        return {
-          success: false,
-          message: 'Failed to send OTP email. Please try again later.',
-          error: emailError
-        };
-      }
-    }
-
     return {
       success: true,
-      message: 'Your registration request has successfully been registered. Please wait for approval'
+      message: 'Your registration request has been submitted successfully! Welcome to the KITS Alumni community. Please wait for department approval.'
     };
   } catch (error) {
     console.error('Registration error:', error);

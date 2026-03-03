@@ -40,11 +40,11 @@ const accordionItems = [
 ];
 
 const typewriterSentences = [
-  "Engineering the Future with AI & Machine Learning",
-  "Shaping Tomorrow's Tech Innovators",
-  "Innovation Meets Excellence in Technology",
-  "Building Your Future in Computer Science",
-  "Leading in Artificial Intelligence & ML Research"
+  { line1: "Engineering the Future with", line2: "AI & Machine Learning" },
+  { line1: "Shaping Tomorrow's", line2: "Tech Innovators" },
+  { line1: "Innovation Meets", line2: "Excellence in Technology" },
+  { line1: "Building Your Future", line2: "in Computer Science" },
+  { line1: "Leading in Artificial", line2: "Intelligence & ML Research" }
 ];
 
 const AccordionItem = ({ item, isActive, isHovered, hoveredIndex, onMouseEnter, onMouseLeave, onClick, index }: {
@@ -139,7 +139,7 @@ const AccordionItem = ({ item, isActive, isHovered, hoveredIndex, onMouseEnter, 
   );
 };
 
-function TransitioningText({ sentences }: { sentences: string[] }) {
+function TransitioningText({ sentences }: { sentences: { line1: string; line2: string }[] }) {
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
 
   useEffect(() => {
@@ -150,7 +150,7 @@ function TransitioningText({ sentences }: { sentences: string[] }) {
   }, [sentences.length]);
 
   return (
-    <div className="relative h-[120px] md:h-[140px] lg:h-[160px] flex flex-col justify-center overflow-hidden">
+    <div className="relative min-h-[100px] md:min-h-[120px] lg:min-h-[140px] flex flex-col justify-center">
       <AnimatePresence mode="wait">
         <motion.h1
           key={currentSentenceIndex}
@@ -162,16 +162,12 @@ function TransitioningText({ sentences }: { sentences: string[] }) {
             ease: [0.25, 0.46, 0.45, 0.94],
             opacity: { duration: 0.8 }
           }}
-          className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-navy leading-[1.1] tracking-tight font-space-grotesk"
+          className="text-2xl md:text-3xl lg:text-4xl font-bold text-navy leading-[1.2] font-space-grotesk"
         >
-          {sentences[currentSentenceIndex].split(' ').map((word, i) => {
-            const isHighlight = ['AI', '&', 'Machine', 'Learning', 'Innovators', 'Technology', 'Excellence', 'Artificial', 'Intelligence', 'ML', 'Research'].includes(word.replace(/[^a-zA-Z&]/g, ''));
-            return (
-              <span key={i} className={isHighlight ? "text-gold relative inline-block" : "inline-block"}>
-                 {word}{' '}
-              </span>
-            );
-          })}
+          {sentences[currentSentenceIndex].line1}
+          <span className="block text-gold mt-1">
+            {sentences[currentSentenceIndex].line2}
+          </span>
         </motion.h1>
       </AnimatePresence>
       <div className="mt-8 w-32 h-[3px] bg-navy/[0.03] overflow-hidden rounded-full relative">
