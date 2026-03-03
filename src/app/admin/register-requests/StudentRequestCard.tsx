@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Calendar, BookOpen, Mail, Briefcase, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
+import { Calendar, BookOpen, Mail, Briefcase, CheckCircle2, XCircle, AlertCircle, Phone } from 'lucide-react';
 import Link from 'next/link';
 
 // Define the request interface
@@ -13,6 +13,7 @@ interface RegisterRequest {
   batch_year: string;
   branch: string;
   email: string;
+  phone?: string;
   status: 'pending' | 'approved' | 'denied';
   linkedin_url?: string;
   requested_at?: string;
@@ -100,6 +101,13 @@ export default function StudentRequestCard({
           <Mail className="h-4 w-4 text-gray-500" />
           <span className="text-sm text-gray-800 break-all">{request.email}</span>
         </div>
+
+        {request.phone && (
+          <div className="flex items-center gap-2">
+            <Phone className="h-4 w-4 text-gray-500" />
+            <span className="text-sm text-gray-800 break-all">{request.phone}</span>
+          </div>
+        )}
 
         <div className="grid grid-cols-2 gap-2">
           <div className="flex items-center gap-2">

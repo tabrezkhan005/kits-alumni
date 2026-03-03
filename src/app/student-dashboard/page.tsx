@@ -139,104 +139,59 @@ export default function StudentDashboard() {
   if (!student) return null;
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <div className="hidden md:flex md:flex-col w-64 bg-white border-r border-gray-200">
-        <div className="flex items-center p-5 border-b border-gray-200 bg-white">
-          <div className="flex-shrink-0 mr-4">
-            <div className="w-12 h-12 rounded-full bg-burgundy flex items-center justify-center text-white">
-              <User size={24} />
-            </div>
-          </div>
-          <div>
-            <h2 className="text-lg font-bold text-gray-800">{student.firstName} {student.lastName}</h2>
-            <p className="text-sm text-gray-500">Student</p>
-          </div>
-        </div>
-
-        {/* Navigation */}
-        <nav className="flex-1 p-4">
-          <ul className="space-y-1">
-            {navItems.map((item) => (
-              <li key={item.id}>
-                <button
-                  onClick={() => handleNavItemClick(item)}
-                  className={`flex items-center w-full px-4 py-2 text-sm rounded-md transition-colors ${
-                    activeSection === item.id
-                      ? "bg-burgundy text-white"
-                      : "text-gray-700 hover:bg-gray-100"
-                  }`}
-                >
-                  <span className="mr-3">{item.icon}</span>
-                  {item.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        {/* Logout */}
-        <div className="p-4 border-t border-gray-200">
-          <button
-            onClick={handleLogout}
-            className="flex items-center w-full px-4 py-2 text-sm text-red-600 rounded-md hover:bg-red-50 transition-colors"
-          >
-            <LogOut size={20} className="mr-3" />
-            Logout
-          </button>
-        </div>
-      </div>
-
-      {/* Main content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+    <>
         {/* Header */}
-        <header className="flex items-center justify-between h-16 px-6 border-b border-gray-200 bg-white">
-          <div className="flex items-center">
-            <div className="w-8 h-8 flex items-center justify-center rounded-full bg-burgundy text-white mr-2">
-              <GraduationCap size={16} />
+        <header className="flex items-center justify-between h-20 px-8 border-b border-gray-100 bg-white">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 flex items-center justify-center rounded-2xl bg-navy/5 text-navy">
+              <GraduationCap size={20} />
             </div>
             <div>
-              <h1 className="text-lg font-semibold">Student Dashboard</h1>
-              <p className="text-xs text-gray-500">Student Portal</p>
+              <h1 className="text-xl font-space-grotesk font-bold text-navy">Student Dashboard</h1>
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Student Portal</p>
             </div>
           </div>
 
           {/* Right side - Date */}
           <div className="flex items-center">
             <div className="text-right">
-              <p className="text-sm font-medium">{formattedDate}</p>
-              <p className="text-xs text-gray-500">{formattedTime}</p>
+              <p className="text-sm font-bold text-navy">{formattedDate}</p>
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mt-0.5">{formattedTime}</p>
             </div>
           </div>
         </header>
 
         {/* Main content area */}
-        <main className="flex-1 overflow-y-auto p-6">
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-800">Student Dashboard</h2>
-            <p className="text-gray-600">Welcome to the KITS College student portal. View your achievements, blogs, and more.</p>
+        <main className="flex-1 overflow-y-auto p-8">
+          <div className="space-y-8 max-w-6xl mx-auto">
+            <div className="bg-navy rounded-[2rem] p-10 relative overflow-hidden shadow-2xl shadow-navy/20">
+               <div className="relative z-10">
+                 <h2 className="text-3xl font-space-grotesk font-bold text-white mb-2">Welcome back, {student.firstName}!</h2>
+                 <p className="text-white/60 font-medium max-w-lg">Access your academic achievements, manage your community blogs, and participate in forum discussions all from one place.</p>
+               </div>
+               <div className="absolute top-[-50%] right-[-10%] w-64 h-64 bg-gold/10 rounded-full blur-3xl"></div>
+            </div>
 
             {/* Stats cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {statsCards.map((stat) => (
                 <div
                   key={stat.id}
-                  className="p-6 rounded-lg shadow-sm bg-white hover:shadow-md cursor-pointer transition-shadow"
+                  className="p-8 pb-10 rounded-[2rem] border border-gray-100 bg-white hover:border-gold/30 hover:shadow-xl hover:-translate-y-1 cursor-pointer transition-all group relative overflow-hidden"
                   onClick={() => handleStatsCardClick(stat.path)}
                 >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">{stat.label}</p>
-                      <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
-                    </div>
-                    <div className="rounded-full p-3">{stat.icon}</div>
+                  <div className="flex flex-col h-full">
+                     <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-gold/10 transition-transform">
+                        {stat.icon}
+                     </div>
+                     <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">{stat.label}</p>
+                     <p className="text-4xl font-space-grotesk font-bold text-navy group-hover:text-gold transition-colors">{stat.value}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
         </main>
-      </div>
-    </div>
+    </>
   );
 }

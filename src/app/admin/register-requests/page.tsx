@@ -14,6 +14,7 @@ interface RegisterRequest {
   batch_year: string;
   branch: string;
   email: string;
+  phone?: string;
   status: 'pending' | 'approved' | 'denied';
   linkedin_url?: string;
 }

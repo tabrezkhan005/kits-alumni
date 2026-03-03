@@ -20,6 +20,11 @@ import {
 // Admin navigation items with icons
 const navItems = [
   {
+    name: "Dashboard",
+    href: "/admin",
+    icon: HomeIcon,
+  },
+  {
     name: "Register Requests",
     href: "/admin/register-requests",
     icon: UserPlusIcon,
